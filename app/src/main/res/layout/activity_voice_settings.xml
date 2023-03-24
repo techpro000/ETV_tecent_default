@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightGrey">
+
+    <!--顶部退出按钮-->
+    <LinearLayout
+        android:id="@+id/lin_exit"
+        style="@style/setting_exit_layout">
+
+        <ImageView style="@style/setting_exit_image" />
+
+        <TextView style="@style/setting_exit_txt" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/setting_fragment_lin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="@string/voice_settings"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+
+        <com.ys.model.view.MoreButtonToggle
+            android:id="@+id/switch_open_tts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:image_left="@mipmap/icon_speech"
+            app:title_content="@string/tts_switch" />
+
+        <LinearLayout
+            android:id="@+id/lin_voice_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.ys.model.view.MoreButton
+                android:id="@+id/more_install_apk_statues"
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:layout_marginTop="@dimen/dimen_10"
+                app:image_left="@mipmap/icon_switch_single"
+                app:right_content=""
+                app:title_content="@string/no_install" />
+
+            <com.ys.model.view.MoreButton
+                android:id="@+id/more_tts_chooice"
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                app:image_left="@mipmap/icon_speech"
+                app:right_content=""
+                app:title_content="@string/tv_language" />
+
+            <com.ys.model.view.MoreButton
+                android:id="@+id/more_tts_setting"
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                app:image_left="@mipmap/icon_dpi"
+                app:right_content=""
+                app:title_content="@string/tts_setting" />
+
+            <com.ys.model.view.MoreButton
+                android:id="@+id/more_tts_message"
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                app:image_left="@mipmap/icon_dpi"
+                app:right_content=""
+                app:title_content="@string/tts_message_time" />
+
+            <View style="@style/view_line_hro" />
+
+            <TextView
+                android:id="@+id/tv_down_statues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="@dimen/dimen_15"
+                android:textColor="@color/grey"
+                android:textSize="16sp" />
+
+            <ProgressBar
+                android:id="@+id/avs_pb"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</RelativeLayout>

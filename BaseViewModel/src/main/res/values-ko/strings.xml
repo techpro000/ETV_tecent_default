@@ -1,0 +1,10 @@
+<resources>
+    <string name="exit">출구</string>
+    <string name="submit_base">확인</string>
+    <string name="cancel_base">취소</string>
+    <string name="time_setting">시간 설정</string>
+    <string name="setting_default">설정</string>
+    <string name="confirm">확정</string>
+    <string name="dialog_tip_title">제시</string>
+    <string name="tips_input">내용을 입력하십시오</string>
+</resources>

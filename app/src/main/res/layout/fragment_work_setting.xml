@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rela_bgg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/back_ground"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/lin_exit"
+        style="@style/setting_exit_layout">
+
+        <ImageView style="@style/setting_exit_image" />
+
+        <TextView
+            android:id="@+id/tv_exit"
+            style="@style/setting_exit_txt" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="1000dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dimen_20"
+            android:paddingTop="@dimen/dimen_20"
+            android:paddingRight="@dimen/dimen_20"
+            android:paddingBottom="@dimen/dimen_30">
+
+            <!--网络状态  顶部标题-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:text="@string/current_network_status"
+                    android:textColor="@color/app_txt_color"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/tv_net_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/normal_show"
+                    android:textColor="@color/red"
+                    android:textSize="30sp" />
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0" />
+
+            </LinearLayout>
+
+            <View style="@style/setting_current_view_style" />
+
+            <GridView
+                android:id="@+id/grid_work"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_100"
+                android:layout_marginTop="@dimen/dimen_10" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_35"
+                android:layout_gravity="right"
+                android:layout_marginTop="@dimen/dimen_30"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_sys_setting"
+                    android:layout_width="@dimen/dimen_100"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/btn_fouces_style"
+                    android:text="@string/next"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    <!--    客户定制界面，可以hulve-->
+    <RelativeLayout
+        android:id="@+id/rela_pass_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent_black"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="600dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/dialog_rect_white"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:gravity="center_vertical"
+                android:text="密码验证"
+                android:textColor="@color/colorAppTheme"
+                android:textSize="18sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="15dp">
+
+                <EditText
+                    android:id="@+id/et_username_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:hint="请输入密码"
+                    android:inputType="text"
+                    android:textColor="@color/app_txt_color"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/btn_del_all"
+                    android:layout_width="@dimen/dimen_40"
+                    android:layout_height="@dimen/dimen_40"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/btn_del_text" />
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_modify"
+                android:layout_width="@dimen/dimen_100"
+                android:layout_height="42dp"
+                android:layout_gravity="right"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/btn_fouces_style"
+                android:text="提交"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

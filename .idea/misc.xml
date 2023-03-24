@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/BaseViewModel/src/main/res/layout/more_button_toggle.xml" value="0.11163194444444445" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/BaseViewModel/src/main/res/layout/view_setting_click.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/BaseViewModel/src/main/res/layout/view_setting_switch.xml" value="0.16" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/drawable/shape_tranlate.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/acticity_general_view.xml" value="0.16" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/activity_app_manager.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/activity_control_center.xml" value="0.33" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/activity_guardian.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/activity_hiddle.xml" value="0.14" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/activity_image_dialog.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/activity_main_new.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/activity_play_task.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/activity_screen_setting.xml" value="0.18" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/activity_splash_low.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/activity_test.xml" value="0.11684027777777778" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/activity_web_setting.xml" value="0.25" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/activity_web_touch.xml" value="0.1111111111111111" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/dialog_setting_menu.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/fragment_net_work_setting.xml" value="0.25" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/fragment_server_connect.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/fragment_service.xml" value="0.15" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/fragment_setting_sys.xml" value="0.22" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/fragment_single_work_setting.xml" value="0.2" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/fragment_work_setting.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/setting_screen_show.xml" value="0.22" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/view_himi_mlogic.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/view_logo_image.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/view_main_logo_qingfeng.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/view_media_all.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/view_pdf_show_new.xml" value="0.1111111111111111" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/view_video.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/view_video_gl_new.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/view_video_play_new.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/view_video_play_new_surface.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/view_video_surface.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/view_web.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/view_web_x5.xml" value="0.1111111111111111" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_common_sz_tecent_socket/app/src/main/res/layout/view_web_x5_back.xml" value="0.14" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/BaseViewModel/src/main/res/layout/view_setting_click.xml" value="0.359375" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/acticity_general_view.xml" value="0.32916666666666666" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/activity_health_monitoring.xml" value="0.1" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/activity_hiddle.xml" value="0.359375" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/activity_main_acreen.xml" value="0.32916666666666666" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/activity_main_new.xml" value="0.32916666666666666" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/activity_main_socket.xml" value="0.32916666666666666" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/activity_menu_setting.xml" value="0.32916666666666666" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/activity_open_camera.xml" value="0.103125" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/activity_play.xml" value="0.32916666666666666" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/activity_play_task.xml" value="0.16" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/activity_screen_setting.xml" value="0.32916666666666666" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/activity_single.xml" value="0.359375" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/activity_splash_low.xml" value="0.2484375" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/activity_web_setting.xml" value="0.3494791666666667" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/dialog_setting_menu.xml" value="0.35052083333333334" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/fragment_net_down_setting.xml" value="0.359375" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/fragment_server.xml" value="0.32447916666666665" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/fragment_server_connect.xml" value="0.22" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/fragment_service.xml" value="0.2947916666666667" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/fragment_setting_sys.xml" value="0.359375" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/fragment_work_setting.xml" value="0.359375" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/item_single_setting.xml" value="0.359375" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/item_single_setting_ver.xml" value="0.359375" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/setting_screen_show.xml" value="0.36614583333333334" />
+        <entry key="..\:/SVN_SERVER/IPC/ETV_esoncloud_tecent/app/src/main/res/layout/view_image_video_new.xml" value="0.34010416666666665" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="trunkUrl" value="svn://139.9.202.29/repos/anhui-esoncloud/IPC/ETV_tecent_socket" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

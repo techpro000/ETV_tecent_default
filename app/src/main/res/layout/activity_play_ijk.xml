@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_play"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <com.etv.util.ijk.SampleVideo
+        android:id="@+id/video_player"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="play" />
+
+        <Button
+            android:id="@+id/btn_finish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="close" />
+
+        <Button
+            android:id="@+id/btn_roate_mirror"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="roate_mirror" />
+
+
+        <Button
+            android:id="@+id/btn_roate_screen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="roate_screen" />
+
+        <Button
+            android:id="@+id/btn_play_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="play_size" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_play_statues"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="@color/red"
+        android:textSize="50sp" />
+
+</RelativeLayout>

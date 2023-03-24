@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rela_bgg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/back_ground">
+
+    <LinearLayout
+        android:id="@+id/lin_exit"
+        style="@style/setting_exit_layout">
+
+        <ImageView style="@style/setting_exit_image" />
+
+        <TextView style="@style/setting_exit_txt" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/setting_fragment_lin"
+        android:padding="@dimen/dimen_20">
+
+        <TextView
+            android:id="@+id/tv_dev_setting"
+            style="@style/setting_title_desc"
+            android:text="@string/web_refresh_auto" />
+
+        <View style="@style/setting_current_view_style" />
+
+        <LinearLayout style="@style/termnal_setting_lin_hro">
+
+            <ImageView
+                style="@style/termnal_setting_image"
+                android:layout_marginLeft="@dimen/dimen_30"
+                android:src="@mipmap/ter_name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dimen_40"
+                android:text="@string/web_refresh_auto"
+                android:textColor="@color/app_txt_color"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <View style="@style/setting_current_view_style" />
+
+        <com.ys.model.view.SettingSwitchView
+            android:id="@+id/switch_web_showbutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:img_left_switch="@mipmap/dialog_net"
+            app:txt_content_switch=""
+            app:txt_title_switch="@string/web_button_show" />
+
+
+        <com.ys.model.view.SettingSwitchView
+            android:id="@+id/switch_web_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:img_left_switch="@mipmap/dialog_net"
+            app:txt_content_switch=""
+            app:txt_title_switch="@string/refresh_time_reduce" />
+
+        <com.ys.model.view.SettingSwitchView
+            android:id="@+id/switch_cache"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:img_left_switch="@mipmap/dialog_net"
+            app:txt_content_switch=""
+            app:txt_title_switch="@string/webview_cache" />
+
+        <com.ys.model.view.SettingClickView
+            android:id="@+id/btn_tecent_inner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:btn_txt_right="@string/app_install"
+            app:img_left="@mipmap/dialog_net"
+            app:txt_content=""
+            app:txt_title="@string/statues_tecent" />
+
+
+        <!--=========底部的安装说明==============-->
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_20"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/web_install_info"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/textSize_20" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_10"
+                    android:text="@string/web_first"
+                    android:textColor="@color/grey" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_10"
+                    android:text="@string/web_second"
+                    android:textColor="@color/grey" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_10"
+                    android:text="@string/web_third"
+                    android:textColor="@color/grey" />
+
+                <ImageView
+                    android:layout_width="572dp"
+                    android:layout_height="823dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dimen_10"
+                    android:background="@mipmap/tecent_install" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rela_bgg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/back_ground">
+    <!--退出按钮-->
+    <LinearLayout
+        android:id="@+id/lin_exit"
+        style="@style/setting_exit_layout">
+
+        <ImageView style="@style/setting_exit_image" />
+
+        <TextView
+            android:id="@+id/tv_exit"
+            style="@style/setting_exit_txt" />
+    </LinearLayout>
+
+    <RelativeLayout style="@style/setting_fragment_lin">
+        <!--标题菜单-->
+        <LinearLayout
+            android:id="@+id/lin_title_time"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="@dimen/dimen_10"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dimen_20"
+            android:paddingRight="@dimen/dimen_20">
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:text="@string/close_time"
+                android:textColor="@color/grey"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:text="@string/open_time"
+                android:textColor="@color/grey"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_mon"
+                style="@style/power_on_off_tv"
+                android:text="@string/monday" />
+
+            <TextView
+                android:id="@+id/tv_tue"
+                style="@style/power_on_off_tv"
+                android:text="@string/thuesday" />
+
+            <TextView
+                android:id="@+id/tv_wed"
+                style="@style/power_on_off_tv"
+                android:text="@string/wedsday" />
+
+            <TextView
+                android:id="@+id/tv_thu"
+                style="@style/power_on_off_tv"
+                android:text="@string/thurday" />
+
+            <TextView
+                android:id="@+id/tv_fri"
+                style="@style/power_on_off_tv"
+                android:text="@string/friday" />
+
+            <TextView
+                android:id="@+id/tv_sat"
+                style="@style/power_on_off_tv"
+                android:text="@string/satuday" />
+
+            <TextView
+                android:id="@+id/tv_sun"
+                style="@style/power_on_off_tv"
+                android:text="@string/sunday" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lv_power"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/rela_bottom"
+            android:layout_below="@id/lin_title_time"
+            android:layout_marginBottom="@dimen/dimen_5"
+            android:listSelector="@drawable/rect_circle_app_style"
+            android:padding="@dimen/dimen_20" />
+
+        <RelativeLayout
+            android:id="@+id/rela_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_30"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_add_time"
+                    android:layout_width="@dimen/dimen_100"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dimen_10"
+                    android:background="@drawable/btn_fouces_style"
+                    android:text="@string/add"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/btn_clear_time"
+                    android:layout_width="@dimen/dimen_100"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dimen_15"
+                    android:background="@drawable/btn_fouces_error_style"
+                    android:text="@string/clear"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/btn_power_log"
+                    android:layout_width="@dimen/dimen_100"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dimen_15"
+                    android:background="@drawable/btn_fouces_style"
+                    android:text="@string/log_power"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_show_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <!--没有数据显示动画-->
+    <LinearLayout
+        android:id="@+id/iv_no_data"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/no_data" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

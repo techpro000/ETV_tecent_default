@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exit">Exit</string>
+    <string name="submit_base">Submit</string>
+    <string name="cancel_base">Cacel</string>
+    <string name="time_setting">Set the time</string>
+    <string name="setting_default">Setting</string>
+    <string name="confirm">Submit</string>
+    <string name="dialog_tip_title">Tips</string>
+    <string name="tips_input">Please enter the content</string>
+</resources>

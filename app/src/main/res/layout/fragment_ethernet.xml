@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rela_bgg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/back_ground"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/lin_exit"
+        style="@style/setting_exit_layout">
+
+        <ImageView style="@style/setting_exit_image" />
+
+        <TextView style="@style/setting_exit_txt" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/setting_fragment_lin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="@dimen/dimen_20"
+            android:layout_marginRight="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="以太网信息"
+                android:textColor="@color/app_txt_color"
+                android:textSize="30sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="@dimen/dimen_20"
+            android:layout_marginRight="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/eth_title"
+                android:text="@string/network_mode" />
+
+            <TextView
+                android:id="@+id/sp_network_mode"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="3.0"
+                android:background="@drawable/btn_fouces_style"
+                android:focusable="true"
+                android:gravity="center"
+                android:paddingRight="30dp"
+                android:text="@string/dynamic_acquisition"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <View
+            style="@style/setting_current_view_style"
+            android:layout_marginTop="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/eth_title"
+                android:text="@string/mac_address" />
+
+            <TextView
+                android:id="@+id/tv_mac_address"
+                style="@style/eth_content_type"
+                android:text="@string/mac_address" />
+        </LinearLayout>
+
+        <View
+            style="@style/setting_current_view_style"
+            android:layout_marginTop="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/eth_title"
+                android:text="@string/ip_address" />
+
+            <TextView
+                android:id="@+id/tv_ip_address"
+                style="@style/eth_content_type"
+                android:text="@string/ip_address" />
+        </LinearLayout>
+
+        <View
+            style="@style/setting_current_view_style"
+            android:layout_marginTop="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/eth_title"
+                android:text="@string/subnet_mask" />
+
+            <TextView
+                android:id="@+id/tv_subnet_mask"
+                style="@style/eth_content_type"
+                android:text="@string/subnet_mask" />
+        </LinearLayout>
+
+        <View
+            style="@style/setting_current_view_style"
+            android:layout_marginTop="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/eth_title"
+                android:text="@string/gateway" />
+
+            <TextView
+                android:id="@+id/tv_gateway"
+                style="@style/eth_content_type"
+                android:text="@string/gateway" />
+        </LinearLayout>
+
+        <View
+            style="@style/setting_current_view_style"
+            android:layout_marginTop="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/eth_title"
+                android:text="@string/dns1" />
+
+            <TextView
+                android:id="@+id/tv_dns1"
+                style="@style/eth_content_type"
+                android:text="@string/dns1" />
+        </LinearLayout>
+
+        <View
+            style="@style/setting_current_view_style"
+            android:layout_marginTop="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/eth_title"
+                android:text="@string/dns2" />
+
+            <TextView
+                android:id="@+id/tv_dns2"
+                style="@style/eth_content_type"
+                android:text="@string/dns2" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rela_bgg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/back_ground">
+
+    <LinearLayout
+        android:id="@+id/lin_exit"
+        style="@style/setting_exit_layout">
+
+        <ImageView style="@style/setting_exit_image" />
+
+        <TextView
+            android:id="@+id/tv_exit"
+            style="@style/setting_exit_txt" />
+    </LinearLayout>
+
+
+    <ScrollView
+        style="@style/setting_fragment_lin"
+        android:layout_centerInParent="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rect_circle"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/control_center"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/app_txt_color" />
+
+            <!--=====Hdmi in得设置============-->
+            <com.ys.model.view.SettingSwitchView
+                android:id="@+id/switch_hdmi_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:img_left_switch="@mipmap/icon_hdmi"
+                app:txt_content_switch=""
+                app:txt_title_switch="HDMI_IN" />
+
+            <!--==============是否显示绘图板图标=============================================-->
+            <com.ys.model.view.SettingSwitchView
+                android:id="@+id/switch_show_toggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:img_left_switch="@drawable/ter_icon_draw"
+                app:txt_content_switch=""
+                app:txt_title_switch="@string/show_canvas" />
+
+            <!--==============是否从服务器拉背景图数据=============================================-->
+            <com.ys.model.view.SettingSwitchView
+                android:id="@+id/switch_main_bgg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:img_left_switch="@mipmap/icon_bgg_update"
+                app:txt_content_switch=""
+                app:txt_title_switch="@string/update_web_bgg" />
+
+            <com.ys.model.view.SettingSwitchView
+                android:id="@+id/switch_task_touch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:img_left_switch="@drawable/ter_icon_screen"
+                app:txt_content_switch=""
+                app:txt_title_switch="@string/task_touch" />
+
+            <com.ys.model.view.SettingSwitchView
+                android:id="@+id/switch_video_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:img_left_switch="@mipmap/icon_bgg_update"
+                app:txt_content_switch=""
+                app:txt_title_switch="@string/video_more_size" />
+
+            <com.ys.model.view.SettingSwitchView
+                android:id="@+id/switch_show_wps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:img_left_switch="@mipmap/icon_wps"
+                app:txt_content_switch=""
+                app:txt_title_switch="@string/wps_show" />
+
+            <com.ys.model.view.SettingSwitchView
+                android:id="@+id/switch_plan_person"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:img_left_switch="@mipmap/hiddle_protect"
+                app:txt_content_switch="@string/auto_clear_cache"
+                app:txt_title_switch="@string/plan_no_person" />
+
+            <com.ys.model.view.SettingSwitchView
+                android:id="@+id/switch_blue_teeth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:img_left_switch="@mipmap/icon_blueteeth"
+                app:txt_content_switch="@string/reboot_start"
+                app:txt_title_switch="@string/blue_theeth" />
+
+            <!--=====是否多屏联动============-->
+            <com.ys.model.view.SettingSwitchView
+                android:id="@+id/switch_double_screen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:img_left_switch="@drawable/ter_icon_screen"
+                app:txt_content_switch=""
+                app:txt_title_switch="@string/screen_more_line" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

@@ -1,0 +1,4 @@
+rootProject.name = 'ETV_NO_ENCRYPTION'
+include ':app'
+include ':bannerlib'
+include ':BaseViewModel'
