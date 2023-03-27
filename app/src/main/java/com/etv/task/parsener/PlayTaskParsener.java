@@ -2,10 +2,12 @@ package com.etv.task.parsener;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -562,6 +564,9 @@ public class PlayTaskParsener {
             int topPosition = TaskDealUtil.StringToFloat(cpListEntityArea.getCoRightPosition());
             int width = TaskDealUtil.StringToFloat(cpListEntityArea.getCoWidth());
             int height = TaskDealUtil.StringToFloat(cpListEntityArea.getCoHeight());
+
+            Log.e("liujk", "获取区域控件： leftPosition :" + leftPosition + " topPosition: " + topPosition + " width：" + width + " height: " + height);
+
             int viewWidth = leftPosition + width;
             int viewHeight = topPosition + height;
             if (leftPosition < 8 && leftPosition > 0) {
@@ -579,6 +584,18 @@ public class PlayTaskParsener {
             if (distanceHeight < 8) {
                 height = screenHeight - topPosition;
             }
+
+            /**
+             * 针对4K 显示屏幕，多个控件设置区域，不会在指定区域显示
+             */
+            if (SharedPerUtil.getScreenWidth() == 3840 || SharedPerUtil.getScreenWidth() == 2160) {
+                leftPosition = leftPosition * 2;
+                topPosition = topPosition * 2;
+                width = width * 2;
+                height = height * 2;
+            }
+
+
             String cpId = cpListEntityShow.getCpidId();
             MyLog.playTask("======parperToShowAreaView===区域跳转====" + cpId + " / " + parentCoId + " /leftPosition = "
                     + leftPosition + "/" + topPosition + " / " + width + " / " + height);
@@ -721,6 +738,7 @@ public class PlayTaskParsener {
                     }
                     MyLog.playTask("====准备显示区域==areaList==" + areaList.size());
                     SceneEntity areaScentity = getCurrentSencenEntity();
+                    Log.e("liujk", "leftPosition : " + leftPosition + " topPosition: " + topPosition + " width: " + width + " height:" + height);
                     generatorView = new ViewImgVideoNetGenerate(context, null, areaScentity, leftPosition, topPosition, width, height, areaList, true, 0, AppInfo.PROGRAM_POSITION_MAIN, true);
                     addViewToList(generatorView, coType, false);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());

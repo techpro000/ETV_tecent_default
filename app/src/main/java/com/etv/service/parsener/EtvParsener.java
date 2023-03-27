@@ -1,13 +1,19 @@
 package com.etv.service.parsener;
 
 import static com.etv.config.AppConfig.APP_TYPE_AD_JH;
+import static com.etv.config.AppConfig.APP_TYPE_BEIJING_MG;
+import static com.etv.config.AppConfig.APP_TYPE_LK_QRCODE;
+import static com.etv.util.FileUtil.TAG;
 
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
+import com.etv.config.ApiInfo;
 import com.etv.config.AppConfig;
 import com.etv.config.AppInfo;
 import com.etv.db.DbStatiscs;
@@ -20,15 +26,25 @@ import com.etv.service.util.EtvServerModuleImpl;
 import com.etv.task.activity.PlayTaskTriggerActivity;
 import com.etv.task.activity.PlayerTaskActivity;
 import com.etv.util.MyLog;
+import com.etv.util.NetWorkUtils;
 import com.etv.util.SharedPerManager;
 import com.etv.util.SimpleDateUtil;
 import com.etv.util.media.AudioPlayerUtil;
 import com.etv.util.media.MediaPlayerListener;
+import com.ys.rkapi.MyManager;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.security.auth.login.LoginException;
+
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
+import okhttp3.Call;
 
 
 public class EtvParsener {
@@ -299,6 +315,74 @@ public class EtvParsener {
         if (etvServerModule == null) {
             etvServerModule = new EtvServerModuleImpl();
         }
+    }
+
+    public static boolean isDealTime  =false;
+
+    public void checkSytemTimeFromWeb(EtvService etvService) {
+
+        if (!NetWorkUtils.isNetworkConnected(context)) {
+            Log.e(TAG, "checkSytemTimeFromWeb net no connect");
+            return;
+        }
+        Log.e(TAG, "checkSytemTimeFromWeb net ok" + AppConfig.APP_TYPE);
+        //      设置并保存系统的时间 这里的type == 35
+
+        String url = ApiInfo.UPDATE_TIME_FROM_WEB();
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, String s, int i) {
+                        //请求失败
+
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        try {
+
+
+                            JSONObject jsonObject = new JSONObject(s);
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            String currentTime = data.getString("currentTime");
+
+
+                            int year = Integer.parseInt(currentTime.substring(0, 4));
+                            int month = Integer.parseInt(currentTime.substring(4, 6));
+                            int day = Integer.parseInt(currentTime.substring(6, 8));
+                            int hour = Integer.parseInt(currentTime.substring(8, 10));
+                            int minute = Integer.parseInt(currentTime.substring(10, 12));
+                            int second = Integer.parseInt(currentTime.substring(12, 14));
+                            Log.e("liujk", "onResponse: " + year + "--" + month + "--" + day + "--" + hour + "--" + minute + "--" + second);
+
+                            String time = year + "-" + month + "-" + day + " " + hour + "-" + minute;
+                            //通知Activity 更新 UI
+                            //设置平板的时间
+                            MyManager manager = MyManager.getInstance(context);
+                            manager.setTime(year, month, day, hour, minute, second);
+
+                            sendSystemTimeChangeBroadCast(time);
+
+                            isDealTime = true;
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+    }
+
+    /**
+     * 发送服务器时间改变，监听广播
+     */
+    private void sendSystemTimeChangeBroadCast(String time) {
+        Intent intent = new Intent(AppInfo.SYSTEM_TIME_CHANGE);
+        intent.putExtra("time", time);
+        context.sendBroadcast(intent);
     }
 
 }

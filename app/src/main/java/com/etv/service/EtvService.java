@@ -1,6 +1,7 @@
 package com.etv.service;
 
 import static com.etv.config.AppConfig.APP_TYPE;
+import static com.etv.config.AppConfig.APP_TYPE_BEIJING_MG;
 import static com.etv.config.AppConfig.APP_TYPE_JIANGJUN_YUNCHENG;
 import static com.etv.util.FileUtil.TAG;
 
@@ -181,7 +182,6 @@ public class EtvService extends Service {
         initParsener();
         initReceiver();
         initTimeClick();
-//        initGpioInfo();
         Message msgm=  new Message();
         msgm.what=SET_SYSTEM_TIME;
         handler.sendMessageDelayed(msgm,2000);
@@ -192,35 +192,6 @@ public class EtvService extends Service {
     }
 
 
-    boolean isStartGpio = true;
-
-
-    private void initGpioInfo() {
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                while (isStartGpio) {
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    getGpioNumByTime();
-                }
-            }
-        }.start();
-
-    }
-
-    private void getGpioNumByTime(){
-        int gpio1 = SystemManagerInstance.getInstance(EtvService.this).getGpioInfoByIoNum(1);
-
-        if (gpio1 == 0){
-
-
-        }
-    }
 //    private void startToPlayTriggleActivity(int playPosition) {
 //        int model = TaskWorkService.getCurrentTaskType();
 //        if (model != TaskWorkService.TASK_TYPE_DEFAULT) {
@@ -342,48 +313,13 @@ public class EtvService extends Service {
                     ProjectorUtil.setProjectorSavePath(EtvService.this, "外置存储设备拔出");
                     break;
                 case SET_SYSTEM_TIME:
-                    //      设置并保存系统的时间
-                        String url = ApiInfo.UPDATE_TIME_FROM_WEB();
-                        OkHttpUtils
-                                .get()
-                                .url(url)
-                                .build()
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onError(Call call, String s, int i) {
-
-                                    }
-                                    @Override
-                                    public void onResponse(String s, int i) {
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(s);
-                                            JSONObject data = jsonObject.getJSONObject("data");
-                                            String currentTime = data.getString("currentTime");
-                                            if (currentTime!=null){
-                                                isOk = true;
-                                            }
-
-                                            int year = Integer.parseInt(currentTime.substring(0,4)) ;
-                                            int month = Integer.parseInt(currentTime.substring(4,6));
-                                            int day =  Integer.parseInt(currentTime.substring(6,8));
-                                            int hour =  Integer.parseInt(currentTime.substring(8,10));
-                                            int minute =  Integer.parseInt(currentTime.substring(10,12));
-                                            int second =  Integer.parseInt(currentTime.substring(12,14));
-                                            MyManager manager = MyManager.getInstance(EtvService.this);
-                                            manager.setTime(year,month,day,hour,minute,second);
-                                            handler.removeMessages(msg.what);
-                                            Log.e(TAG, "onResponse: "+year+"--"+month+"--"+day+"--"+hour+"--"+minute+"--"+second);
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
-//                        }
-                    if (isOk == false || ! AppConfig.isOnline){
-                        Message msgm=  new Message();
-                        msgm.what=SET_SYSTEM_TIME;
-                        handler.sendMessageDelayed(msgm,1000*10);
+                    if (EtvParsener.isDealTime){
+                        return;
                     }
+                    initParsener();
+                    //获取系统时间
+                    etvParsener.checkSytemTimeFromWeb(EtvService.this);
+
                     break;
             }
         }

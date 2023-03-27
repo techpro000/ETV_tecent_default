@@ -390,6 +390,10 @@ public class AppInfo {
     public static final String TURN_VOICE_ZREO = "TURN_VOICE_ZREO";  //静音
     public static final String TURN_VOICE_RESUME = "TURN_VOICE_RESUME";  //恢复音量
 
+    public static final String SYSTEM_TIME_CHANGE = "com.etv.service.SYSTEM_TIME_CHANGE";  //系统时间发生改变
+
+
+
     //MLOGIC hdmi插口节点
     public static String HDMIIN1() {
         if (CpuModel.getMobileType().startsWith(CpuModel.CPU_MODEL_MTK_M11)) {

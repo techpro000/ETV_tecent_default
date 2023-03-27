@@ -94,9 +94,14 @@ public class MainActivity extends TaskActivity implements
                 }
                 mainParsener.updateTimeNetLineView();
                 mainParsener.startTimerToPlay("服务器连接成功了，去检查一次");       //5秒后自动播放
+            } else if (action.equals(AppInfo.SYSTEM_TIME_CHANGE)) { //时间发生改变
+
+                String time = intent.getStringExtra("time");
+                tv_time.setText(time);
             }
         }
     };
+
 
     @Override
     protected void onCreate(Bundle paramBundle) {
@@ -154,8 +159,8 @@ public class MainActivity extends TaskActivity implements
         });
         updateBggImageView("程序启动，加载一次");
         initEventBus();
-        if (AppConfig.APP_TYPE == APP_TYPE_LK_QRCODE || AppConfig.APP_TYPE == APP_TYPE_LK_QRCODE_SHOW_DHL){
-            if (!GuardianUtil.getFisrt()){
+        if (AppConfig.APP_TYPE == APP_TYPE_LK_QRCODE || AppConfig.APP_TYPE == APP_TYPE_LK_QRCODE_SHOW_DHL) {
+            if (!GuardianUtil.getFisrt()) {
                 return;
             }
             GuardianUtil.setGuardianStaues(MainActivity.this, false);
@@ -195,14 +200,14 @@ public class MainActivity extends TaskActivity implements
                 break;
             case APP_TYPE_LK_QRCODE:
             case APP_TYPE_LK_QRCODE_SHOW_DHL:
-                if (imagePath != null){
+                if (imagePath != null) {
                     GlideImageUtil.loadImageDefaultId(MainActivity.this, imagePath, iv_main_bgg, defaultImage);
                     return;
                 }
-                if (SharedPerManager.getScreenWidth()>SharedPerManager.getScreenHeight()){
-                    iv_main_bgg.setImageResource( R.mipmap.heng);
-                }else {
-                    iv_main_bgg.setImageResource( R.mipmap.shu);
+                if (SharedPerManager.getScreenWidth() > SharedPerManager.getScreenHeight()) {
+                    iv_main_bgg.setImageResource(R.mipmap.heng);
+                } else {
+                    iv_main_bgg.setImageResource(R.mipmap.shu);
                 }
                 break;
         }
@@ -229,7 +234,10 @@ public class MainActivity extends TaskActivity implements
         IntentFilter fileter = new IntentFilter();
         fileter.addAction(Intent.ACTION_TIME_TICK);
         fileter.addAction(AppInfo.SOCKET_LINE_STATUS_CHANGE);
+        fileter.addAction(AppInfo.SYSTEM_TIME_CHANGE);
         registerReceiver(receiverMain, fileter);
+
+
     }
 
     @Override
@@ -254,7 +262,7 @@ public class MainActivity extends TaskActivity implements
         if (SharedPerManager.getGpioAction()) {
             GuardianUtil.setGuardianProjectTime(MainActivity.this, "120");
         }
-        if (AppConfig.APP_TYPE == APP_TYPE_JIANGJUN_YUNCHENG){
+        if (AppConfig.APP_TYPE == APP_TYPE_JIANGJUN_YUNCHENG) {
             GuardianUtil.setGuardianProjectTime(MainActivity.this, "31");
         }
         isMainForst = true;
@@ -409,7 +417,7 @@ public class MainActivity extends TaskActivity implements
         } else if (workModel == AppInfo.WORK_MODEL_NET_DOWN) {//网络导入模式
             startToPlayActivity();
         } else if (workModel == AppInfo.WORK_MODEL_SINGLE) { //单机模式
-            Log.e("TAG", "startToCheckTaskToActivity: "+111111);
+            Log.e("TAG", "startToCheckTaskToActivity: " + 111111);
             goToSingleActivity();
         }
     }
