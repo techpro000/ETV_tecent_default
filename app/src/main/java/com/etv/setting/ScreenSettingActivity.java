@@ -1,5 +1,6 @@
 package com.etv.setting;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -73,7 +74,7 @@ public class ScreenSettingActivity extends SettingBaseActivity implements View.O
         MyLog.d("light", "======当前背光的状态===" + isBackLightOpen);
         mBingding.switchOpenPower.setSwitchStatues(isBackLightOpen);
         //更新旋转角度
-        updateScreenRoate();
+        //updateScreenRoate();
         //更新屏幕亮度
         updateBlightInfo();
     }
@@ -82,7 +83,12 @@ public class ScreenSettingActivity extends SettingBaseActivity implements View.O
         mBingding.btnSubmit.setOnMoretListener(new MoreButtonListener() {
             @Override
             public void clickView(View view) {
-                showModifyScreenRoateNumDialog();
+                //跳转到系统设置页面，由用户自己设置
+                Intent intent = new Intent(Settings.ACTION_DISPLAY_SETTINGS);
+                startActivity(intent);
+
+                //前面是在应用内处理。
+                //showModifyScreenRoateNumDialog();
             }
         });
 
