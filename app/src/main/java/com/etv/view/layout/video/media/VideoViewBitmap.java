@@ -46,7 +46,7 @@ public class VideoViewBitmap extends RelativeLayout implements
         TextureView.SurfaceTextureListener {
 
     View view;
-    private MediaPlayer mMediaPlayer;
+    private static MediaPlayer mMediaPlayer;
     private Surface surface;
     private TextureView textureView;
     private boolean isSetSurface;
@@ -103,9 +103,14 @@ public class VideoViewBitmap extends RelativeLayout implements
         view = View.inflate(context, R.layout.view_video, null);
         initView(view);
         addView(view);
-        if (mMediaPlayer == null) {
+
+        getMediaPlayerInstance();
+
+    }
+
+    private static void getMediaPlayerInstance(){
+        if(mMediaPlayer == null){
             mMediaPlayer = new MediaPlayer();
-            MyLog.video("==========mediaplay create================== " + hashCode() + "   " + mMediaPlayer.hashCode());
         }
     }
 
@@ -143,10 +148,7 @@ public class VideoViewBitmap extends RelativeLayout implements
         float volNumChangfe = (float) (volNum * 1.0 / 100);
         MyLog.video("==========开始播放 volNum==" + volNum + " / " + currentPlayIndex + " / " + playUrl + "   mMediaPlayer:" + mMediaPlayer);
         try {
-            //20221223 去掉判断
-//            if (mMediaPlayer.isPlaying()) {
-//                mMediaPlayer.stop();
-//            }
+
             mMediaPlayer.reset();
             mMediaPlayer.setDataSource(playUrl);
 //            mMediaPlayer.setSurface(surface);      //1  隐藏-默认版本   2 显示

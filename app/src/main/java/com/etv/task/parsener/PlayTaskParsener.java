@@ -637,6 +637,7 @@ public class PlayTaskParsener {
      * @param height
      */
     private void loadMixImgVideoView(String cpId, int parentCoId, int leftPosition, int topPosition, int width, int height, boolean isTrue) {
+        MyLog.playTask("===loadMixImgVideoView");
         List<MpListEntity> mpListEntities = DBTaskUtil.getMpListInfoById(cpId, parentCoId, "parperToShowAreaView");
         if (mpListEntities == null || mpListEntities.size() < 1) {
             MyLog.playTask("====parperToShowAreaView=混播播放的素材 =null===" + parentCoId);
@@ -677,6 +678,7 @@ public class PlayTaskParsener {
     }
 
     public void parperToShowView(CpListEntity cpEntity) {
+        MyLog.playTask("===parperToShowView");
         if (cpEntity == null) {
             playTaskView.showViewError("控件解析失败");
             Log.e("TAG", "parperToShowAreaView: " + 456789);
@@ -759,6 +761,7 @@ public class PlayTaskParsener {
                     generatorView.updateView(null, true);
                     break;
                 case AppInfo.VIEW_VIDEO: //视频格式
+                    MyLog.playTask("视频格式数据源");
                     List<MediAddEntity> videoList = TaskDealUtil.getResourceListPath(mpList);
                     if (videoList == null || videoList.size() < 1) {
                         MyLog.playTask("====视频的坐标的坐标==竖屏没有需要播放的素材");

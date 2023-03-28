@@ -134,6 +134,7 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
     @Override
     protected void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
+        MyLog.message("PlayerTaskAct onCreate");
         boolean isDevSpeed = SharedPerManager.getDevSpeedStatues();
         if (isDevSpeed) {
             getWindow().setFormat(PixelFormat.TRANSLUCENT);
@@ -303,9 +304,6 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
      * @param tag
      */
     private void updateViewInfo(String tag) {
-
-
-
         if (playTaskParsener == null) {
             return;
         }
