@@ -9,11 +9,23 @@ public class RawSourceEntity {
     long fileLength;
     String name;
     int apkVersion;
+    int apkTag;
 
     public RawSourceEntity() {
     }
 
+
+
+
     public RawSourceEntity(int rawId, long fileLength, String name, int apkVersion) {
+        this.rawId = rawId;
+        this.fileLength = fileLength;
+        this.name = name;
+        this.apkVersion = apkVersion;
+    }
+
+    public RawSourceEntity(int apkTag, int rawId, long fileLength, String name, int apkVersion) {
+        this.apkTag = apkTag;
         this.rawId = rawId;
         this.fileLength = fileLength;
         this.name = name;

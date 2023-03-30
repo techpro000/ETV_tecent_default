@@ -16,16 +16,9 @@ public class AppConfig {
     public static final int APP_TYPE_DEFAULT = 0;               //default
     public static final int APP_TYPE_SHI_WEI = 1;               //视威-广州
     public static final int APP_TYPE_MIKE = 2;                  //米可
-    public static final int APP_TYPE_CHUANGPIN = 3;             //创品科技
     public static final int APP_TYPE_QINGFENG_DEFAULT = 4;      //广州青蜂--主界面图标显示
     public static final int APP_TYPE_QINGFENG_NOT_QR = 4001;    //广州青蜂--去掉二维码
     public static final int APP_TYPE_HUANGZUNNIANHUA = 5;                        //深圳皇尊年华
-    public static final int APP_TYPE_HUANGZUNNIANHUA_WEB_NEW = 5005;                        //深圳皇尊年华
-    public static final int APP_TYPE_HUANGZUNNIANHUA_DEFAULT_SIZE = 5001;        //深圳皇尊年华-原始比例
-    public static final int APP_TYPE_HUANGZUNNIANHUA_MATCH_SIZE = 5002;          //深圳皇尊年华-强制适配
-    public static final int APP_TYPE_HUANGZUNNIANHUA_YUN_OLD_PERSON = 5003;      //深圳皇尊年华-云老头
-    public static final int APP_TYPE_HUANGZUNNIANHUA_ONE_LEY_POLICE = 5004;      //深圳皇尊年华-一键报警
-
     public static final int APP_TYPE_RUIGUAN = 7;                //广州瑞冠电子科技
     public static final int APP_TYPE_JIANGJUN_YUNCHENG = 13;     //运城日报--唯意客户-将军
     public static final int APP_TYPE_AD_JH = 21;                 //深远通--景华广告
@@ -36,7 +29,7 @@ public class AppConfig {
     public static final int APP_TYPE_KING_LAM = 29;              //金朗曼-不用我们得定时开关机
     public static final int APP_TYPE_CW_GPIO = 34;               //触沃-红外感应-语音播报
     public static final int APP_TYPE_LK_QRCODE = 35;             //广州林肯更换二维码
-    public static final int APP_TYPE_LK_QRCODE_SHOW_DHL  = 47;    //广州林肯更换二维码,显示导航栏
+    public static final int APP_TYPE_LK_QRCODE_SHOW_DHL = 47;    //广州林肯更换二维码,显示导航栏
     public static final int APP_TYPE_YOUSE_AUTHOR = 37;           //优色--默认登陆账号 IP
     public static final int APP_TYPE_SENHAN = 39;                 // 珠海涤生涵科技有限公司-去掉中间的二维码功能
     public static final int APP_TYPE_CHUNYN = 40;                 //传音-固定服务器IP
@@ -56,9 +49,9 @@ public class AppConfig {
     public static final int APP_TYPE_ZB_DEFAULT_ADDRESS = 110;  // 中百默认ip地址:www.zhongbaizhihui.com
 
 
-    public static final int APP_TYPE = APP_TYPE_LK_QRCODE;
+    public static final int APP_TYPE = APP_TYPE_DEFAULT;
 
-    
+
     /***0
      * Socket 连接方式
      *

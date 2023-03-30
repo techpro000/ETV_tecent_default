@@ -167,7 +167,7 @@ public class GuardianUtil {
                 return;
             }
             Intent intent = new Intent(AppInfo.MODIFY_GUARDIAN_TIME);
-           intent.putExtra(AppInfo.MODIFY_GUARDIAN_TIME, guardianTime * 1000);
+            intent.putExtra(AppInfo.MODIFY_GUARDIAN_TIME, guardianTime * 1000);
             context.sendBroadcast(intent);
         } catch (Exception e) {
             e.printStackTrace();
@@ -179,7 +179,7 @@ public class GuardianUtil {
         return aa;
     }
 
-    public static void setFirst(boolean firstChoice){
+    public static void setFirst(boolean firstChoice) {
         EtvApplication.getInstance().saveData("firstChoice", firstChoice);
     }
 
@@ -195,7 +195,7 @@ public class GuardianUtil {
         if (aa) {
             /// 执行关闭守护
             Intent intent = new Intent(AppInfo.CHANGE_GUARDIAN_STATUES);
-            intent.putExtra(AppInfo.CHANGE_GUARDIAN_STATUES,false);
+            intent.putExtra(AppInfo.CHANGE_GUARDIAN_STATUES, false);
             context.sendBroadcast(intent);
             setFirst(false);
             return;
@@ -310,16 +310,14 @@ public class GuardianUtil {
             List<RawSourceEntity> lists = new ArrayList<RawSourceEntity>();
             lists.add(new RawSourceEntity(R.raw.guardian_44, 3359565, "4.4通用版本", 55));         //4.4 系统通用       0
             lists.add(new RawSourceEntity(R.raw.guardian_51, 1624725, "5.1通用版本", 43));         //5.0 系统通用       1
-//            lists.add(new RawSourceEntity(R.raw.guardian_71, 3384046, "7.0通用版本", 55));         // 7.1 系统通用       2
-            lists.add(new RawSourceEntity(R.raw.guardian_71, 3395008 , "7.0通用版本", 77));         // 7.1 系统通用       2
+            lists.add(new RawSourceEntity(R.raw.guardian_71, 3395008, "7.0通用版本", 77));         // 7.1 系统通用       2
             lists.add(new RawSourceEntity(R.raw.guardian_gt_81, 1597440, "8.1高通通用版本", 43));   //高通8.1版本      3
             lists.add(new RawSourceEntity(R.raw.guardian_lg, 1615652, "朗国主板", 43));            //朗国主板          4
             lists.add(new RawSourceEntity(R.raw.guardian_a20, 1593887, "视美泰", 43));             //视美泰A20  4.2    5
             lists.add(new RawSourceEntity(R.raw.guardian_81, 3389505, "8.1通用版本", 48));         //8.1 PX30 系统通用         6
             lists.add(new RawSourceEntity(R.raw.guardian_91, 3397722, "9.0", 74));                                      //a88 9.0版本               7
             lists.add(new RawSourceEntity(R.raw.guardian_mlogic91, 3365824, "mlogic9.0", 47));    //MLOCIC_91              8
-            lists.add(new RawSourceEntity(R.raw.guardian_11_3588, 3394988 , "3588-android-11", 78));    //Android-11  3568       9
-//            lists.add(new RawSourceEntity(R.raw.guardian_11, 3360451, "3568-android-11", 57));    //Android-11  3568       9
+            lists.add(new RawSourceEntity(R.raw.guardian_11_3588, 3394988, "3588-android-11", 78));    //Android-11  3568       9
             lists.add(new RawSourceEntity(R.raw.guardian_3568, 3394812, "3568-android-3568", 76));    //Android  3568       10
             lists.add(new RawSourceEntity(R.raw.guardian_982, 3399823, "3568-android-982", 75));    //Android  982       11
             String cpuModel = CpuModel.getMobileType();
@@ -328,16 +326,12 @@ public class GuardianUtil {
                 rawSourceEntity = lists.get(8);
             } else if (cpuModel.contains(CpuModel.CPU_MODEL_T982)) {
                 //982 主
-                 rawSourceEntity = lists.get(11);
+                rawSourceEntity = lists.get(11);
             } else if (cpuModel.contains(CpuModel.CPU_MODEL_3568_11)) {
                 //3568 android 11
                 rawSourceEntity = lists.get(10);
             } else if (cpuModel.contains(CpuModel.CPU_MODEL_SMD) || cpuModel.contains(CpuModel.CPU_MODEL_MSM)) {
                 rawSourceEntity = lists.get(3);
-            } else if (cpuModel.contains(CpuModel.CPU_MODEL_AOSP)) {
-                rawSourceEntity = lists.get(4);
-            } else if (cpuModel.contains(CpuModel.CPU_MODEL_WING)) {
-                rawSourceEntity = lists.get(5);
             } else if (cpuModel.contains(CpuModel.CPU_MODEL_PX30)) {
                 rawSourceEntity = lists.get(6);
             } else if (cpuModel.contains(CpuModel.CPU_MODEL_RK_DEFAULT)) {
@@ -370,30 +364,6 @@ public class GuardianUtil {
         return rawSourceEntity;
     }
 
-//    public void startHdmInService() {
-//        boolean isSuportHdmi = SharedPerManager.getIfHdmiInSuport();
-//        if (!isSuportHdmi) {
-//            return;
-//        }
-//        try {
-//            String cpuModel = CpuModel.getMobileType();
-//            if (!cpuModel.contains("rk3288")) {
-//                return;
-//            }
-//            boolean isApkInstall = APKUtil.ApkState(context, AppInfo.HDMI_IN_PACKAGE_NAME);
-//            if (!isApkInstall) {
-//                return;
-//            }
-//            Intent intent = new Intent();
-//            intent.setAction(AppInfo.HDMI_IN_SERVICE_NAME);  //应用在清淡文件中注册的action
-//            intent.setPackage(AppInfo.HDMI_IN_PACKAGE_NAME); //应用程序的包名
-//            context.startService(intent);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-
     /***
      * 启动守护进程
      * @param contextOnly
@@ -421,7 +391,7 @@ public class GuardianUtil {
         try {
             String code = CodeUtil.getUniquePsuedoID();
             String requestUrl = ApiInfo.MONITOR_IMAGE_UPDATE() + "?clientNo=" + code;
-            Log.e(TAG, "getCaptureImage: "+requestUrl );
+            Log.e(TAG, "getCaptureImage: " + requestUrl);
             Intent intent = new Intent();
             intent.putExtra("screenWidth", screenWidth);
             intent.putExtra("screenHeight", screenHeight);
