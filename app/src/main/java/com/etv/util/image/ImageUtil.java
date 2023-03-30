@@ -29,11 +29,7 @@ public class ImageUtil {
             imageBggDefault = R.mipmap.app_logo_default;
         } else if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_MIKE) {
             imageBggDefault = R.mipmap.icon_mike;
-        } else if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_CP_BFG) {
-            imageBggDefault = R.mipmap.icon_cp_bfg;
-        } else if(AppConfig.APP_TYPE == AppConfig.APP_TYPE_BEIJING_MG){
-            imageBggDefault = R.drawable.shape_tranlate;
-        } else if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_HUANGZUNNIANHUA) {
+        }   else if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_HUANGZUNNIANHUA) {
             imageBggDefault = R.mipmap.app_logo_default_hznh;
         } else {
             imageBggDefault = R.mipmap.app_logo_default;

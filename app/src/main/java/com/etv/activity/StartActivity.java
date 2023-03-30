@@ -1,6 +1,5 @@
 package com.etv.activity;
 
-import static com.etv.config.AppConfig.APP_TYPE_BEIJING_MG;
 
 import android.Manifest;
 import android.content.Intent;

@@ -49,11 +49,6 @@ public class SplashLowActivity extends SplashBaseActivity {
         ViewSizeChange.setLogoPosition(iv_logo_show);
         int showBggImage = ImageUtil.getShowBggLogo();
         iv_logo_show.setBackgroundResource(showBggImage);
-
-        if(AppConfig.APP_TYPE == AppConfig.APP_TYPE_BEIJING_MG) {
-            findViewById(R.id.rela_bgg).setBackgroundResource(R.mipmap.icon_beijing_mg);
-        }
-
         if (SharedPerUtil.SOCKEY_TYPE() == AppConfig.SOCKEY_TYPE_WEBSOCKET) {
             startService(new Intent(SplashLowActivity.this, TcpService.class));
         } else {

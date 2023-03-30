@@ -172,7 +172,6 @@ public class SharedPerManager {
         boolean defaulrOpen = false;
         switch (AppConfig.APP_TYPE) {
             case AppConfig.APP_TYPE_SHI_WEI:
-            case AppConfig.APP_TYPE_YJH_QF:
             case AppConfig.APP_TYPE_QINGFENG_DEFAULT:
             case AppConfig.APP_TYPE_QINGFENG_NOT_QR:
                 defaulrOpen = true;
@@ -333,7 +332,6 @@ public class SharedPerManager {
     public static boolean getGpioAction() {
         boolean defaultAction = false;
         switch (AppConfig.APP_TYPE) {
-            case AppConfig.APP_TYPE_SYT_READLINE:
             case AppConfig.APP_TYPE_CW_GPIO:
             case AppConfig.APP_TYPE_XINABICN:
                 defaultAction = true;
@@ -841,13 +839,6 @@ public class SharedPerManager {
             case AppConfig.APP_TYPE_SHI_WEI:
                 ipAddressDefault = "106.53.206.158"; //视威
                 break;
-            case AppConfig.APP_TYPE_CP_BFG:  //创品-bfg
-                ipAddressDefault = "145.15.1.2";
-                break;
-            case AppConfig.APP_TYPE_ZHENGDE:  //正德
-                ipAddressDefault = "139.9.210.122";
-                break;
-
             case AppConfig.APP_TYPE_AD_JH:  //深远通--景华广告--汕头
                 ipAddressDefault = "183.237.107.34";
                 break;

@@ -389,9 +389,6 @@ public class PlaySingleTaskParsener {
     }
 
     public void resumePlayView() {
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_CP_BFG) {
-            return;
-        }
         if (view_abous == null) {
             return;
         }
@@ -405,9 +402,6 @@ public class PlaySingleTaskParsener {
     }
 
     public void pauseDisplayView() {
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_CP_BFG) {
-            return;
-        }
         if (view_abous == null) {
             return;
         }
@@ -421,9 +415,6 @@ public class PlaySingleTaskParsener {
     }
 
     public void moveViewForward(boolean b) {
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_CP_BFG) {
-            return;
-        }
         if (view_abous == null) {
             return;
         }

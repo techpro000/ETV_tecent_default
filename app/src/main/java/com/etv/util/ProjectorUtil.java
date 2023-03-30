@@ -18,9 +18,6 @@ public class ProjectorUtil {
      */
     public static void
     setProjectorSavePath(final Context context, String tag) {
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_RNGDACIJN) {
-            return;
-        }
         Runnable runnable = new Runnable() {
             @Override
             public void run() {

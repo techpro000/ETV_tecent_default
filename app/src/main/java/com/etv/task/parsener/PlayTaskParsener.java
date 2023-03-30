@@ -370,21 +370,6 @@ public class PlayTaskParsener {
             return;
         }
         try {
-//            int index = 0;
-//            while (index < genratorViewList.size()) {
-//                CacheMemory cacheMemory = genratorViewList.get(index);
-//                if (cacheMemory != null) {
-//                    String cpType = cacheMemory.getCoType();
-//                    System.out.println("aaaaaaaaaaaaaaaaaa----------> " + cpType);
-//                    Generator generator = cacheMemory.getGenerator();
-//                    if (cpType.contains(AppInfo.VIEW_LOGO)) {
-//                        genratorViewList.remove(index);
-//                        generator.clearMemory();
-//                        loadLogoImage();
-//                    }
-//                }
-//                index++;
-//            }
             for (CacheMemory cacheMemory : genratorViewList) {
                 if (cacheMemory == null) {
                     continue;
@@ -1815,9 +1800,6 @@ public class PlayTaskParsener {
      */
     public void moveViewForward(boolean b) {
         MyLog.d("haha", "====列表的数量==moveViewForward==" + b);
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_CP_BFG) {
-            return;
-        }
         if (myPresentation != null) {
             myPresentation.moveViewForward(b);
         }
@@ -1840,9 +1822,6 @@ public class PlayTaskParsener {
      * 暂停播放界面
      */
     public void pauseDisplayView() {
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_CP_BFG) {
-            return;
-        }
         if (myPresentation != null) {
             myPresentation.pauseDisplayView();
         }
@@ -1863,9 +1842,6 @@ public class PlayTaskParsener {
      */
     public void resumePlayView() {
         MyLog.playTask("=====恢复播放的功能==============");
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_CP_BFG) {
-            return;
-        }
         if (myPresentation != null) {
             myPresentation.resumePlayView();
         }

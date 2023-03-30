@@ -59,17 +59,10 @@ public class SystemManagerUtil {
      */
     public static void openCloseChuangpinLeaderBar(Context context, boolean isOpen) {
         try {
-            if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_CHUANGPIN
-                    || AppConfig.APP_TYPE == AppConfig.APP_TYPE_CP_BFG) {  //创品公司
-                //关闭导航栏
-                MyManager manager = MyManager.getInstance(context);
-                manager.setSlideShowNotificationBar(isOpen); //关闭下拉菜单
-                manager.setSlideShowNavBar(isOpen);  //关闭滑出底部菜单
-            }
 //            A98无法自己打开导航栏
             String mode = VersionUtils.getAndroidModle();
-            if ("YS-A98".equals(mode)){
-                if (isOpen == true){
+            if ("YS-A98".equals(mode)) {
+                if (isOpen == true) {
                     Intent intent = new Intent();
                     intent.setAction("android.action.adtv.showNavigationBar");
                     context.sendBroadcast(intent);

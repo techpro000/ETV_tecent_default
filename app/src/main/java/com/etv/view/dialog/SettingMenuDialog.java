@@ -100,10 +100,6 @@ public class SettingMenuDialog implements OnClickListener {
                 lin_all_qrcode.setVisibility(View.GONE);
                 lin_bottom_info.setVisibility(View.GONE);
                 break;
-            case AppConfig.APP_TYPE_BEIJING_MG:
-                lin_wechat_code.setVisibility(View.VISIBLE);
-                iv_qr_code_chat.setBackgroundResource(R.mipmap.icon_beijing_mg);
-                break;
             case AppConfig.APP_TYPE_TY_DEFAULT_ADDRESS:
                 lin_all_qrcode.setVisibility(View.GONE);
                 iv_qr_code_chat.setVisibility(View.GONE);

@@ -237,9 +237,6 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
     private void initView() {
         playTaskParsener = new PlayTaskParsener(PlayerTaskActivity.this, this);
         playTaskParsener.updateMediaVoiceNum();
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_RUICYK) {
-            mBingding.viewClickRight.setVisibility(View.VISIBLE);
-        }
         updateViewInfo("onResume");
         if(AppConfig.APP_TYPE==AppConfig.APP_TYPE_CHUNYN){
             mBingding.viewClickRight.setVisibility(View.VISIBLE);
@@ -356,12 +353,6 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
             return;
         }
         JUMP_TO_VIEW = JUMP_TO_APK;
-
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_XINGMA) {
-            //星马
-            goToTaskApkBackActivity(coLinkAction);
-            return;
-        }
         RawSourceEntity rawSourceEntity = InstallApkBackUtil.getResourceEntity();
         if (rawSourceEntity == null) {  //不是7.1  3288的
             goToTaskApkBackActivity(coLinkAction);
@@ -740,9 +731,6 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
 
     @Override
     public void toClickLongViewListener() {
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_RUICYK) {
-            return;
-        }
         showBaseSettingDialogNew();
     }
 

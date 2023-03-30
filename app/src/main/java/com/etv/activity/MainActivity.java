@@ -205,9 +205,6 @@ public class MainActivity extends TaskActivity implements
                     iv_main_bgg.setImageResource( R.mipmap.shu);
                 }
                 break;
-            case AppConfig.APP_TYPE_CP_BFG:   //创品 BFG
-                iv_logo_show.setBackgroundResource(R.mipmap.icon_cp_bfg);
-                break;
         }
         MyLog.cdl("===================加载背景图==========" + imagePath);
         GlideImageUtil.loadImageDefaultId(MainActivity.this, imagePath, iv_main_bgg, defaultImage);

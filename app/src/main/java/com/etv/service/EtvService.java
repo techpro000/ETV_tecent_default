@@ -1,7 +1,6 @@
 package com.etv.service;
 
 import static com.etv.config.AppConfig.APP_TYPE;
-import static com.etv.config.AppConfig.APP_TYPE_BEIJING_MG;
 import static com.etv.config.AppConfig.APP_TYPE_JIANGJUN_YUNCHENG;
 import static com.etv.util.FileUtil.TAG;
 
@@ -344,7 +343,6 @@ public class EtvService extends Service {
                     break;
                 case SET_SYSTEM_TIME:
                     //      设置并保存系统的时间
-//                    if (AppConfig.APP_TYPE == APP_TYPE_BEIJING_MG){
                         String url = ApiInfo.UPDATE_TIME_FROM_WEB();
                         OkHttpUtils
                                 .get()

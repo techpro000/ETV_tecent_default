@@ -26,48 +26,26 @@ public class AppConfig {
     public static final int APP_TYPE_HUANGZUNNIANHUA_YUN_OLD_PERSON = 5003;      //深圳皇尊年华-云老头
     public static final int APP_TYPE_HUANGZUNNIANHUA_ONE_LEY_POLICE = 5004;      //深圳皇尊年华-一键报警
 
-    public static final int APP_TYPE_AOZHEN = 6;                 //深圳奥振电子-东港
     public static final int APP_TYPE_RUIGUAN = 7;                //广州瑞冠电子科技
-    public static final int APP_TYPE_DISUI = 8;                  //迪硕 -修改统计流程
-    public static final int APP_TYPE_COLOR_BUSNESS = 10;         //色彩商显-何璐遥
-    public static final int APP_TYPE_CP_BFG = 11;                //创品--BFG定制logo界面 /长春地铁项目
     public static final int APP_TYPE_JIANGJUN_YUNCHENG = 13;     //运城日报--唯意客户-将军
-    public static final int APP_TYPE_DAXIANG_TECH = 15;          //李凤睿---翔达智能
-    public static final int APP_TYPE_XINGMA = 16;                //星马客户-APK跳转不返回
-    public static final int APP_TYPE_YJH_QF = 17;                //清风客户--粤饺皇
-    public static final int APP_TYPE_ZHENGDE = 18;               //正德-李风瑞
-    public static final int APP_TYPE_ZAOCHI = 20;                //兆驰-
     public static final int APP_TYPE_AD_JH = 21;                 //深远通--景华广告
     public static final int APP_TYPE_JIAIWEI = 22;               //杰爱威  --定制launcher
     public static final int APP_TYPE_START_ON_POWER = 24;        //千视嘉-开机启动-不用守护进程
-    public static final int APP_TYPE_HAPPY_EARE = 25;            //北京伊甸园网络有限公司
     public static final int APP_TYPE_THREE_VIEW_STAND = 27;      //三视立---修改背景默认图片
     public static final int APP_TYPE_THREE_TAI = 28;             //三泰 --设置固定IP
     public static final int APP_TYPE_KING_LAM = 29;              //金朗曼-不用我们得定时开关机
-    public static final int APP_TYPE_SYT_READLINE = 30;          //深远通-红外切换安抚视频
-    //public static final int APP_TYPE_CP_POLICE_AED = 31;       //创品-一键报警-AED报警功能-使用单独的版本维护
-    public static final int APP_TYPE_WZ_VIEW = 32;               //五洲视界-IO-4 红外检测
-    public static final int APP_TYPE_CNCUNJALIN = 33;            //长春嘉林
     public static final int APP_TYPE_CW_GPIO = 34;               //触沃-红外感应-语音播报
     public static final int APP_TYPE_LK_QRCODE = 35;             //广州林肯更换二维码
     public static final int APP_TYPE_LK_QRCODE_SHOW_DHL  = 47;    //广州林肯更换二维码,显示导航栏
-    //public static final int APP_TYPE_BJ_BZKJ = 35;               //北京伯仲技术-遥控只切换流媒体
-    public static final int APP_TYPE_AZ_TAILG = 36;               //奥圳-tailg
     public static final int APP_TYPE_YOUSE_AUTHOR = 37;           //优色--默认登陆账号 IP
-    public static final int APP_TYPE_WEIMEZNSHI = 38;             // 深圳市维美展示科技有限公司  --默认username, 默认新服务器 ids 地址
     public static final int APP_TYPE_SENHAN = 39;                 // 珠海涤生涵科技有限公司-去掉中间的二维码功能
     public static final int APP_TYPE_CHUNYN = 40;                 //传音-固定服务器IP
-    public static final int APP_TYPE_HDMI_2 = 41;                 //升博源--默认HDMI_2接口位置
-    public static final int APP_TYPE_RNGDACIJN = 42;              //容大彩晶集团--强制存储SD卡目录
-    public static final int APP_TYPE_RUICYK = 43;                 //瑞诚易科定制版本--Play 播放界面长按60秒
     public static final int APP_TYPE_SCHOOL_STUDY = 44;           //放心学   webSocket
-    public static final int APP_TYPE_BEIJING_MG = 45;             // 北京美冠
     public static final int APP_TYPE_XINABICN = 46;             // 深圳市芯纳百川技术有限公司
 
     public static final int APP_TYPE_NO_ERCODE = 100;             //没有二维码的模式
     public static final int APP_TYPE_WISIJIE = 100;             //微世杰--HDMIN-NUM-默认2
     public static final int APP_TYPE_TEST = 101;                  //测试模式-不要轻易打包这个版本
-    public static final int APP_TYPE_TEST_TTS = 102;                  //测试模式-不要轻易打包这个版本
     public static final int APP_TYPE_POLICE_ALERT = 103;//一键报警版本
     public static final int APP_TYPE_TURN_ON_BLUETOOTH = 104;//开启，蓝牙不关闭
     public static final int APP_TYPE_DEFAULT_ADDRESS_USERNAME = 105;  //默认地址:139.9.126.178，用户名:tailg,连接方式:websocket
@@ -119,9 +97,6 @@ public class AppConfig {
      * 回到主界面，自动检查播放
      */
     public static int CHECK_TIMER_TO_PLAY() {
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_WEIMEZNSHI) {
-            return 30;
-        }
         String exitPassword = SharedPerManager.getExitpassword();
         if (TextUtils.isEmpty(exitPassword)) {
             return 5;
