@@ -193,7 +193,7 @@ public class DifferentDislay extends Presentation {
      */
     private void setDefaultBackColor(String sencenType) {
         try {
-            GlideImageUtil.clearViewCache(iv_back_bgg);
+            GlideImageUtil.clearViewCache(context, iv_back_bgg);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -254,7 +254,7 @@ public class DifferentDislay extends Presentation {
                         return;
                     }
                     generatorView = TaskDealUtil.getImageGenertorViewParsener(context, cpEntity, leftPosition, topPosition, width, height, imageList, false);
-                    Log.e(TAG, "parperToShowView: "+width+"///"+height );
+                    Log.e(TAG, "parperToShowView: " + width + "///" + height);
                     addViewToList(generatorView, coType);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     generatorView.updateView(null, true);

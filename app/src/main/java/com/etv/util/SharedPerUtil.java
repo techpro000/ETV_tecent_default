@@ -74,25 +74,4 @@ public class SharedPerUtil {
         return CURRENT_SOCKET_TYPE;
     }
 
-
-    /***
-     * 获取图片得加载方式
-     * @return
-     */
-    public static int ImageShowType = -1;
-
-    /***
-     * 0  Glide
-     * 1  Fresco
-     * @return
-     */
-    public static int getImageShowType() {
-        if (ImageShowType > -1) {
-            return ImageShowType;
-        }
-        ImageShowType = SharedPerManager.getImageShowType();
-        return ImageShowType;
-    }
-
-
 }

@@ -99,7 +99,7 @@ public class PlayTaskTriggerParsener {
 
             @Override
             public void getTaskTigerFromDb(TaskWorkEntity taskWorkEntity) {
-                Log.e("TAG", "getTaskTigerFromDb: "+taskWorkEntity );
+                Log.e("TAG", "getTaskTigerFromDb: " + taskWorkEntity);
                 if (taskWorkEntity == null) {
                     MyLog.playTask("===获取得任务===null");
                     playTaskView.showViewError("没有需要播放得任务");
@@ -648,7 +648,7 @@ public class PlayTaskTriggerParsener {
      */
     private void setDefaultBackColor(String sencenType) {
         try {
-            GlideImageUtil.clearViewCache(iv_back_bgg);
+            GlideImageUtil.clearViewCache(context, iv_back_bgg);
         } catch (Exception e) {
             e.printStackTrace();
         }

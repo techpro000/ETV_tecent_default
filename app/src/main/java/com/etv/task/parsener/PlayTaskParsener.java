@@ -101,18 +101,21 @@ public class PlayTaskParsener {
         taskModel = new TaskModelmpl();
         getView();
     }
+
     public PlayTaskParsener(Activity context, PlayTaskView playTaskView, int playPosition) {
         this.context = context;
         this.playTaskView = playTaskView;
         taskModel = new TaskModelmpl();
-        currentSencenPosition = playPosition+currentSencenPosition;
+        currentSencenPosition = playPosition + currentSencenPosition;
         Log.e("TAG", "PlayTaskTriggerParsener: " + currentSencenPosition);
         getView();
     }
+
     TextView tv_video_error;
+
     public void setPlayPosition(int playPosition) {
-        currentSencenPosition= currentSencenPosition+playPosition;
-        Log.e("TAG", "setPlayPosition: "+currentSencenPosition );
+        currentSencenPosition = currentSencenPosition + playPosition;
+        Log.e("TAG", "setPlayPosition: " + currentSencenPosition);
     }
 
     private void getView() {
@@ -219,7 +222,7 @@ public class PlayTaskParsener {
             playTaskView.showViewError("获取主界面任务场景失败");
             return;
         }
-        Log.e("TAG", "startGpioPosition 2222: "+ this );
+        Log.e("TAG", "startGpioPosition 2222: " + this);
         MyLog.playTask("=========主界面的场景个数===" + sceneEntityListMain.size() + "/" + sceneEntityListMain.get(0).getTaskid());
         SceneEntity sceneEntity = sceneEntityListMain.get(0);
         String scId = sceneEntity.getSenceId();
@@ -309,7 +312,7 @@ public class PlayTaskParsener {
             for (int i = 0; i < cpCacheList.size(); i++) {
                 CpListEntity cpListEntity = cpCacheList.get(i);
                 String coType = cpListEntity.getCoType();
-                Log.e("TAG", "getPmFromTask: "+cpListEntity.getCoWidth()+"/"+cpListEntity.getCoHeight() );
+                Log.e("TAG", "getPmFromTask: " + cpListEntity.getCoWidth() + "/" + cpListEntity.getCoHeight());
                 if (CpuModel.getMobileType().startsWith(CpuModel.CPU_MODEL_MTK_M11) && coType.equals(AppInfo.VIEW_STREAM_VIDEO)) {
                     tv_video_error.setText(context.getString(R.string.support_stream_current));
                     tv_video_error.setVisibility(View.VISIBLE);
@@ -367,33 +370,36 @@ public class PlayTaskParsener {
             return;
         }
         try {
-            int index = 0;
-            while (index < genratorViewList.size()) {
-                CacheMemory cacheMemory = genratorViewList.get(index);
-                if (cacheMemory != null) {
-                    String cpType = cacheMemory.getCoType();
-                    System.out.println("aaaaaaaaaaaaaaaaaa----------> " + cpType);
-                    Generator generator = cacheMemory.getGenerator();
-                    if (cpType.contains(AppInfo.VIEW_LOGO)) {
-                        genratorViewList.remove(index);
-                        generator.clearMemory();
-                        loadLogoImage();
-                    }
+//            int index = 0;
+//            while (index < genratorViewList.size()) {
+//                CacheMemory cacheMemory = genratorViewList.get(index);
+//                if (cacheMemory != null) {
+//                    String cpType = cacheMemory.getCoType();
+//                    System.out.println("aaaaaaaaaaaaaaaaaa----------> " + cpType);
+//                    Generator generator = cacheMemory.getGenerator();
+//                    if (cpType.contains(AppInfo.VIEW_LOGO)) {
+//                        genratorViewList.remove(index);
+//                        generator.clearMemory();
+//                        loadLogoImage();
+//                    }
+//                }
+//                index++;
+//            }
+            for (CacheMemory cacheMemory : genratorViewList) {
+                if (cacheMemory == null) {
+                    continue;
                 }
-                index++;
+                String cpType = cacheMemory.getCoType();
+                System.out.println("aaaaaaaaaaaaaaaaaa----------> " + cpType);
+                Generator generator = cacheMemory.getGenerator();
+                if (cpType.contains(AppInfo.VIEW_LOGO)) {
+                    genratorViewList.remove(cacheMemory);
+                    view_abous.removeView(generator.getView());
+                    generator.clearMemory();
+                    loadLogoImage();
+                    break;
+                }
             }
-            /*for (CacheMemory cacheMemory : genratorViewList) {
-                if (cacheMemory != null) {
-                    String cpType = cacheMemory.getCoType();
-                    System.out.println("aaaaaaaaaaaaaaaaaa----------> " + cpType);
-                    Generator generator = cacheMemory.getGenerator();
-                    if (cpType.contains(AppInfo.VIEW_LOGO)) {
-                        genratorViewList.remove(cacheMemory);
-                        generator.clearMemory();
-                        loadLogoImage();
-                    }
-                }
-            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -563,7 +569,7 @@ public class PlayTaskParsener {
         //这里才是开始得逻辑
         if (cpListEntityArea == null) {
             playTaskView.showViewError("控件解析失败");
-            Log.e("TAG", "parperToShowAreaView: "+123456 );
+            Log.e("TAG", "parperToShowAreaView: " + 123456);
             return;
         }
         try {
@@ -671,7 +677,7 @@ public class PlayTaskParsener {
     public void parperToShowView(CpListEntity cpEntity) {
         if (cpEntity == null) {
             playTaskView.showViewError("控件解析失败");
-            Log.e("TAG", "parperToShowAreaView: "+456789 );
+            Log.e("TAG", "parperToShowAreaView: " + 456789);
             return;
         }
         try {
@@ -990,7 +996,7 @@ public class PlayTaskParsener {
                         case CpuModel.CPU_MODEL_MTK_M11:
                             //下面是 MLOGIC 的业务逻辑
                             generatorView = new ViewHdmiMLogicGenerate(context, cpEntity, leftPosition, topPosition, width, height);
-                            Log.e("TAG", "parperToShowView: "+width+"////"+height );
+                            Log.e("TAG", "parperToShowView: " + width + "////" + height);
                             addViewToList(generatorView, coType, false);
                             view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                             generatorView.updateView(null, true);
@@ -1680,13 +1686,14 @@ public class PlayTaskParsener {
             e.printStackTrace();
         }
     }
+
     DifferentDislay myPresentation = null;
 
 
     //播放制定序号节目
     public void toPlayFormulateProject(int Formulateindex) {
         //能进入这个函数，就已经处理了能否播放的判断，这里直接播放就行了。
-        Log.e("TAG", "toPlayFormulateProject: "+Formulateindex );
+        Log.e("TAG", "toPlayFormulateProject: " + Formulateindex);
         if (currentSencenPosition == Formulateindex) {
             return;
         }
@@ -1772,7 +1779,7 @@ public class PlayTaskParsener {
      * 播放下一个场景节目
      */
     public void playNextSencenView(boolean showToast) {
-        Log.e("TAG", "playNextSencenView: "+sceneEntityListMain.size() );
+        Log.e("TAG", "playNextSencenView: " + sceneEntityListMain.size());
         if (sceneEntityListMain == null || sceneEntityListMain.size() < 1) {
             playTaskView.showToastView("当前节目为 null");
             return;

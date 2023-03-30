@@ -36,8 +36,6 @@ public class SharedPerManager {
     }
 
 
-
-
     public static void setPowerOnTime(long powerOnTime, String printTag) {
         MyLog.powerOnOff("Shared-OnTime==" + printTag + " / " + powerOnTime, true);
         EtvApplication.getInstance().saveData("powerOnTime", powerOnTime);
@@ -119,8 +117,8 @@ public class SharedPerManager {
      */
     public static int getSocketType() {
         if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_JIANGJUN_YUNCHENG
-        ||AppConfig.APP_TYPE == AppConfig.APP_TYPE_SCHOOL_STUDY
-        ||AppConfig.APP_TYPE == AppConfig.APP_TYPE_DEFAULT_ADDRESS_USERNAME) {
+                || AppConfig.APP_TYPE == AppConfig.APP_TYPE_SCHOOL_STUDY
+                || AppConfig.APP_TYPE == AppConfig.APP_TYPE_DEFAULT_ADDRESS_USERNAME) {
             return AppConfig.SOCKEY_TYPE_WEBSOCKET;
         }
         int defaultSockeType = AppConfig.SOCKEY_TYPE_SOCKET;
@@ -164,22 +162,6 @@ public class SharedPerManager {
     public static void setSocketType(int socketType) {
         SharedPerUtil.CURRENT_SOCKET_TYPE = socketType;
         EtvApplication.getInstance().saveData("socketType", socketType);
-    }
-
-    /***
-     * 图片加载方式
-     * 0   Glide
-     * 1   Fresco
-     * @return
-     */
-    public static int getImageShowType() {
-        int socketType = (int) EtvApplication.getInstance().getData("ImageShowType", 0);
-        return socketType;
-    }
-
-    public static void setImageShowType(int ImageShowType) {
-        SharedPerUtil.ImageShowType = ImageShowType;
-        EtvApplication.getInstance().saveData("ImageShowType", ImageShowType);
     }
 
     /***
@@ -321,6 +303,7 @@ public class SharedPerManager {
         boolean infoFrom = (boolean) EtvApplication.getInstance().getData("infoFrom", isDefault);
         return infoFrom;
     }
+
     public static void setInfoFrom(boolean infoFrom) {
         EtvApplication.getInstance().saveData("infoFrom", infoFrom);
     }
@@ -359,6 +342,7 @@ public class SharedPerManager {
         boolean SleepStatues = (boolean) EtvApplication.getInstance().getData("openPoliceAction", defaultAction);
         return SleepStatues;
     }
+
     public static void setGpioAction(boolean openPoliceAction) {
         EtvApplication.getInstance().saveData("openPoliceAction", openPoliceAction);
     }
@@ -383,11 +367,11 @@ public class SharedPerManager {
 
     //    网页显示button按钮
     public static boolean getWebShowButton() {
-        if (AppConfig.APP_TYPE == APP_TYPE_RW_DEFAULT_ADDRESS){
+        if (AppConfig.APP_TYPE == APP_TYPE_RW_DEFAULT_ADDRESS) {
             boolean isShow = (boolean) EtvApplication.getInstance().getData("webButtonShow", false);
             MyLog.cdl("========是否显示网页互动按钮===" + isShow);
             return isShow;
-        }else {
+        } else {
             boolean isShow = (boolean) EtvApplication.getInstance().getData("webButtonShow", true);
             MyLog.cdl("========是否显示网页互动按钮===" + isShow);
             return isShow;
@@ -634,8 +618,8 @@ public class SharedPerManager {
      */
     public static boolean getOpenPower() {
         boolean defaultOpenStatues = true;
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE || AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL){
-            defaultOpenStatues =false;
+        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE || AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL) {
+            defaultOpenStatues = false;
         }
         boolean openPower = ((boolean) EtvApplication.getInstance().getData("openPower", defaultOpenStatues));
         return openPower;
@@ -673,8 +657,8 @@ public class SharedPerManager {
 
     //获取限制下载的台数
     public static int getLimitDevNum() {
-        if (limitCacheNUm!=-1){
-            return  limitCacheNUm;
+        if (limitCacheNUm != -1) {
+            return limitCacheNUm;
         }
         limitCacheNUm = ((int) EtvApplication.getInstance().getData("limitdevnum", 100));
         return limitCacheNUm;
@@ -1168,7 +1152,7 @@ public class SharedPerManager {
         return ((String) EtvApplication.getInstance().getData("packageName", "com.ys.etv"));
     }
 
-    public static String getPackageNameByYuncheng () {
+    public static String getPackageNameByYuncheng() {
         return ((String) EtvApplication.getInstance().getData("packageName", "com.founder.huanghechenbao"));
     }
 
@@ -1220,9 +1204,9 @@ public class SharedPerManager {
      */
     public static boolean getGuardianStatues() {
         boolean defaultStatues = false;
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE || AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL){
-            defaultStatues =false;
-            Log.e("TAG", "getGuardianStatues: "+defaultStatues );
+        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE || AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL) {
+            defaultStatues = false;
+            Log.e("TAG", "getGuardianStatues: " + defaultStatues);
         }
         return ((boolean) EtvApplication.getInstance().getData("guardianStatues", defaultStatues));
     }
@@ -1235,7 +1219,6 @@ public class SharedPerManager {
     public static void setGuardianStatues(boolean guardianStatues) {
         EtvApplication.getInstance().saveData("guardianStatues", guardianStatues);
     }
-
 
 
     /**
@@ -1367,30 +1350,14 @@ public class SharedPerManager {
      * @return
      */
     public static int geWPSSingleShowTYpe() {
-        int backCode = (int) EtvApplication.getInstance().getData("wpsSingleShowTYpe", BannerConfig.SCREEN_SHOW_TYPE_PROPROTIONAL);
-
-        return backCode;
+        return 0;
+//        int backCode = (int) EtvApplication.getInstance().getData("wpsSingleShowTYpe", BannerConfig.SCREEN_SHOW_TYPE_PROPROTIONAL);
+//        return backCode;
     }
 
     public static void setWPSSingleShowTYpe(int wpsSingleShowTYpe, String printTag) {
-        MyLog.cdl("=========setWPSSingleShowTYpe=====" + wpsSingleShowTYpe + " / printTag = " + printTag);
-        EtvApplication.getInstance().saveData("wpsSingleShowTYpe", wpsSingleShowTYpe);
-    }
-
-    /***
-     * 0: 左右切换
-     * 1：上下切换
-     * 文档切换动画
-     * @return
-     */
-    public static int geWPSSingleShowAnimalTYpe() {
-        int backCode = (int) EtvApplication.getInstance().getData("wpsSingleShowSAnimalTYpe", 0);
-        return backCode;
-    }
-
-    public static void setWPSSingleShowAnimalTYpe(int wpsSingleShowSAnimalTYpe) {
-        MyLog.cdl("=========setWPSSingleShowTYpe=====" + wpsSingleShowSAnimalTYpe + " / printTag = " + wpsSingleShowSAnimalTYpe);
-        EtvApplication.getInstance().saveData("wpsSingleShowSAnimalTYpe", wpsSingleShowSAnimalTYpe);
+//        MyLog.cdl("=========setWPSSingleShowTYpe=====" + wpsSingleShowTYpe + " / printTag = " + printTag);
+//        EtvApplication.getInstance().saveData("wpsSingleShowTYpe", wpsSingleShowTYpe);
     }
 
     /**

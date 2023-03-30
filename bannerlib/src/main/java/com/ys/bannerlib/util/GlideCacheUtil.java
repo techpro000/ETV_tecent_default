@@ -18,7 +18,6 @@ import java.math.BigDecimal;
  * Created by
  */
 
-
 public class GlideCacheUtil {
     private static GlideCacheUtil inst;
 
@@ -35,7 +34,6 @@ public class GlideCacheUtil {
     private void clearImageDiskCache(final Context context) {
         try {
             if (Looper.myLooper() == Looper.getMainLooper()) {
-
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {

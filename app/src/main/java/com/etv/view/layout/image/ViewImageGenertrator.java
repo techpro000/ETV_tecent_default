@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.etv.config.AppConfig;
 import com.etv.config.AppInfo;
 import com.etv.db.DbStatiscs;
 import com.etv.entity.StatisticsEntity;
@@ -14,13 +13,11 @@ import com.etv.task.entity.MediAddEntity;
 import com.etv.task.entity.SceneEntity;
 import com.etv.util.MyLog;
 import com.etv.util.SharedPerManager;
-import com.etv.util.SharedPerUtil;
 import com.etv.view.layout.Generator;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 import com.ys.bannerlib.BannerHelper;
 import com.ys.bannerlib.adapter.ImageAdapter;
-import com.ys.bannerlib.imageloader.FrescoImageLoader;
 import com.ys.bannerlib.imageloader.GlideImageLoader;
 import com.ys.bannerlib.util.GlideCacheUtil;
 import com.ys.etv.R;
@@ -83,12 +80,7 @@ public class ViewImageGenertrator extends Generator {
         helper = new BannerHelper<MediAddEntity>(banner);
         helper.setDatas(new ArrayList<>(imageList));
         helper.setPageTransformer(PageTransformer);
-        int imageShowType = SharedPerUtil.getImageShowType();
-        if (imageShowType == AppInfo.IMAGE_TYPE_GLIDE) {
-            helper.setImageLoader(new GlideImageLoader(), SharedPerManager.getPicSingleShowTYpe());
-        } else if (imageShowType == AppInfo.IMAGE_TYPE_FRESOC) {
-            helper.setImageLoader(new FrescoImageLoader(), SharedPerManager.getPicSingleShowTYpe());
-        }
+        helper.setImageLoader(new GlideImageLoader(), SharedPerManager.getPicSingleShowTYpe());
         initListener();
         helper.startPlay();
     }

@@ -228,7 +228,7 @@ public class ViewImageSingleGenertrator extends Generator {
     public void clearMemory() {
         try {
             if (iv_abs != null) {
-                GlideImageUtil.clearViewCache(iv_abs);
+                GlideImageUtil.clearViewCache(context,iv_abs);
             }
             if (handler != null) {
                 handler.removeMessages(TIME_DELAY);

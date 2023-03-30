@@ -51,9 +51,6 @@ public class ScreenShowSetting extends SettingBaseActivity implements View.OnCli
     private SettingClickView btn_double_show_type;
     private SettingClickView btn_double_image_roate;
     private SettingClickView btn_capture_quetity;
-    private SettingClickView btn_wps_show_type;  //wps 文档
-    private SettingClickView btn_wps_animal_type;
-    private SettingClickView btn_image_load_type;  //图片加载框架
     SettingSwitchView switch_info_from;
 
     private void initView() {
@@ -74,12 +71,6 @@ public class ScreenShowSetting extends SettingBaseActivity implements View.OnCli
         btn_double_image_roate.setOnMoretListener(this);
         btn_capture_quetity = (SettingClickView) findViewById(R.id.btn_capture_quetity);
         btn_capture_quetity.setOnMoretListener(this);
-        btn_wps_show_type = (SettingClickView) findViewById(R.id.btn_wps_show_type);
-        btn_wps_show_type.setOnMoretListener(this);
-        btn_wps_animal_type = (SettingClickView) findViewById(R.id.btn_wps_animal_type);
-        btn_wps_animal_type.setOnMoretListener(this);
-        btn_image_load_type = (SettingClickView) findViewById(R.id.btn_image_load_type);
-        btn_image_load_type.setOnMoretListener(this);
         showIrHiddleView();
     }
 
@@ -88,14 +79,12 @@ public class ScreenShowSetting extends SettingBaseActivity implements View.OnCli
             btn_touch_show_type.setVisibility(View.GONE);
             btn_double_show_type.setVisibility(View.GONE);
             btn_double_image_roate.setVisibility(View.GONE);
-            btn_image_load_type.setVisibility(View.GONE);
         }
 
         if (CpuModel.CPU_MODEL_3566_11.equals(CpuModel.getMobileType())) {
             btn_touch_show_type.setVisibility(View.GONE);
             btn_double_show_type.setVisibility(View.GONE);
             btn_double_image_roate.setVisibility(View.GONE);
-            btn_image_load_type.setVisibility(View.GONE);
         }
     }
 
@@ -135,15 +124,6 @@ public class ScreenShowSetting extends SettingBaseActivity implements View.OnCli
     @Override
     public void clickView(View view) {
         switch (view.getId()) {
-            case R.id.btn_image_load_type:
-                showImageShowTypeDialog();
-                break;
-            case R.id.btn_wps_animal_type:
-                showWpsShowAnimalTypeDialog();
-                break;
-            case R.id.btn_wps_show_type:
-                showWpsShowTypeDialog();
-                break;
             case R.id.btn_capture_quetity:
                 showCaptureImageQuity();
                 break;
@@ -166,26 +146,6 @@ public class ScreenShowSetting extends SettingBaseActivity implements View.OnCli
     }
 
 
-    /***
-     * 图片加载框架
-     *
-     */
-    private void showImageShowTypeDialog() {
-        int showType = SharedPerUtil.getImageShowType();
-        RadioListDialog radioListDialog = new RadioListDialog(ScreenShowSetting.this);
-        List<RedioEntity> list = new ArrayList<RedioEntity>();
-        list.add(new RedioEntity("Glide"));
-        list.add(new RedioEntity("Fresco"));
-        radioListDialog.show("ImageShow", list, showType);
-        radioListDialog.setRadioChooiceListener(new RadioChooiceListener() {
-            @Override
-            public void backChooiceInfo(RedioEntity redioEntity, int chooicePosition) {
-                SharedPerManager.setImageShowType(chooicePosition);
-                showToastView("Success");
-                updateShowView("设置图片的加载框架");
-            }
-        });
-    }
 
 
     @Override
@@ -196,44 +156,6 @@ public class ScreenShowSetting extends SettingBaseActivity implements View.OnCli
                 finish();
                 break;
         }
-    }
-
-    /***
-     * 文档切换动画
-     */
-    private void showWpsShowAnimalTypeDialog() {
-        int showType = SharedPerManager.geWPSSingleShowAnimalTYpe();
-        RadioListDialog radioListDialog = new RadioListDialog(ScreenShowSetting.this);
-        List<RedioEntity> list = new ArrayList<RedioEntity>();
-        list.add(new RedioEntity(getString(R.string.animal_left_right)));
-        list.add(new RedioEntity(getString(R.string.animal_top_bottom)));
-        radioListDialog.show("Type", list, showType);
-        radioListDialog.setRadioChooiceListener(new RadioChooiceListener() {
-            @Override
-            public void backChooiceInfo(RedioEntity redioEntity, int chooicePosition) {
-                SharedPerManager.setWPSSingleShowAnimalTYpe(chooicePosition);
-                showToastView("Success");
-                updateShowView("设置图片的显示类型");
-            }
-        });
-    }
-
-
-    private void showWpsShowTypeDialog() {
-        int showType = SharedPerManager.geWPSSingleShowTYpe();
-        RadioListDialog radioListDialog = new RadioListDialog(ScreenShowSetting.this);
-        List<RedioEntity> list = new ArrayList<RedioEntity>();
-        list.add(new RedioEntity(getString(R.string.all_screen_change)));
-        list.add(new RedioEntity(getString(R.string.size_screen_change)));
-        radioListDialog.show("Type", list, showType);
-        radioListDialog.setRadioChooiceListener(new RadioChooiceListener() {
-            @Override
-            public void backChooiceInfo(RedioEntity redioEntity, int chooicePosition) {
-                SharedPerManager.setWPSSingleShowTYpe(chooicePosition, "单机模式，手动设置");
-                showToastView("Success");
-                updateShowView("设置图片的显示类型");
-            }
-        });
     }
 
     private void showCaptureImageQuity() {
@@ -392,19 +314,9 @@ public class ScreenShowSetting extends SettingBaseActivity implements View.OnCli
     }
 
     private void updateShowView(String tag) {
-        btn_image_load_type.setTxtContent(SharedPerUtil.getImageShowType() == AppInfo.IMAGE_TYPE_GLIDE ? "Glide" : "Fresco");
         boolean isFromWeb = SharedPerManager.getInfoFrom();
         switch_info_from.setSwitchStatues(isFromWeb);
         switch_info_from.setTxtContent(isFromWeb ? getString(R.string.screen_double_net_model) : getString(R.string.screen_double_net_local));
-        int showTypeAnimal = SharedPerManager.geWPSSingleShowAnimalTYpe();
-        if (showTypeAnimal == 0) {
-            btn_wps_animal_type.setTxtContent(getString(R.string.animal_left_right));
-        } else {
-            btn_wps_animal_type.setTxtContent(getString(R.string.animal_top_bottom));
-        }
-        int showWpsType = SharedPerManager.geWPSSingleShowTYpe();
-        btn_wps_show_type.setTxtContent(showWpsType == 0 ? getString(R.string.all_screen_change)
-                : getString(R.string.size_screen_change));
         MyLog.cdl("========界面刷新==" + tag);
         int videoShowType = SharedPerManager.geVideoSingleShowTYpe();
         btn_video_show_type.setTxtContent(videoShowType == 0 ? getString(R.string.all_screen_change)

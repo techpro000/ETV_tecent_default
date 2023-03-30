@@ -71,7 +71,7 @@ public class ViewLogoImageGenertrator extends Generator {
     @Override
     public void clearMemory() {
         if (logo_image != null) {
-            GlideImageUtil.clearViewCache(logo_image);
+            GlideImageUtil.clearViewCache(context,logo_image);
         }
     }
 

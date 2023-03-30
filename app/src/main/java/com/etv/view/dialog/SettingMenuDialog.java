@@ -161,7 +161,7 @@ public class SettingMenuDialog implements OnClickListener {
         try {
             handler.removeMessages(DISSMISS_DIALOG_AUTO);
             if (iv_qr_code_scan != null) {
-                GlideImageUtil.clearViewCache(iv_qr_code_scan);
+                GlideImageUtil.clearViewCache(context,iv_qr_code_scan);
             }
             if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();

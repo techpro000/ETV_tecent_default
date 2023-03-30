@@ -87,28 +87,6 @@
                 app:txt_content=""
                 app:txt_title="@string/video_distance_type" />
 
-
-            <!--文档展示类型-->
-            <com.ys.model.view.SettingClickView
-                android:id="@+id/btn_wps_show_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:btn_txt_right="@string/setting_default"
-                app:img_left="@mipmap/icon_wps_setting"
-                app:txt_content=""
-                app:txt_title="@string/wps_distance_type" />
-
-            <!--文档展示动画切换类型-->
-            <com.ys.model.view.SettingClickView
-                android:id="@+id/btn_wps_animal_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:btn_txt_right="@string/setting_default"
-                app:img_left="@mipmap/icon_wps_setting"
-                app:txt_content=""
-                app:txt_title="@string/wps_anim_type" />
-
-
             <!--互动显示类型-->
             <com.ys.model.view.SettingClickView
                 android:id="@+id/btn_touch_show_type"
@@ -148,16 +126,6 @@
                 app:img_left="@mipmap/icon_pic_setting"
                 app:txt_content=""
                 app:txt_title="@string/capture_quetity" />
-
-            <com.ys.model.view.SettingClickView
-                android:id="@+id/btn_image_load_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:btn_txt_right="@string/setting_default"
-                app:img_left="@mipmap/icon_pic_setting"
-                app:txt_content=""
-                app:txt_title="@string/image_show_tyle" />
-
 
         </LinearLayout>
 
