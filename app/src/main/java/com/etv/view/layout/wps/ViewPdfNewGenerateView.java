@@ -19,6 +19,7 @@ import com.etv.task.entity.MediAddEntity;
 import com.etv.task.entity.SceneEntity;
 import com.etv.util.MyLog;
 import com.etv.util.SharedPerManager;
+import com.etv.util.TimerDealUtil;
 import com.etv.view.layout.Generator;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
@@ -60,6 +61,7 @@ public class ViewPdfNewGenerateView extends Generator {
         view = LayoutInflater.from(context).inflate(R.layout.view_pdf_show_new, null);
         pdfInit(view);
         initListener();
+        TimerDealUtil.getInstance().addGeneratorToList(ViewPdfNewGenerateView.this);
     }
 
 
@@ -86,7 +88,7 @@ public class ViewPdfNewGenerateView extends Generator {
         loadPdfFileToView(mediAddEntity);
     }
 
-
+    //当前文件得个数
     private int CURRENT_PLAY_POSITION = 0;
 
     /***
@@ -95,41 +97,23 @@ public class ViewPdfNewGenerateView extends Generator {
      */
     private void loadPdfFileToView(MediAddEntity mediAddEntity) {
         String filePath = mediAddEntity.getUrl();
-        MyLog.pdf("开始加载 pdf 文件==" + filePath);
         File file = new File(filePath);
         if (!file.exists()) {
             iv_no_data.setVisibility(View.VISIBLE);
+            TimerDealUtil.getInstance().removeGeneratorToList(ViewPdfNewGenerateView.this);
             return;
         }
-        FitPolicy fitPolicy;
-        int pdfShowType = SharedPerManager.geWPSSingleShowTYpe();
-        if (pdfShowType == BannerConfig.SCREEN_SHOW_TYPE_ALL_GLOBLE) { //全屏拉伸
-            fitPolicy = FitPolicy.FULL_SCREEN;
-        } else {  //比例缩放
-            fitPolicy = FitPolicy.BOTH_SCREEN;
-        }
-        pdfview = (PDFView) view.findViewById(R.id.pdfview);
-        int showTypeAnimal = SharedPerManager.geWPSSingleShowAnimalTYpe();
-        //0 左右   1 上下
-        boolean isLeft_right = true;
-        if (showTypeAnimal == 0) {
-            isLeft_right = true;
-        } else {
-            isLeft_right = false;
+        if (pdfview == null) {
+            pdfview = (PDFView) view.findViewById(R.id.pdfview);
         }
         pdfview.fromFile(file)
                 .defaultPage(currentShowPosition)
-                .swipeHorizontal(isLeft_right)
+                .swipeHorizontal(true)  //横向移动
                 .enableDoubletap(false)
                 .enableSwipe(false)
                 .spacing(0) // in dp
                 .autoSpacing(false)
-                .pageFitPolicy(fitPolicy)  //居中显示
-
-//                .fitEachPage(true)
-//                .pageSnap(true) // snap pages to screen boundaries
-//                .pageFling(true) // make a fling change only a single page like ViewPager
-
+                .pageFitPolicy(FitPolicy.FULL_SCREEN)  //居中显示
                 .enableAnnotationRendering(true)
                 .setShowScreenSize(screenWidth, screenHeight)
                 .onLoad(onLoadCompleteListener)
@@ -139,15 +123,6 @@ public class ViewPdfNewGenerateView extends Generator {
     }
 
     private void initListener() {
-        view_click_pdf.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener == null) {
-                    return;
-                }
-                listener.clickTaskView(cpListEntity, null, currentShowPosition);
-            }
-        });
         view_click_pdf.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -159,15 +134,26 @@ public class ViewPdfNewGenerateView extends Generator {
         });
     }
 
+    int addNum = 1;
+
     @Override
     public void timeChangeToUpdateView() {
-
+        addNum++;
+        if (addNum % POLLING_INTERVAL == 0) {
+            goToShowNextPagePosition();
+        }
+        if (addNum > 9999) {
+            addNum = 0;
+        }
     }
 
     private void setPageTime(int duration, String printTag) {
         MyLog.playTask("设置文档切换时间=" + duration + " /printTag =  " + printTag);
-        POLLING_INTERVAL = duration;
-        startToPlayPdfFile();
+        if (duration < 5000) {
+            POLLING_INTERVAL = 10;
+            return;
+        }
+        POLLING_INTERVAL = duration / 1000;
     }
 
     @Override
@@ -183,30 +169,14 @@ public class ViewPdfNewGenerateView extends Generator {
     private int currentShowPosition = 0;
     private int totalPageSize = 0;
 
-    private static final int AUTO_CHANGE_POSITION = 5621;
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            handler.removeMessages(msg.what);
-            switch (msg.what) {
-                case AUTO_CHANGE_POSITION:
-                    goToShowNextPagePosition();
-                    break;
-            }
-        }
-    };
-
     private void goToShowNextPagePosition() {
-        startToPlayPdfFile();
-        currentShowPosition++;
         if (totalPageSize < 1) {
             return;
         }
-        MyLog.pdf("当前页码==" + currentShowPosition + " / " + totalPageSize);
+        currentShowPosition++;
         if (currentShowPosition > totalPageSize) {
+            //当前文件播放完毕，播放下一个文件
             playNextFile();
-            currentShowPosition = 0;
             return;
         }
         if (pdfview != null) {
@@ -219,39 +189,29 @@ public class ViewPdfNewGenerateView extends Generator {
      * 播放下一个pdf 文件
      */
     private void playNextFile() {
-        MyLog.pdf("playNextFile==播放下一个");
         CURRENT_PLAY_POSITION++;
         if (CURRENT_PLAY_POSITION > mixtureList.size() - 1) {
             playComplet();
             CURRENT_PLAY_POSITION = 0;
         }
+        currentShowPosition = 0;
         MediAddEntity mediAddEntity = mixtureList.get(CURRENT_PLAY_POSITION);
         loadPdfFileToView(mediAddEntity);
     }
 
-    private void goToShowPrePagePosition() {
-        startToPlayPdfFile();
-        currentShowPosition--;
-        if (totalPageSize < 1) {
-            return;
-        }
-        if (currentShowPosition < 0) {
-            currentShowPosition = totalPageSize;
-        }
-        if (pdfview != null) {
-//            pdfview.setPositionOffset(currentShowPosition);
-            pdfview.jumpTo(currentShowPosition, true);
-        }
-    }
-
-    public void startToPlayPdfFile() {
-        if (handler == null) {
-            return;
-        }
-        handler.removeMessages(AUTO_CHANGE_POSITION);
-        handler.sendEmptyMessageDelayed(AUTO_CHANGE_POSITION, POLLING_INTERVAL);
-    }
-
+//    private void goToShowPrePagePosition() {
+//        currentShowPosition--;
+//        if (totalPageSize < 1) {
+//            return;
+//        }
+//        if (currentShowPosition < 0) {
+//            currentShowPosition = totalPageSize;
+//        }
+//        if (pdfview != null) {
+////            pdfview.setPositionOffset(currentShowPosition);
+//            pdfview.jumpTo(currentShowPosition, true);
+//        }
+//    }
 
     /***
      * 加载完成
@@ -281,10 +241,7 @@ public class ViewPdfNewGenerateView extends Generator {
 
     @Override
     public void clearMemory() {
-        if (handler != null) {
-            handler.removeMessages(AUTO_CHANGE_POSITION);
-            handler = null;
-        }
+        TimerDealUtil.getInstance().removeGeneratorToList(ViewPdfNewGenerateView.this);
         if (pdfview != null) {
             pdfview.recycle();
             pdfview = null;
@@ -328,21 +285,19 @@ public class ViewPdfNewGenerateView extends Generator {
 
     @Override
     public void pauseDisplayView() {
-        handler.removeMessages(AUTO_CHANGE_POSITION);
     }
 
     @Override
     public void resumePlayView() {
-        handler.sendEmptyMessage(AUTO_CHANGE_POSITION);
     }
 
     @Override
     public void moveViewForward(boolean b) {
-        if (b) {  //下一页
-            goToShowNextPagePosition();
-        } else { //上一页
-            goToShowPrePagePosition();
-        }
+//        if (b) {  //下一页
+//            goToShowNextPagePosition();
+//        } else { //上一页
+//            goToShowPrePagePosition();
+//        }
     }
 
     @Override
