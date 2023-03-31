@@ -123,12 +123,13 @@ public class ViewImageGenertrator extends Generator {
                 MyLog.banner("=======onPageChange====" + position + " / " + isLast + " / size--> " + (imageList.size()));
                 //播放完毕
                 if (isLast) {
-                    //playComplet();
-                    banner.postDelayed(() -> {
-                        playComplet();
-                    }, imageList.get(position).getLoopTime());
+                    addNum++;
+                    return;
                 }
-
+                if (addNum == 1) {
+                    playComplet();
+                }
+                addNum = 0;
                 if (position < imageList.size()) {
                     String midId = imageList.get(position).getMidId();
                     MediAddEntity entity = imageList.get(0);
@@ -137,25 +138,9 @@ public class ViewImageGenertrator extends Generator {
                 }
             }
         });
-
-        /*helper.addOnPageChangePlayCallback((position, isLast) -> {
-            MyLog.banner("=======onPageChange====" + position + " / " + isLast + " / size--> " + (imageList.size()));
-            //播放完毕
-            if (isLast) {
-                MyLog.banner("=======onPageChange===ready=>");
-                playComplet();
-            }
-            if (imageList == null || imageList.size() < 1) {
-                return;
-            }
-            if (position < imageList.size()) {
-                String midId = imageList.get(position).getMidId();
-                MediAddEntity entity = imageList.get(0);
-                int playTime = (int) entity.getLoopTime() / 1000;
-                addImageUpdateToWeb(midId, playTime);
-            }
-        });*/
     }
+
+    int addNum = 0;
 
     @Override
     public void pauseDisplayView() {
