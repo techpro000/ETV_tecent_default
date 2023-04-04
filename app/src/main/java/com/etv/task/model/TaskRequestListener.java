@@ -34,5 +34,5 @@ public interface TaskRequestListener {
     /***
      * 解析JSON完毕
      */
-    void parserJsonOver(String tag);
+    void parserJsonOver(String tag, List<TaskWorkEntity> list);
 }

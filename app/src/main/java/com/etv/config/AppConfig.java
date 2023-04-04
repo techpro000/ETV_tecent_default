@@ -34,6 +34,7 @@ public class AppConfig {
     public static final int APP_TYPE_SENHAN = 39;                 // 珠海涤生涵科技有限公司-去掉中间的二维码功能
     public static final int APP_TYPE_CHUNYN = 40;                 //传音-固定服务器IP
     public static final int APP_TYPE_SCHOOL_STUDY = 44;           //放心学   webSocket
+    public static final int APP_TYPE_BEIJING_MG = 45;             // 北京美冠
     public static final int APP_TYPE_XINABICN = 46;             // 深圳市芯纳百川技术有限公司
 
     public static final int APP_TYPE_NO_ERCODE = 100;             //没有二维码的模式

@@ -115,6 +115,7 @@ public class MainActivity extends TaskActivity implements
     @Override
     public void showDownStatuesView(boolean isShow, String desc) {
         rela_down_tag.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        MyLog.d("DDD", "下载描述：" + desc);
         tv_down_desc.setText(desc);
     }
 

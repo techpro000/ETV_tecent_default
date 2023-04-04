@@ -126,6 +126,7 @@ public class WorkChoiceActivity extends SettingBaseActivity implements View.OnCl
 
     private void changeWorkModelType(int workModel) {
         try {
+            MyLog.playTask("clearAllDbInfo 7");
             DBTaskUtil.clearAllDbInfo("=======选择工作状态===");  //清理任务
             //切换工作模式需要停止下载
             sendBroadcast(new Intent(AppInfo.STOP_DOWN_TASK_RECEIVER));

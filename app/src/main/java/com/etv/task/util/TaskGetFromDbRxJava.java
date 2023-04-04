@@ -33,7 +33,8 @@ public class TaskGetFromDbRxJava {
             List<TaskWorkEntity> taskWorkCacheList = DBTaskUtil.getTaskInfoList();
             if (taskWorkCacheList == null || taskWorkCacheList.size() < 1) {
                 MyLog.task("=====00000====从数据库中获取的任务集合个数==0=====" + printTag);
-                DBTaskUtil.clearAllDbInfo("从数据库中获取的任务集合个数==0=" + printTag);   //清理所有的数据库信息
+                MyLog.playTask("clearAllDbInfo");
+                DBTaskUtil.clearAllDbInfo("从数据库中获取的任务集合个数脏数据==0=" + printTag);   //清理所有的数据库信息
                 return null;
             }
             MyLog.task("=====00000====从数据库中获取的任务集合个数======" + taskWorkCacheList.size() + " / " + printTag, true);

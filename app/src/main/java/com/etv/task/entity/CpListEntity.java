@@ -207,8 +207,12 @@ public class CpListEntity extends LitePalSupport {
                 ", coHeight='" + coHeight + '\'' +
                 ", coActionType='" + coActionType + '\'' +
                 ", coLinkAction='" + coLinkAction + '\'' +
+                ", coLinkId='" + coLinkId + '\'' +
                 ", coScreenProtectTime='" + coScreenProtectTime + '\'' +
-                ", pmFixedScreen='" + pmFixedScreen + '\'' +
+                ", txList=" + "文本资源个数 ：" + (txList == null ? 0 : txList.size()) +
+                ", mpList=" + mpList +
+                ", pmResolutionType=" + pmResolutionType +
+                ", pmFixedScreen=" + pmFixedScreen +
                 '}';
     }
 }

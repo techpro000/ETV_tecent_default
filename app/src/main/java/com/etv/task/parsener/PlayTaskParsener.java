@@ -141,6 +141,7 @@ public class PlayTaskParsener {
             taskModel.getPlayTaskListFormDb(new TaskGetDbListener() {
                 @Override
                 public void getTaskFromDb(List<TaskWorkEntity> list) {
+                    MyLog.playTask("==== getTaskFromDb " + (list == null ? " list == null" : " list size :" + list.size()));
                     if (list == null || list.size() < 1) {
                         MyLog.playTask("======播放界面===没有获取到需要播放的任务，去检查插播消息");
                         checkTxtInsertTask(false, "当前没有任务，去检查字幕插播", false);
@@ -163,7 +164,9 @@ public class PlayTaskParsener {
                 }
             }, "====播放界面，这里获取任务数据====", TaskModelUtil.DEL_LASTDATE_AND_AFTER_NOW);
         } catch (Exception e) {
+            MyLog.playTask("==== getPlayTaskListFormDb " + e.toString());
             e.printStackTrace();
+
         }
     }
 
@@ -172,6 +175,7 @@ public class PlayTaskParsener {
      * @param taskWorkEntityList
      */
     private void parsenerTaskFromDb(List<TaskWorkEntity> taskWorkEntityList) {
+        MyLog.playTask("==== parsenerTaskFromDb :" + (taskWorkEntityList == null ? "taskWorkEntityList == null" : taskWorkEntityList.size()));
         List<MpListEntity> mpListEntities = DBTaskUtil.getMpListInfoAll();
         boolean isFileExict = TaskDealUtil.compairMpListFileExict(mpListEntities);
         if (!isFileExict) {
@@ -186,12 +190,16 @@ public class PlayTaskParsener {
             if (taskWorkEntity == null) {
                 break;
             }
+
             List<SceneEntity> listCacheSenc = DbTaskManager.getSencenEntityFormDbByTask(taskWorkEntity);
             if (listCacheSenc != null && listCacheSenc.size() > 0) {
                 sceneEntityListCache.addAll(listCacheSenc);
             }
         }
+        //这里获取任务场景失效，
+        MyLog.d("DDD", "sceneEntityListCache size: " + sceneEntityListCache.size());
         if (sceneEntityListCache == null || sceneEntityListCache.size() < 1) {
+            MyLog.playTask("==== 获取任务场景失败 2");
             playTaskView.showViewError("获取任务场景失败");
             return;
         }
@@ -228,6 +236,7 @@ public class PlayTaskParsener {
         MyLog.playTask("=========主界面的场景个数===" + sceneEntityListMain.size() + "/" + sceneEntityListMain.get(0).getTaskid());
         SceneEntity sceneEntity = sceneEntityListMain.get(0);
         String scId = sceneEntity.getSenceId();
+        MyLog.playTask("====TEXT getPmFromTask 1");
         getPmFromTask(currentSencenPosition, scId, false, "parsenerTaskFromDb");
     }
 
@@ -289,7 +298,9 @@ public class PlayTaskParsener {
                 return;
             }
             String sencenId = currentSceneEntity.getSenceId();   // 场景得ID
+            MyLog.playTask("===== 场景ID " + sencenId);
             List<CpListEntity> cpList = DbTaskManager.getComptionFromDbBySenId(sencenId);
+            MyLog.playTask("===== 场景cpList " +  (cpList == null ? "无法获取到" : cpList.size()));
             if (cpList == null || cpList.size() < 1) {
                 playTaskView.showViewError("获取控件异常");
                 return;
@@ -314,7 +325,7 @@ public class PlayTaskParsener {
             for (int i = 0; i < cpCacheList.size(); i++) {
                 CpListEntity cpListEntity = cpCacheList.get(i);
                 String coType = cpListEntity.getCoType();
-                Log.e("TAG", "getPmFromTask: " + cpListEntity.getCoWidth() + "/" + cpListEntity.getCoHeight());
+                Log.e("TAG", "getPmFromTask: " + cpListEntity.getCoWidth() + "/" + cpListEntity.getCoHeight() + " 数据相关：" + cpListEntity.toString());
                 if (CpuModel.getMobileType().startsWith(CpuModel.CPU_MODEL_MTK_M11) && coType.equals(AppInfo.VIEW_STREAM_VIDEO)) {
                     tv_video_error.setText(context.getString(R.string.support_stream_current));
                     tv_video_error.setVisibility(View.VISIBLE);
@@ -876,8 +887,11 @@ public class PlayTaskParsener {
                     if (txtList == null || txtList.size() < 1) {
                         return;
                     }
+
+                    MyLog.playTask("===== 文本数据size: " + txtList.size());
                     generatorView = new ViewDateGenerate(context, leftPosition, topPosition, width, height);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
+                    MyLog.playTask("==== textInfo ： "  + txtList.get(0).toString());
                     generatorView.updateView(txtList.get(0), true);
                     addViewToList(generatorView, coType, false);
                     break;
@@ -1145,6 +1159,7 @@ public class PlayTaskParsener {
 
                 @Override
                 public void reStartPlayProgram(String errorDesc) {
+                    MyLog.d("DDD", "getTaskToView 222");
                     getTaskToView("播放异常，重启播放一次");
                 }
             });
@@ -1246,7 +1261,7 @@ public class PlayTaskParsener {
             }
 
             @Override
-            public void parserJsonOver(String tag) {
+            public void parserJsonOver(String tag, List<TaskWorkEntity> list) {
 
             }
         });
@@ -1310,6 +1325,7 @@ public class PlayTaskParsener {
                     projectJumpEntity.setProjectorTime(projectorTime);
                     addProJumpSencenToList(projectJumpEntity, " case AppInfo.TOUCH_TYPE_JUMP_SENCEN: //跳转场景");
                     //====准备布局到界面===============================
+                    MyLog.playTask("====TEXT getPmFromTask 2");
                     getPmFromTask(nextSencenPosition, nextSceneEntity, true, "触摸互动场景跳转");
                     break;
                 case AppInfo.TOUCH_TYPE_JUMP_WEB:  //跳转网页
@@ -1474,12 +1490,14 @@ public class PlayTaskParsener {
                     ProjectJumpEntity projectJumpEntity = getLastProJumpEntity();
                     if (projectJumpEntity == null) {
                         String SenceId = sceneEntityListMain.get(0).getSenceId();
+                        MyLog.playTask("====TEXT getPmFromTask 3");
                         getPmFromTask(0, SenceId, true, "===触摸返回===projectJumpEntity==null=");
                         return;
                     }
                     SceneEntity sceneEntityFrom = projectJumpEntity.getSceneEntityFrom();
                     if (sceneEntityFrom == null) {
                         String SenceId = sceneEntityListMain.get(0).getSenceId();
+                        MyLog.playTask("====TEXT getPmFromTask 4");
                         getPmFromTask(0, SenceId, true, "===触摸返回==sceneEntityFrom==null");
                         return;
                     }
@@ -1490,6 +1508,7 @@ public class PlayTaskParsener {
                     }
                     MyLog.playTaskBack("===屏保=======准备跳转场景======" + lastPlayPosition);
                     String SenceId = sceneEntityListMain.get(lastPlayPosition).getSenceId();
+                    MyLog.playTask("====TEXT getPmFromTask 5");
                     getPmFromTask(lastPlayPosition, SenceId, true, "===触摸返回==lastPlayPosition==" + lastPlayPosition);
                     break;
             }
@@ -1587,7 +1606,7 @@ public class PlayTaskParsener {
             }
 
             @Override
-            public void parserJsonOver(String tag) {
+            public void parserJsonOver(String tag, List<TaskWorkEntity> list) {
 
             }
         });
@@ -1670,6 +1689,7 @@ public class PlayTaskParsener {
         }
         MyLog.playTaskBack("====播放结束了，切换节目===" + currentSencenPosition + " / " + lastSencenPosition);
         String SenceId = sceneEntityListMain.get(lastSencenPosition).getSenceId();
+        MyLog.playTask("====TEXT getPmFromTask 6");
         getPmFromTask(lastSencenPosition, SenceId, true, "执行返回播放的操作");
     }
 
@@ -1687,6 +1707,7 @@ public class PlayTaskParsener {
             MyLog.playTask("====播放结束了，切换节目===" + currentSencenPosition + " / " + sceneEntities.size());
             MyLog.playTask("当前只有" + sceneEntities.size() + "个节目,执行下一步操作");
             String SenceId = sceneEntityListMain.get(currentSencenPosition).getSenceId();
+            MyLog.playTask("====TEXT getPmFromTask 7");
             getPmFromTask(currentSencenPosition, SenceId, false, "==去播放下一个节目==");
         } catch (Exception e) {
             e.printStackTrace();
@@ -1710,6 +1731,7 @@ public class PlayTaskParsener {
         MyLog.gpio("====播放GPIO界面===" + currentSencenPosition + " /总长度 " + sceneEntityListMain.size());
         MyLog.gpio("当前只有" + sceneEntityListMain.size() + "个节目,执行下一步操作");
         String SenceId = sceneEntityListMain.get(currentSencenPosition).getSenceId();
+        MyLog.playTask("====TEXT getPmFromTask 8");
         getPmFromTask(currentSencenPosition, SenceId, false, "==去播放下一个节目==");
     }
 
@@ -1778,6 +1800,7 @@ public class PlayTaskParsener {
         projectJumpEntity.setProjectorTime(0);
         addProJumpSencenToList(projectJumpEntity, "playPreSencenView");
         String SenceId = sceneEntityListMain.get(currentSencenPosition).getSenceId();
+        MyLog.playTask("====TEXT getPmFromTask 9");
         getPmFromTask(currentSencenPosition, SenceId, false, "播放上一个场景==playPreSencenView");
     }
 
@@ -1809,6 +1832,7 @@ public class PlayTaskParsener {
         projectJumpEntity.setProjectorTime(0);
         addProJumpSencenToList(projectJumpEntity, "playNextSencenView");
         String SenceId = sceneEntityListMain.get(currentSencenPosition).getSenceId();
+        MyLog.playTask("====TEXT getPmFromTask 10");
         getPmFromTask(currentSencenPosition, SenceId, false, "播放下一个场景节目");
     }
 
@@ -1999,6 +2023,7 @@ public class PlayTaskParsener {
             MyLog.playTask("====时间到了，更新天气以及日期控件======" + currentTime, true);
             clearMemory();
             clearLastView(-1);
+            MyLog.d("DDD", "getTaskToView 333");
             getTaskToView("凌晨切换节目");
             return;
         }

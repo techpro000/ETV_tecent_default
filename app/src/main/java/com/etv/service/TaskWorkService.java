@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.EtvApplication;
 import com.etv.activity.MainActivity;
@@ -26,7 +27,12 @@ import com.etv.setting.update.view.UpdateView;
 import com.etv.socket.online.SocketWebListener;
 import com.etv.task.activity.PlayerTaskActivity;
 import com.etv.task.db.DBTaskUtil;
+import com.etv.task.entity.CpListEntity;
 import com.etv.task.entity.DownStatuesEntity;
+import com.etv.task.entity.LocalEntity;
+import com.etv.task.entity.MpListEntity;
+import com.etv.task.entity.PmListEntity;
+import com.etv.task.entity.SceneEntity;
 import com.etv.task.entity.TaskDownEntity;
 import com.etv.task.entity.TaskWorkEntity;
 import com.etv.task.model.TaskCheckLimitListener;
@@ -35,10 +41,12 @@ import com.etv.task.model.TaskGetDownListListener;
 import com.etv.task.model.TaskModelUtil;
 import com.etv.task.model.TaskModelmpl;
 import com.etv.task.model.TaskMudel;
+import com.etv.task.model.TaskRequestListener;
 import com.etv.task.parsener.TaskParsener;
 import com.etv.task.util.TaskDealUtil;
 import com.etv.task.view.TaskView;
 import com.etv.util.Biantai;
+import com.etv.util.FileUtils;
 import com.etv.util.MyLog;
 import com.etv.util.NetWorkUtils;
 import com.etv.util.RootCmd;
@@ -47,6 +55,8 @@ import com.etv.util.SimpleDateUtil;
 import com.etv.util.down.DownFileEntity;
 import com.etv.util.down.DownRunnable;
 import com.etv.util.down.DownStateListener;
+import com.etv.util.down.SaveDataRunnable;
+import com.etv.util.down.SaveDateToDbListener;
 import com.etv.util.guardian.GuardianUtil;
 import com.etv.util.rxjava.AppStatuesListener;
 import com.etv.util.sdcard.MySDCard;
@@ -82,6 +92,7 @@ public class TaskWorkService extends Service implements TaskView {
     public static final int TASK_TYPE_DOWN_WAIT = 3;  //下载等待状态
     public static final int TASK_TYPE_DOWNING = 4;  //下载状态
     public static int TASK_CURRENT_TYPE = TASK_TYPE_DEFAULT;
+    private List<TaskWorkEntity>  taskWorkEntityList;
 
     /***
      * 设置当前状态
@@ -425,11 +436,12 @@ public class TaskWorkService extends Service implements TaskView {
      */
     @Override
     public void backTaskList(List<TaskWorkEntity> lists, String printTag) {
+        MyLog.d("liujk", "返回需要下载播放的任务集合 backTaskList : " + lists.size());
         setCurrentTaskType(TASK_TYPE_DEFAULT, "恢复原始状态");
         listTask = lists;
         if (listTask == null || listTask.size() < 1) {
             //这里需要 停止播放
-            MyLog.task("========parserJsonOver=======没有获取到任务=====");
+            MyLog.task("========parserJsonOver=======没有获取到任务=====2");
             sendBroadCastToView(AppInfo.RECEIVE_STOP_PLAY_TO_VIEW);
             return;
         }
@@ -438,19 +450,60 @@ public class TaskWorkService extends Service implements TaskView {
         if (taskMudel == null) {
             taskMudel = new TaskModelmpl();
         }
-        taskMudel.getTaskDownListInfoFromDbByTaskIdRunnable(lists, new TaskGetDownListListener() {
-            @Override
-            public void getTaskDownFileListFromDb(List<TaskDownEntity> list) {
-                if (list == null || list.size() < 1) {
-                    MyLog.task("====检查下载的文件===00");
-                } else {
-                    MyLog.task("====检查下载的文件===" + list.size());
-                }
-                toJujleDownFileList(list, printTag);
-            }
-        }, printTag);
+
+        List<TaskDownEntity> mpListFromServer = getMpListFromServer(lists);
+        //需要从服务器获取需要下载的资源文件
+        toJujleDownFileList(mpListFromServer, printTag);
+
     }
 
+    /**
+     * 需要从服务器获取需要下载的资源
+     * @param lists 服务器数据
+     * @return
+     */
+    private List<TaskDownEntity> getMpListFromServer(List<TaskWorkEntity> lists) {
+        List<TaskDownEntity> list = new ArrayList<>();
+
+        for (int i = 0; i < lists.size(); i++) {
+            TaskWorkEntity taskWorkEntity = lists.get(i); //任务
+
+            List<PmListEntity> pmListEntities = taskWorkEntity.getPmListEntities(); //节目
+            for (int j = 0; j < pmListEntities.size(); j++) {
+                List<SceneEntity> sceneEntityList = pmListEntities.get(i).getSceneEntityList(); //场景
+                for (int k = 0; k < sceneEntityList.size(); k++) {
+                    List<CpListEntity> listCp = sceneEntityList.get(k).getListCp();  //素材
+
+                    for (int l = 0; l < listCp.size(); l++) {
+                        List<MpListEntity> mpList = listCp.get(l).getMpList(); // 资源
+
+                        for (int m = 0; m < mpList.size(); m++) {
+                            MpListEntity mpListEntity = mpList.get(m);
+                            String taskId = mpListEntity.getTaskId(); //任务id
+                            String url = mpListEntity.getUrl();  //下载地址
+                            String size = mpListEntity.getSize(); //文件大小
+                            String savePath = FileUtils.SAVE_PATH ;
+
+                            MyLog.d("liujk", "服务器文件资源 任务id: " + taskId + " 下载地址：" + url + " 文件大小： " + size + " 保存路径： " + savePath);
+                            TaskDownEntity  taskDownEntity = new TaskDownEntity(taskId, url, savePath, size, false);
+                            list.add(taskDownEntity);
+
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        return list;
+    }
+
+
+    /**
+     * 服务器对比过本地 后，需要下载的资源
+     */
+    private List<TaskDownEntity> needDownTaskEntityList = new ArrayList<>();
     /**
      * 去判断有没有需要下载得资源
      *
@@ -463,9 +516,124 @@ public class TaskWorkService extends Service implements TaskView {
             return;
         }
         MyLog.task("=========获取任务的个数=======" + listTask.size() + " /需要下载资源得个数== " + taskEntityList.size());
+
+
+        //新的业务逻辑
+        //对比本地后，需要下载的任务。
+        needDownTaskEntityList = compareServerAndLocalFile(taskEntityList);
+        if(needDownTaskEntityList.size() == 0) {
+            //没有需要下载文件
+            MyLog.d("liujk", "对比服务器的资源，发现没有需要下载的文件了，那么直接使用本地数据去播放吧");
+            sendSourcesCompleteBroadcast();
+        }
+
+
+
+        for (int i = 0; i < needDownTaskEntityList.size(); i++) {
+            String savePath = needDownTaskEntityList.get(i).getSavePath();
+            String downUrl = needDownTaskEntityList.get(i).getDownUrl();
+            downUrl = downUrl.substring(downUrl.lastIndexOf("/")+1);
+            Log.e("liujk", "需要下载的资源最终有：" + needDownTaskEntityList.get(i).getSavePath() + downUrl);
+        }
+
+
         //检查下载进度
         isHasDownLimit = false;
         handler.sendEmptyMessage(CHECK_LIMIT_DOWN_NUM);      //开始检测下载资格
+    }
+
+    /**
+     *  对比服务器任务与本地下载文件
+     *  对比文件的时候,文件名相同,文件比服务器下发文件大, 删除改文件； 文件比服务器下发的小就保暂时留该文件（因为短点续传,可能还在下载该文件。）
+     * @param serverTaskEntityList  服务器需要下载的资源
+     * @return 所需下载的任务数。
+     */
+    private List<TaskDownEntity> compareServerAndLocalFile(List<TaskDownEntity> serverTaskEntityList) {
+
+        List<LocalEntity> localEntity = getLocalEntity(); // 本地资源
+        //服务器要删除的文件名集合
+        List<String> deleteServerFileList = new ArrayList<>();
+
+        //本地要删除的文件名集合
+        List<String> deleteLocalFileList = new ArrayList<>();
+
+
+        for (int i = 0; i < serverTaskEntityList.size(); i++) {
+            TaskDownEntity taskDownEntity = serverTaskEntityList.get(i);
+            String downUrl = taskDownEntity.getDownUrl();
+            String fileLength = taskDownEntity.getFileLength();
+
+            for (int j = 0; j < localEntity.size(); j++) {
+                LocalEntity entity = localEntity.get(j);
+                String fileName = entity.getFileName();
+                String localFileLength = entity.getFileLength();
+
+                MyLog.d("liujk", "本地文件 : " + fileName +  " 本地文件大小： " + localFileLength);
+                String serverFileName = downUrl.substring(downUrl.lastIndexOf("/") + 1);
+
+
+                MyLog.d("liujk", "服务器 savePath: " + serverFileName + " 服务器文件大小： " + fileLength);
+                if(serverFileName.equals(fileName)){  //文件名相同比较文件代销
+                    if(fileLength.equals(localFileLength)) { //文件大小相同
+                        MyLog.d("TTT", "服务器 savePath: " + serverFileName + "与本地文件大小==");
+
+                        deleteServerFileList.add(serverFileName);
+                        break;
+                    }  else if(Long.parseLong(localFileLength) > Long.parseLong(fileLength)) {
+                        deleteLocalFileList.add(localFileLength);
+                        break;
+                    } //本地文件 < 服务器文件，暂时不处理，因为断点续传，导致文件可能偏小。后续会优化下载框架
+
+                }
+            }
+
+        }
+
+        MyLog.d("TTT", "要删除的服务器任务数：" + deleteServerFileList.size());
+        for (int i = 0; i < deleteServerFileList.size(); i++) {
+            MyLog.d("TTT", "*****要删除的服务器任务名字：" + deleteServerFileList.get(i));
+
+        }
+
+        MyLog.d("TTT", "服务器任务数：" + serverTaskEntityList.size());
+
+
+
+        /**
+         * 这样删除比较安全，倒叙删除， 正顺序，可能存在删除不干净的情况
+         */
+        for (int i = serverTaskEntityList.size() - 1; i >= 0; i--) {
+            TaskDownEntity taskDownEntity = serverTaskEntityList.get(i);
+            String downUrl = taskDownEntity.getDownUrl();
+            String serverFileName = downUrl.substring(downUrl.lastIndexOf("/")+1);
+
+            MyLog.d("TTT", "*****服务器任务名字：" + serverFileName);
+
+            if(deleteServerFileList.contains(serverFileName)) {
+                //不能通过remove i 的形式删除
+                MyLog.d("liujk", "服务器不用下载的任务文件是： " + serverFileName);
+                serverTaskEntityList.remove(i);
+            }
+
+        }
+        for (int i = 0; i < localEntity.size(); i++) {
+            LocalEntity entity = localEntity.get(i);
+            String fileName = entity.getFileName();
+            if(deleteLocalFileList.contains(fileName)) {
+                FileUtils.deleteSingleFile(fileName);
+            }
+
+        }
+        MyLog.d("TTT", "删除后服务器任务数：" + serverTaskEntityList.size());
+
+        return serverTaskEntityList;
+    }
+
+    /**
+     * 获取本地文件名称，文件大小的Bean
+     */
+    private List<LocalEntity> getLocalEntity() {
+        return FileUtils.getFiles();
     }
 
     boolean isHasDownLimit = false;  //检查是否有下载资格
@@ -564,25 +732,7 @@ public class TaskWorkService extends Service implements TaskView {
      * 如果全部完成，就直接开始播放
      */
     private void downTaskListOneByOne() {
-        if (listTask == null || listTask.size() < 1) {
-            MyLog.task("========parserJsonOver====全部任务下载完毕了=====");
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startPlayTaskActivity("========全部下载完毕===downTaskListOneByOne");    //准备去播放
-                }
-            },1000);
 
-            return;
-        }
-        TaskWorkEntity taskWorkEntity = listTask.get(0);
-        //加入获取得任务==null.直接跳过当前，去下载下一个
-        if (taskWorkEntity == null) {
-            listTask.remove(0);
-            downTaskListOneByOne();
-            return;
-        }
-        MyLog.task("========parserJsonOver====开始下载的任务ID=====" + taskWorkEntity.getEtName());
         if (downFileList == null) {
             downFileList = new ArrayList<DownFileEntity>();
         }
@@ -590,19 +740,25 @@ public class TaskWorkService extends Service implements TaskView {
         if (taskMudel == null) {
             taskMudel = new TaskModelmpl();
         }
-        taskMudel.getTaskDownListInfoFromDbByTaskIdRunnable(listTask, new TaskGetDownListListener() {
-            @Override
-            public void getTaskDownFileListFromDb(List<TaskDownEntity> listContent) {
-                MyLog.taskDown("====service====消息回来了==downTaskListOneByOne");
-                if (listContent == null || listContent.size() < 1) {
-                    MyLog.task("========parserJsonOver====当前任务已经下载完毕了，直接跳过当前任务，去下一个=====");
-                    listTask.remove(0);
-                    downTaskListOneByOne();
-                    return;
-                }
-                startDownTaskFile(listContent);
-            }
-        }, "downTaskListOneByOne");
+
+        //这里不需要从服务器下载了，我已经拿到最终需要下载的资源数据了。
+        startDownTaskFile(needDownTaskEntityList);
+
+
+        //这里不需要从服务器下载了，我已经拿到最终需要下载的资源数据了。
+//        taskMudel.getTaskDownListInfoFromDbByTaskIdRunnable(listTask, new TaskGetDownListListener() {
+//            @Override
+//            public void getTaskDownFileListFromDb(List<TaskDownEntity> listContent) {
+//                MyLog.taskDown("====service====消息回来了==downTaskListOneByOne");
+//                if (listContent == null || listContent.size() < 1) {
+//                    MyLog.task("========parserJsonOver====当前任务已经下载完毕了，直接跳过当前任务，去下一个=====");
+//                    listTask.remove(0);
+//                    downTaskListOneByOne();
+//                    return;
+//                }
+//                startDownTaskFile(listContent);
+//            }
+//        }, "downTaskListOneByOne");
     }
 
     /**
@@ -616,6 +772,8 @@ public class TaskWorkService extends Service implements TaskView {
         MyLog.timer("====下载文件的个数========" + downListCache.size());
         downFileList.clear();
         closeDownTask();
+
+        MyLog.d("TTT", "");
         this.downList = downListCache;
         long fileTotalLength = 0;   //用来比对磁盘
         for (int i = 0; i < downList.size(); i++) {
@@ -630,6 +788,7 @@ public class TaskWorkService extends Service implements TaskView {
             }
             long fileLength = Long.parseLong(downFileLength);
             fileTotalLength = fileTotalLength + fileLength;
+
             MyLog.timer("======获取集合的信息==" + taskId + " / " + downUrl + " / " + savePath + "/ " + downList.get(i).getFileLength());
             DownFileEntity downFileEntity = new DownFileEntity(DownFileEntity.DOWN_STATE_START, 0, false, "准备下载", downUrl, savePath, 0, fileLength, taskId);
             downFileList.add(downFileEntity);
@@ -644,30 +803,48 @@ public class TaskWorkService extends Service implements TaskView {
         }
     }
 
+
+
     /**
      * 下载任务里面的文件一个接一个
      */
     DownRunnable downTaskrunnable;
+    //用来判断下载的文件是否是完整的。因为是一个接一个下载的，只要有一个出问题就不能清除数据库，保存数据到数据库
+    private Boolean isDownFileComplete = true;
 
     private void downResourceOneByOne() {
-        if (downFileList == null || downFileList.size() < 1) {
-            if (listTask != null && listTask.size() > 0) {
-                listTask.remove(0);
-            }
-            downTaskListOneByOne();
+
+        //这里面写明返回条件,没有需要下载的文件。就返回
+        if(downFileList.size() <= 0) {
+            //
+            MyLog.d("liujk", "下载文件成功了：");
+
+            //下载完毕
+            //存数据到数据库，这变也一个线程
+            SaveDataRunnable saveDataRunnable = new SaveDataRunnable(isDownFileComplete, listTask, new SaveDateToDbListener() {
+                @Override
+                public void saveDataToDbOk(Boolean isSaveOk) {
+
+                    MyLog.d("liujk", "保存数据成功： " + isSaveOk);
+                    //存放入服务器后发送，开始进入播放页面。
+                    if(isSaveOk) {
+                        sendSourcesCompleteBroadcast();
+                    }
+
+                }
+            });
+            EtvService.getInstance().executor(saveDataRunnable);
             return;
+
+
         }
+
+
+
         DownFileEntity entity = downFileList.get(0);
         MyLog.timer("====downResourceOneByOne====" + entity.toString());
         boolean isDownOver = entity.isDown();
-        //如果已经下载完毕，这里就不用下载了
-        if (isDownOver) {
-            if (listTask != null && listTask.size() > 0) {
-                listTask.remove(0);
-            }
-            downTaskListOneByOne();
-            return;
-        }
+
         String downUrlCache = entity.getDownPath();
         if (!TextUtils.isEmpty(downUrlCache) && downUrlCache.contains("\\")) {
             downUrlCache = downUrlCache.replace("\\", "/");
@@ -685,13 +862,15 @@ public class TaskWorkService extends Service implements TaskView {
             }
         }
         String savePath = entity.getSavePath();
+        String fileName = downPath.substring(downPath.lastIndexOf("/")+1);
+        long needDownfileLength = entity.getFileLength();
         MyLog.down("===parserJsonOver==剩余个数==" + downFileList.size()
                 + "\n下载地址：" + downPath
                 + "\n保存地址：" + savePath, true);
         if (downTaskrunnable == null) {
             downTaskrunnable = new DownRunnable();
         }
-        downTaskrunnable.setDownInfo(downPath, savePath, new DownStateListener() {
+        downTaskrunnable.setDownInfo(needDownfileLength, downPath, savePath + fileName, new DownStateListener() {
             @Override
             public void downStateInfo(DownFileEntity entity) {
                 jujleDownFileLengthToWeb("下载进度提交", entity.getTaskId());
@@ -700,25 +879,45 @@ public class TaskWorkService extends Service implements TaskView {
                 String taskId = entity.getTaskId();
                 downSpeed = entity.getDownSpeed();
                 MyLog.task("========下载状态=progress===" + progress + " /speed= " + downSpeed + " / taskId =  " + taskId);
+
                 if (downStatues == DownFileEntity.DOWN_STATE_SUCCESS) {
                     //下载成功,直接下载下一个
+                    Log.e("liujk", "DOWN_STATE_SUCCESS 下载成功文件名 ：" + entity.getDownPath());
                     if (downFileList != null && downFileList.size() > 0) {
                         downFileList.remove(0);
                     }
                     downResourceOneByOne();
                 } else if (downStatues == DownFileEntity.DOWN_STATE_FAIED) {
+                    isDownFileComplete = false;
+                    Log.e("liujk", "DOWN_STATE_FAIED 下载失败文件名 ：" + entity.getDownPath());
                     //下载失败，去下载下一个，并且删除下载失败的文件
                     if (downFileList != null && downFileList.size() > 0) {
                         downFileList.remove(0);
                     }
                     downResourceOneByOne();
                 }
+
+
+
+
             }
         });
         downTaskrunnable.setTaskId(entity.getTaskId());
         downTaskrunnable.setIsDelFile(false);                                 // 不删除，下次断点下载文件
         downTaskrunnable.setLimitDownSpeed(SharedPerManager.getLimitSpeed()); // 限速下载
         EtvService.getInstance().executor(downTaskrunnable);
+    }
+
+    /**
+     * 数据库已经保存成功。发送广播，进行任务播放
+     */
+    private void sendSourcesCompleteBroadcast() {
+        sendBroadCastToView(AppInfo.DOWN_TASK_SUCCESS);
+        MyLog.timer("播放界面是否在前台==false=直接打开界面", true);
+        Intent intent = new Intent();
+        intent.setClass(EtvApplication.getContext(), PlayerTaskActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        EtvApplication.getContext().startActivity(intent);
     }
 
     /**
@@ -785,9 +984,11 @@ public class TaskWorkService extends Service implements TaskView {
     }
 
     /**
+     * 下载完成一个计算一次。
      * 计算下载进度的方法
      */
     private void jujleDownFileLengthToWeb(String tag, String taskId) {
+        MyLog.d("TTT", "jujleDownFileLengthToWeb");
         try {
             if (!AppConfig.isOnline) {
                 //设备不在线，中止更新进度
@@ -805,20 +1006,31 @@ public class TaskWorkService extends Service implements TaskView {
                 TaskDownEntity taskDownEntity = downList.get(i);
                 if (taskDownEntity.getTaskId().contains(taskId)) {
                     String downFilePath = taskDownEntity.getSavePath();
-                    String downFileLength = downList.get(i).getFileLength().trim();
+                    String downFileLength = taskDownEntity.getFileLength().trim();
+                    String downUrl = taskDownEntity.getDownUrl();
+                    downUrl = downUrl.substring(downUrl.lastIndexOf("/") + 1);
+                    MyLog.test("TTT 要下载的文件路径： " + downFilePath + " 文件 index :" + i + " 文件大小： " + downFileLength);
                     //防止服务器下发得背景文件大小是null
                     if (downFileLength == null || downFileLength.length() < 1) {
                         downFileLength = "1024";
                     }
                     long fileLength = Long.parseLong(downFileLength);
                     taskFileAllLength = taskFileAllLength + fileLength;
-                    File file = new File(downFilePath);
+                    MyLog.test("TTT 下载文件总内存变化 taskFileAllLength ：" + taskFileAllLength);
+
+                    //
+                    String fileName = downFilePath + downUrl;
+                    File file = new File(fileName);
+                    MyLog.test("TTT下载 文件路径： " + downFilePath);
                     if (file.exists()) {
                         long saveFileLength = file.length();
-                        hasdownFileLength = hasdownFileLength + saveFileLength;
+                        hasdownFileLength  += saveFileLength;
+                        MyLog.test("TTT下载 文件大小累加, 用来计算下载总进度 每次累加 saveFileLength : " + saveFileLength +  " 下载到本地的文件路径： " + fileName + " 已经下载的容量: " + hasdownFileLength );
+
                     }
                 }
             }
+            MyLog.test("已经下载的容量：" + hasdownFileLength + " 下载文件总内存： " + taskFileAllLength);
             int progress = (int) (hasdownFileLength * 100 / taskFileAllLength);
             if (progress < 1) {
                 progress = 1;
@@ -913,7 +1125,8 @@ public class TaskWorkService extends Service implements TaskView {
         }
         String savePath = AppInfo.BASE_APK() + "/" + downFileName;
         MyLog.update("====下载文件的保存地址==" + savePath + " /下载地址: " + downUrl);
-        runnableUpdateApk = new DownRunnable(downUrl, savePath, new DownStateListener() {
+        String type = "UPDATE_APK";
+        runnableUpdateApk = new DownRunnable(type, downUrl, savePath, new DownStateListener() {
 
             @Override
             public void downStateInfo(final DownFileEntity entity) {
@@ -924,6 +1137,7 @@ public class TaskWorkService extends Service implements TaskView {
                     isDownApkImg = false;
                     EtvService.getInstance().updateDownApkImgProgress("文件下载完成", 100, 0, updateInfo.getUfOgname());
                     String fileSaveLength = entity.getSavePath();
+                    MyLog.playTask("APK 下载后保存的路径： " + fileSaveLength);
                     File fileSave = new File(fileSaveLength);
                     long fileLengthSave = fileSave.length();
                     long fileDownSize = updateInfo.getUfSize();

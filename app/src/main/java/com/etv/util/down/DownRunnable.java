@@ -1,8 +1,12 @@
 package com.etv.util.down;
 
 import android.os.Handler;
+import android.util.Log;
+
+import androidx.core.content.FileProvider;
 
 import com.etv.util.FileUtil;
+import com.etv.util.FileUtils;
 import com.etv.util.MyLog;
 import com.ys.http.download.DownloadTask;
 import com.ys.http.download.OnDownloadListener;
@@ -14,11 +18,13 @@ public class DownRunnable implements Runnable {
 
     String downUrl;
     String saveUrl;
+    long needDownFileLength;
     DownStateListener listener;
     boolean isFalse = false;
     int LimitDownSpeed = -1;
     String taskId;
     private DownloadTask downTask;
+    private String type = "";
 
     public void setTaskId(String taskId) {
         this.taskId = taskId;
@@ -32,24 +38,28 @@ public class DownRunnable implements Runnable {
         this.isFalse = isDelFile;
     }
 
-    public DownRunnable(String downUrl, String saveUrl, DownStateListener listener) {
+    public DownRunnable(String type, String downUrl, String saveUrl, DownStateListener listener) {
         MyLog.down("======下载地址= " + downUrl + "\n保存的地址==" + saveUrl);
         this.downUrl = downUrl;
         this.saveUrl = saveUrl;
         this.listener = listener;
+        this.type = type;
         FileUtil.creatPathNotExcit("下载线程");
     }
 
     public DownRunnable() {
     }
 
-    public void setDownInfo(String downUrl, String saveUrl, DownStateListener listener) {
+    public void setDownInfo(long needDownFileLength, String downUrl, String saveUrl, DownStateListener listener) {
         MyLog.down("======下载地址= " + downUrl + "\n保存的地址==" + saveUrl);
+        this.needDownFileLength = needDownFileLength;
         this.downUrl = downUrl;
         this.saveUrl = saveUrl;
         this.listener = listener;
         FileUtil.creatPathNotExcit("下载线程");
     }
+
+
 
 
     @Override
@@ -78,11 +88,30 @@ public class DownRunnable implements Runnable {
 
             @Override
             public void onSuccess(String filePath) {
-                backState("下载成功", DownFileEntity.DOWN_STATE_SUCCESS, 100, false, downUrl, saveUrl, 0, taskId);
+                MyLog.d("liujk", "下载文件成功： " + filePath + " 下载类型type： " + type);
+                File file = new File(filePath);
+
+                if(type.equals("UPDATE_APK")) { //升级apk
+
+                    backState("下载成功", DownFileEntity.DOWN_STATE_SUCCESS, 100, false, downUrl, saveUrl, 0, taskId);
+                }else  { //下载资源文件
+                    if(file.length() == needDownFileLength) { //判断下载大小跟，服务器文件大小一致。 返回下载成功的状态
+                        backState("下载成功", DownFileEntity.DOWN_STATE_SUCCESS, 100, false, downUrl, saveUrl, 0, taskId);
+
+                    }else if(file.length() > needDownFileLength) { //如果下载大小超过，服务器文件大小， 返回下载失败状态
+
+                        MyLog.d("liujk", "下载文件大小： " + file.length() + " 需要下载的大小: " + needDownFileLength);
+                        FileUtils.deleteSingleFile(filePath);
+                        backState("下载文件大小超过服务器文件大小", DownFileEntity.DOWN_STATE_FAIED, 0, false, downUrl, saveUrl, -1, taskId);
+                    }
+                }
+
+
             }
 
             @Override
             public void onFailure(Throwable e) {
+                MyLog.d("liujk", "下载文件失败原因： " + e.getMessage());
                 backState(e.getMessage(), DownFileEntity.DOWN_STATE_FAIED, 0, false, downUrl, saveUrl, -1, taskId);
             }
         });

@@ -21,6 +21,7 @@ import com.etv.service.TcpSocketService;
 import com.etv.task.entity.MediAddEntity;
 import com.etv.task.entity.SceneEntity;
 import com.etv.task.entity.SingleTaskEntity;
+import com.etv.task.entity.TaskWorkEntity;
 import com.etv.task.model.TaskModelmpl;
 import com.etv.task.model.TaskRequestListener;
 import com.etv.util.FileUtil;
@@ -342,7 +343,7 @@ public class SdCheckParsener implements SdCheckListener {
             }
 
             @Override
-            public void parserJsonOver(String tag) {
+            public void parserJsonOver(String tag, List<TaskWorkEntity> list) {
                 //清理当前的task.以防下次误判
                 String file = AppInfo.BASE_TASK_URL() + "/task.txt";
                 FileUtil.deleteDirOrFilePath(file, "====解析完成==parserJsonOver====");

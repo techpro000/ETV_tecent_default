@@ -22,6 +22,7 @@ import com.etv.util.SharedPerManager;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -40,7 +41,6 @@ public class TaskParsener implements TaskRequestListener {
 
     public void requestTaskUrl(String printTag) {
         if (!NetWorkUtils.isNetworkConnected(context)) {
-            parserJsonOver("requestTaskUrl");   //没有网络去加载本地的素材
             return;
         }
         taskMudel.requestTaskInfo(this, printTag);
@@ -52,29 +52,42 @@ public class TaskParsener implements TaskRequestListener {
      * @param tag
      */
     @Override
-    public void parserJsonOver(String tag) {
+    public void parserJsonOver(String tag, List<TaskWorkEntity> list) {
+        MyLog.d("liujk", "解析完成 parserJsonOver");
         TaskWorkService.setCurrentTaskType(TaskWorkService.TASK_TYPE_DEFAULT, "解析完成，这里恢复状态");
         //检查已经下载得文件信息。主要是清理多余得素材
         if (taskView == null) {
             return;
         }
-        taskMudel.getPlayTaskListFormDb(new TaskGetDbListener() {
-            @Override
-            public void getTaskFromDb(List<TaskWorkEntity> taskWorkEntityList) {
-                if (taskWorkEntityList == null || taskWorkEntityList.size() < 1) {
-                    MyLog.task("========parserJsonOver=======没有获取到任务=====");
-                    taskView.finishMyShelf("没有合适的任务");
-                    return;
-                }
-                MyLog.task("========parserJsonOver=======准备去播放===== " + tag + " / " + taskWorkEntityList.size());
-                taskView.backTaskList(taskWorkEntityList, tag);
-            }
 
-            @Override
-            public void getTaskTigerFromDb(TaskWorkEntity taskWorkEntity) {
+        //解析完成，需要从服务器中获取TaskWorkEntity 集合
+        if (list == null || list.size() < 1) {
+            MyLog.task("========parserJsonOver=======没有获取到任务=====1");
+            taskView.finishMyShelf("没有合适的任务");
+            return;
+        }
+        MyLog.task("========parserJsonOver=======准备去播放===== " + tag + " / " + list.size());
+        taskView.backTaskList(list, tag);
 
-            }
-        }, "========请求解析完成，准备去播放=====", TaskModelUtil.DEL_LASTDATE_ONLY);
+
+        //不再从客户端获取数据
+//        taskMudel.getPlayTaskListFormDb(new TaskGetDbListener() {
+//            @Override
+//            public void getTaskFromDb(List<TaskWorkEntity> taskWorkEntityList) {
+//                if (taskWorkEntityList == null || taskWorkEntityList.size() < 1) {
+//                    MyLog.task("========parserJsonOver=======没有获取到任务=====");
+//                    taskView.finishMyShelf("没有合适的任务");
+//                    return;
+//                }
+//                MyLog.task("========parserJsonOver=======准备去播放===== " + tag + " / " + taskWorkEntityList.size());
+//                taskView.backTaskList(taskWorkEntityList, tag);
+//            }
+//
+//            @Override
+//            public void getTaskTigerFromDb(TaskWorkEntity taskWorkEntity) {
+//
+//            }
+//        }, "========请求解析完成，准备去播放=====", TaskModelUtil.DEL_LASTDATE_ONLY);
     }
 
     @Override

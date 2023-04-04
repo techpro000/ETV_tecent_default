@@ -25,6 +25,9 @@ import com.etv.util.system.CpuModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ParsenerJsonRunnable implements Runnable {
 
     private String json;
@@ -42,20 +45,16 @@ public class ParsenerJsonRunnable implements Runnable {
     public void run() {
         if (isParsenerNet) {  //网络模式节目解析
             if (json == null || json.length() < 8) {
-                if (ConsumerUtil.DelAllTaskDbByConsumer()) {
-                    DBTaskUtil.clearAllDbInfo("网络任务==ParsenerJsonRunnable");
-                }
                 parserJsonOver("网络任务 = 解析异常,没有相关的 JSON 数据");
                 return;
             }
-            parsenerTaskEntity(json);
+            List<TaskWorkEntity> taskWorkEntityList = parsenerTaskEntity(json);
+            MyLog.d("liujk", "服务器任务 size:" + taskWorkEntityList.size());
+            taskRequestListener.parserJsonOver("解析数据完成", taskWorkEntityList);
             return;
         }
         //离线单机任务
         if (json == null || json.length() < 8) {
-            if (ConsumerUtil.DelAllTaskDbByConsumer()) {
-                DBTaskUtil.clearAllDbInfo("单机软件==ParsenerJsonRunnable");
-            }
             parserJsonOver("单机软件 = 解析异常,没有相关的 JSON 数据");
             return;
         }
@@ -66,26 +65,23 @@ public class ParsenerJsonRunnable implements Runnable {
      * 解析网络任务资源
      * @param data
      */
-    public void parsenerTaskEntity(String data) {
+    public List<TaskWorkEntity> parsenerTaskEntity(String data) {
+        List<TaskWorkEntity> taskWorkEntityList = new ArrayList<>();
         try {
             JSONArray jsonArray = new JSONArray(data);
             int lengthArray = jsonArray.length();
             MyLog.task("=====任务的数据==" + lengthArray);
-            if (ConsumerUtil.DelAllTaskDbByConsumer()) {
-                DBTaskUtil.clearAllDbInfo("parsenerTaskEntity==000");
-            }
             if (lengthArray < 1) {
                 finishMySelf("未获取到任务");
-                return;
+                return taskWorkEntityList;
             }
             //如果解析到节目数据，清理数据库，重新保存
-            DBTaskUtil.clearAllDbInfo("如果解析到节目数据，清理数据库，重新保存");
             for (int i = 0; i < lengthArray; i++) {
                 JSONObject jsonData = jsonArray.getJSONObject(i);
                 String taskid = jsonData.getString("id");
                 String etName = jsonData.getString("etName");
                 String etLevel = jsonData.getString("etLevel"); //1替换 2追加 3插播  4同步  5触发
-                Log.e("TAG", "parsenerTaskEntity: "+ etLevel);
+                Log.e("TAG", "parsenerTaskEntity: " + etLevel);
                 if (etLevel.contains(AppInfo.TASK_PLAY_PLAY_SAME)) {
                     MyLog.task("=====任务的数据=当前同步关闭直接跳过任务=");
                     continue;
@@ -93,14 +89,14 @@ public class ParsenerJsonRunnable implements Runnable {
                 String startDate = null;
                 String startTime = null;
 //              修改任务的起始时间
-                if (etLevel.equals("1")){
-                     startDate = "1990-01-01";
-                     startTime = jsonData.getString("etStartTime");
-                    Log.e("TAG", "parsenerTaskEntity: "+ startDate+"////"+startTime);
-                }else {
-                     startDate = jsonData.getString("etStartDate");
-                     startTime = jsonData.getString("etStartTime");
-                    Log.e("TAG", "parsenerTaskEntity: "+ startDate+"////"+startTime);
+                if (etLevel.equals("1")) {
+                    startDate = "1990-01-01";
+                    startTime = jsonData.getString("etStartTime");
+                    Log.e("TAG", "parsenerTaskEntity: " + startDate + "////" + startTime);
+                } else {
+                    startDate = jsonData.getString("etStartDate");
+                    startTime = jsonData.getString("etStartTime");
+                    Log.e("TAG", "parsenerTaskEntity: " + startDate + "////" + startTime);
                 }
                 String etTaskType = jsonData.getString("etTaskType");  // 1普通节目任务 2双屏异显任务
                 String endDate = jsonData.getString("etEndDate");
@@ -158,20 +154,23 @@ public class ParsenerJsonRunnable implements Runnable {
                         delTaskByIdOrParsenError("000当前任务的结束时间在当前时候之前，删除任务", taskid);
                     }
                 }
-                boolean isSaveTask = DBTaskUtil.saveTaskEntity(workEntity);
-                MyLog.task("=====保存任务到数据库状态===" + isSaveTask + " /taskId=" + taskid + " / etLevel = " + etLevel + " /type =  " + workEntity.getEtTaskType());
-                if (isSaveTask) {
-                    //保存成功并且是普通任务
-                    String pmList = jsonData.getString("pmList");
-                    MyLog.task("=====节目列表=" + pmList);
-                    parsenerPmList(taskid, etLevel, pmList, etIsLinkScreeen);
-                }
+                //解析保存任务到数据库
+                //保存成功并且是普通任务
+                String pmList = jsonData.getString("pmList");
+                MyLog.task("=====节目列表=" + pmList);
+                List<PmListEntity> pmListEntityList = parsenerPmList(taskid, etLevel, pmList, etIsLinkScreeen);
+                workEntity.setPmListEntities(pmListEntityList);
+
+                taskWorkEntityList.add(workEntity);
+
+
             }
         } catch (Exception e) {
-            MyLog.ExceptionPrint("解析任务error: " + e.toString());
             e.printStackTrace();
         }
         parserJsonOver("任务解析完成--往界面进行回调");
+
+        return taskWorkEntityList;
     }
 
     /***
@@ -186,6 +185,7 @@ public class ParsenerJsonRunnable implements Runnable {
                 finishMySelf("JSON异常，解析停止");
                 return;
             }
+            MyLog.playTask("clearAllDbInfo 8");
             DBTaskUtil.clearAllDbInfo("parsenerSingleTaskEntity");
             JSONObject jsonData = new JSONObject(data);
             String taskid = jsonData.getString("id");
@@ -269,7 +269,6 @@ public class ParsenerJsonRunnable implements Runnable {
         handlerjson.post(new Runnable() {
             @Override
             public void run() {
-                taskRequestListener.parserJsonOver(desc);
             }
         });
     }
@@ -294,20 +293,22 @@ public class ParsenerJsonRunnable implements Runnable {
      * @param pmList
      * 节目信息
      */
-    private void parsenerPmList(String taskid, String etLevel, String pmList, int etIsLinkScreeen) {
+    private List<PmListEntity> parsenerPmList(String taskid, String etLevel, String pmList, int etIsLinkScreeen) {
+        List<PmListEntity> pmListEntityList = new ArrayList<>();
         try {
+
             pmList = pmList.trim();
             if (TextUtils.isEmpty(pmList) || pmList.length() < 3) { //获取的数据为null
                 delTaskByIdOrParsenError("解析节目获取的数据为null", taskid);
                 finishMySelf("当前没有节目");
-                return;
+                return pmListEntityList;
             }
             JSONArray jsonArray = new JSONArray(pmList);
             int lengthArray = jsonArray.length();
             if (lengthArray < 1) {
                 delTaskByIdOrParsenError("解析的节目数组==null", taskid);
                 finishMySelf("当前没有节目");
-                return;
+                return pmListEntityList;
             }
             for (int i = 0; i < lengthArray; i++) {
                 JSONObject jsonpnlist = jsonArray.getJSONObject(i);
@@ -347,23 +348,20 @@ public class ParsenerJsonRunnable implements Runnable {
                 entity.setPmName(pmName);
                 entity.setPmType(pmType);
                 entity.setDisplayPos(displayPos);
-                MyLog.task("======准备保存节目===" + entity.toString());
-                boolean isSavePro = DBTaskUtil.saveProjectorEntity(entity);
-                MyLog.task("======保存节目数据 status===" + isSavePro);
-                if (isSavePro) {
-                    String sceneList = jsonpnlist.getString("sceneList");
-                    MyLog.task("======节目保存成功，去解析场景===" + sceneList);
-                    parsenerScenecList(proid, taskid, pmType, etLevel, displayPos, sceneList, etIsLinkScreeen, pmResolutionType, pmFixedScreen);
-                } else {
-                    //如果节目保存失败，删除任务数据库
-                    DBTaskUtil.delTaskById(taskid, "解析节目失败，直接删除当前任务信息");
-                    finishMySelf("节目保存失败");
-                }
+                String sceneList = jsonpnlist.getString("sceneList");
+                MyLog.task("======节目保存成功，去解析场景===" + sceneList);
+                List<SceneEntity> sceneEntityList = parsenerScenecList(proid, taskid, pmType, etLevel, displayPos, sceneList, etIsLinkScreeen, pmResolutionType, pmFixedScreen);
+                entity.setSceneEntityList(sceneEntityList);
+
+                pmListEntityList.add(entity);
+
             }
         } catch (Exception e) {
             MyLog.ExceptionPrint("解析任务error: " + e.toString());
             e.printStackTrace();
         }
+
+        return pmListEntityList;
     }
 
 
@@ -373,18 +371,20 @@ public class ParsenerJsonRunnable implements Runnable {
      * @param proid     节目ID
      * @param sceneList 场景
      */
-    private void parsenerScenecList(String proid, String taskid, String pmType, String etLevel, String displayPos, String sceneList, int etIsLinkScreeen, int pmResolutionType, int pmFixedScreen) {
+    private List<SceneEntity> parsenerScenecList(String proid, String taskid, String pmType, String etLevel, String displayPos, String sceneList, int etIsLinkScreeen, int pmResolutionType, int pmFixedScreen) {
+
+        List<SceneEntity> sceneEntityList = new ArrayList<>();
         MyLog.task("======准备解析场景===" + sceneList);
         try {
             if (sceneList == null || sceneList.length() < 3) {
                 finishMySelf("没有场景属性");
-                return;
+                return sceneEntityList;
             }
             JSONArray jsonArray = new JSONArray(sceneList);
             int lengthArray = jsonArray.length();
             if (lengthArray < 1) {
                 finishMySelf("当前节目没有场景属性，终端操作");
-                return;
+                return sceneEntityList;
             }
             for (int i = 0; i < lengthArray; i++) {
                 JSONObject jsonSenceList = jsonArray.getJSONObject(i);
@@ -406,21 +406,19 @@ public class ParsenerJsonRunnable implements Runnable {
                 SceneEntity sceneEntity = new SceneEntity(SenceId, proid, taskid, scBackImg, scBackimgSize, pmType, displayPos,
                         etLevel, scTime, etIsLinkScreeen, currentTime);
                 MyLog.task("=====保存场景属性===" + sceneEntity.toString());
-                boolean isSaveSencen = DBTaskUtil.saveSenceEntity(sceneEntity);
-                MyLog.task("=====保存场景属性===" + isSaveSencen);
-                if (isSaveSencen && sceneList.contains("componentsList")) {
+                if (sceneList.contains("componentsList")) {
                     String componentsList = jsonSenceList.getString("componentsList");
-                    parsenerCpList(taskid, pmType, SenceId, componentsList, pmResolutionType, pmFixedScreen);
-                } else {
-                    //如果节目保存失败，删除任务数据库
-                    DBTaskUtil.delSenceByProId(SenceId);
-                    finishMySelf("节目保存失败");
+                    List<CpListEntity> cpListEntities = parsenerCpList(taskid, pmType, SenceId, componentsList, pmResolutionType, pmFixedScreen);
+                    sceneEntity.setListCp(cpListEntities);
+                    sceneEntityList.add(sceneEntity);
                 }
             }
         } catch (Exception e) {
             MyLog.ExceptionPrint("解析任务error: " + e.toString());
             e.printStackTrace();
         }
+
+        return sceneEntityList;
     }
 
     /***
@@ -430,18 +428,19 @@ public class ParsenerJsonRunnable implements Runnable {
      * @param cpList
      * 控件集合JSON
      */
-    private void parsenerCpList(String taskid, String pmType, String sencenId, String cpList, int pmResolutionType, int pmFixedScreen) {
+    private List<CpListEntity> parsenerCpList(String taskid, String pmType, String sencenId, String cpList, int pmResolutionType, int pmFixedScreen) {
+        List<CpListEntity> cpListEntityList = new ArrayList<>();
         try {
             MyLog.task("=====解析控件======" + cpList);
             if (cpList == null || cpList.length() < 5) {
                 delSencenByScenId(sencenId);
-                return;
+                return cpListEntityList;
             }
             JSONArray jsonArray = new JSONArray(cpList);
             int lengthArray = jsonArray.length();
             if (lengthArray < 1) {
                 delSencenByScenId(sencenId);
-                return;
+                return cpListEntityList;
             }
             for (int i = 0; i < lengthArray; i++) {
                 JSONObject jsonCplist = jsonArray.getJSONObject(i);
@@ -460,14 +459,7 @@ public class ParsenerJsonRunnable implements Runnable {
                 }
                 CpListEntity cpListEntity = new CpListEntity(cpid, sencenId, coType, coLeftPosition, coRightPosition, coWidth, coHeight,
                         coActionType, coLinkAction, coScreenProtectTime, pmResolutionType, pmFixedScreen, coLinkId);
-                MyLog.task("===保存的控件状态==" + coLinkId + " / " + cpListEntity.toString());
-                boolean isSave = DBTaskUtil.saveCpEntity(cpListEntity);
-                MyLog.task("===保存控件信息状态==" + isSave + "  / ID=" + cpid + " / " + coActionType);
-                if (!isSave) { //保存失败就不往下进行
-                    DBTaskUtil.delProById(sencenId);
-                    finishMySelf("控件保存数据库失败");
-                    return;
-                }
+
                 MyLog.task("====当前保存的控件的类型==" + coType);
                 if (coType.equals(AppInfo.VIEW_SUBTITLE)
                         || coType.equals(AppInfo.VIEW_DATE)
@@ -486,9 +478,16 @@ public class ParsenerJsonRunnable implements Runnable {
                     if (jsonCplist.toString().contains("childCompentLst")) {
                         MyLog.task("====获取的控件是关联文本信息==");
                         String childCompentLst = jsonCplist.getString("childCompentLst");
-                        parsenerChildCompentInfo(taskid, pmType, cpid, childCompentLst);
+                        List<TextInfo> textInfoList = parsenerChildCompentInfoForTextInfo(taskid, pmType, cpid, childCompentLst);
+                        List<MpListEntity> mpListEntityList = parsenerChildCompentInfoForMpListEntity(taskid, pmType, cpid, childCompentLst);
+
+                        cpListEntity.setTxList(textInfoList);
+                        cpListEntity.setMpList(mpListEntityList);
+
+
                     }
-                    parsenerTextList(taskid, txList, pmType);
+                    List<TextInfo> textInfoList = parsenerTextList(taskid, txList, pmType);
+                    cpListEntity.setTxList(textInfoList);
                 } else if (coType.contains(AppInfo.VIEW_DOC)
                         || coType.contains(AppInfo.VIEW_IMAGE)
                         || coType.contains(AppInfo.VIEW_AUDIO)
@@ -501,32 +500,43 @@ public class ParsenerJsonRunnable implements Runnable {
                     if (jsonCplist.toString().contains("childCompentLst")) {
                         String childCompentLst = jsonCplist.getString("childCompentLst");
                         MyLog.task("====获取的控件是关联素材==" + childCompentLst);
-                        parsenerChildCompentInfo(taskid, pmType, cpid, childCompentLst);
+                        List<TextInfo> textInfoList = parsenerChildCompentInfoForTextInfo(taskid, pmType, cpid, childCompentLst);
+                        List<MpListEntity> mpListEntityList = parsenerChildCompentInfoForMpListEntity(taskid, pmType, cpid, childCompentLst);
+
+                        cpListEntity.setTxList(textInfoList);
+                        cpListEntity.setMpList(mpListEntityList);
                     }
-                    parsenerMpList(taskid, pmType, cpid, mpList);
+                    List<MpListEntity> mpListEntityList = parsenerMpList(taskid, pmType, cpid, mpList);
+                    cpListEntity.setMpList(mpListEntityList);
                 }
+
+                cpListEntityList.add(cpListEntity);
+
             }
         } catch (Exception e) {
             MyLog.ExceptionPrint("解析任务error: " + e.toString());
             e.printStackTrace();
         }
+
+        return cpListEntityList;
     }
 
     /***
      * 解析关联素材
      * @param childCompentLst
      */
-    private void parsenerChildCompentInfo(String taskId, String pmType, String cpid, String childCompentLst) {
+    private List<TextInfo> parsenerChildCompentInfoForTextInfo(String taskId, String pmType, String cpid, String childCompentLst) {
+        List<TextInfo> textInfoList = new ArrayList<>();
         if (childCompentLst == null || childCompentLst.length() < 5) {
             MyLog.task("====parsenerChildCompentInfo==null。不操作");
-            return;
+            return textInfoList;
         }
         try {
             JSONArray jsonArray = new JSONArray(childCompentLst);
             int lengthArray = jsonArray.length();
             if (lengthArray < 1) {
                 MyLog.task("parsenerChildCompentInfo当前控件没有资源==不用解析");
-                return;
+                return textInfoList;
             }
             if (childCompentLst.contains("taMoveSpeed") || childCompentLst.contains("taContent")) {
                 //文本属性
@@ -545,11 +555,32 @@ public class ParsenerJsonRunnable implements Runnable {
                         }
                     }
                     TextInfo textInfo = new TextInfo(taskId, txtId, taCoId, taContent, taMove, DBTaskUtil.MP_RELATION, taBgImage, pmType, taBgimageSize);
+                    textInfoList.add(textInfo);
                     MyLog.task("==parsenerChildCompentInfo获取的文本信息==" + textInfo.toString());
-                    boolean isSaveTxt = DBTaskUtil.saveTxtInfo(textInfo);
-                    MyLog.task("====parsenerChildCompentInfo保存关联字体信息数据库==" + isSaveTxt);
                 }
-                return;
+                return textInfoList;
+            }
+        } catch (Exception e) {
+            MyLog.ExceptionPrint("parsenerChildCompentInfo解析任务error: " + e.toString());
+            e.printStackTrace();
+        }
+
+        return textInfoList;
+    }
+
+
+    private List<MpListEntity> parsenerChildCompentInfoForMpListEntity(String taskId, String pmType, String cpid, String childCompentLst) {
+        List<MpListEntity> mpListEntityList = new ArrayList<>();
+        if (childCompentLst == null || childCompentLst.length() < 5) {
+            MyLog.task("====parsenerChildCompentInfo==null。不操作");
+            return mpListEntityList;
+        }
+        try {
+            JSONArray jsonArray = new JSONArray(childCompentLst);
+            int lengthArray = jsonArray.length();
+            if (lengthArray < 1) {
+                MyLog.task("parsenerChildCompentInfo当前控件没有资源==不用解析");
+                return mpListEntityList;
             }
             //资源属性
             MyLog.task("===parsenerChildCompentInfo==获取当前的资源数组个数===" + lengthArray);
@@ -564,13 +595,14 @@ public class ParsenerJsonRunnable implements Runnable {
                 String parentCoId = DBTaskUtil.MP_RELATION + "";
                 String type = jsonMplist.getString("type");
                 MpListEntity mpListEntity = new MpListEntity(taskId, mid, cpid, url, playParam, cartoon, size, volume, pmType, parentCoId, type);
-                boolean isSave = DBTaskUtil.saveMpInfo(mpListEntity);
-                MyLog.task("====parsenerChildCompentInfo=保存的关联素材到数据库===" + isSave + " /cpid= " + cpid + " /数据== " + mpListEntity.toString());
+                mpListEntityList.add(mpListEntity);
             }
         } catch (Exception e) {
             MyLog.ExceptionPrint("parsenerChildCompentInfo解析任务error: " + e.toString());
             e.printStackTrace();
         }
+
+        return mpListEntityList;
     }
 
     /**
@@ -590,17 +622,18 @@ public class ParsenerJsonRunnable implements Runnable {
      * 控件ID
      * @param txList
      */
-    private void parsenerTextList(String taskid, String txList, String pmType) {
+    private List<TextInfo> parsenerTextList(String taskid, String txList, String pmType) {
+        List<TextInfo> textInfoList = new ArrayList<>();
         if (txList == null || TextUtils.isEmpty(txList) || txList.length() < 5) {
             MyLog.task("==txList=null，终止解析==");
-            return;
+            return textInfoList;
         }
         try {
             JSONArray jsonArray = new JSONArray(txList);
             int lengthArray = jsonArray.length();
             if (lengthArray < 1) {
                 MyLog.task("文本信息里面没有数据");
-                return;
+                return textInfoList;
             }
             for (int i = 0; i < lengthArray; i++) {
                 JSONObject jsonTxtList = jsonArray.getJSONObject(i);
@@ -644,14 +677,14 @@ public class ParsenerJsonRunnable implements Runnable {
                 }
                 TextInfo textInfo = new TextInfo(taskid, txtId, taCoId, taContent, taColor, taNo, taFontSize, taMove, taAddress, taBgColor,
                         taMoveSpeed, taAlignment, taCountDown, taFonType, DBTaskUtil.MP_DEFAULT, taBgImage, pmType, taBgimageSize);
-                MyLog.task("==获取的文本信息==" + textInfo.toString());
-                boolean isSaveTxt = DBTaskUtil.saveTxtInfo(textInfo);
-                MyLog.task("====保存字体信息数据库==" + isSaveTxt);
+
+                textInfoList.add(textInfo);
             }
         } catch (Exception e) {
             MyLog.ExceptionPrint("解析任务error: " + e.toString());
             e.printStackTrace();
         }
+        return textInfoList;
     }
 
     /***
@@ -660,10 +693,11 @@ public class ParsenerJsonRunnable implements Runnable {
      * 控件ID
      * @param mpList
      */
-    private void parsenerMpList(String taskId, String pmType, String cpid, String mpList) {
+    private List<MpListEntity> parsenerMpList(String taskId, String pmType, String cpid, String mpList) {
+        List<MpListEntity> mpListEntityList = new ArrayList<>();
         if (mpList == null || TextUtils.isEmpty(mpList) || mpList.length() < 5) {
             MyLog.task("====mpList==null。不操作");
-            return;
+            return mpListEntityList;
         }
         MyLog.task("====mpList==" + mpList);
         try {
@@ -671,7 +705,7 @@ public class ParsenerJsonRunnable implements Runnable {
             int lengthArray = jsonArray.length();
             if (lengthArray < 1) {
                 MyLog.task("当前控件没有资源==不用解析");
-                return;
+                return mpListEntityList;
             }
             MyLog.task("=====获取当前的资源数组个数===" + lengthArray);
             for (int i = 0; i < lengthArray; i++) {
@@ -692,13 +726,14 @@ public class ParsenerJsonRunnable implements Runnable {
                 }
                 String parentCoId = DBTaskUtil.MP_DEFAULT + "";
                 MpListEntity mpListEntity = new MpListEntity(taskId, mid, cpid, url, playParam, cartoon, size, volume, pmType, parentCoId, type);
-                boolean isSave = DBTaskUtil.saveMpInfo(mpListEntity);
-                MyLog.task("==0000=====保存的素材到数据库===" + isSave + " /cpid= " + cpid + " /数据== " + mpListEntity.toString());
+                mpListEntityList.add(mpListEntity);
             }
         } catch (Exception e) {
             MyLog.ExceptionPrint("解析任务error: " + e.toString());
             e.printStackTrace();
         }
+
+        return mpListEntityList;
     }
 
     /**

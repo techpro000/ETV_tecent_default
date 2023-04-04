@@ -63,6 +63,7 @@ public class PlayTaskTriggerActivity extends TaskActivity implements PlayTaskVie
     @Override
     protected void onResume() {
         super.onResume();
+        MyLog.playTask( this.getClass().getName() + " onResume");
         updateViewInfo("onResume");
     }
 

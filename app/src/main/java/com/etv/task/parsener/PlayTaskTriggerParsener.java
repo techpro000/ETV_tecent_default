@@ -87,6 +87,7 @@ public class PlayTaskTriggerParsener {
 
 
     public void getTaskToView(String tag) {
+        MyLog.playTask("==== getTaskToView");
         clearMemory();
 //        if (Biantai.isTwoClick()) {
 //            return;
@@ -140,6 +141,7 @@ public class PlayTaskTriggerParsener {
             sceneEntityListCache.addAll(listCacheSenc);
         }
         if (sceneEntityListCache == null || sceneEntityListCache.size() < 1) {
+            MyLog.playTask("===== 获取任务场景失败 1");
             playTaskView.showViewError("获取任务场景失败");
             return;
         }
@@ -563,7 +565,7 @@ public class PlayTaskTriggerParsener {
             }
 
             @Override
-            public void parserJsonOver(String tag) {
+            public void parserJsonOver(String tag, List<TaskWorkEntity> list) {
 
             }
         });

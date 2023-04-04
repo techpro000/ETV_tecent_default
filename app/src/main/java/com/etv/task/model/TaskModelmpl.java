@@ -308,7 +308,7 @@ public class TaskModelmpl implements TaskMudel {
                         TaskWorkService.setCurrentTaskType(TaskWorkService.TASK_TYPE_DEFAULT, "请求失败，返回信息");
                         MyLog.task("===failed==" + errorDesc);
                         if (listener != null) {
-                            listener.parserJsonOver("网络请求失败: " + errorDesc);
+                            listener.parserJsonOver("网络请求失败: " + errorDesc, new ArrayList<>());
                         }
                     }
 
@@ -317,7 +317,6 @@ public class TaskModelmpl implements TaskMudel {
                         TaskWorkService.setCurrentTaskType(TaskWorkService.TASK_TYPE_DEFAULT, "请求成功，恢复状态");
                         MyLog.task("任务请求success=" + json);
                         if (json == null || json.length() < 5) {
-                            listener.parserJsonOver("网络请求失败: json==null");
                             return;
                         }
                         try {
@@ -325,11 +324,11 @@ public class TaskModelmpl implements TaskMudel {
                             int code = jsonObject.getInt("code");
                             String msg = jsonObject.getString("msg");
                             if (code != 0) { //获取信息失败，清理数据库
-                                listener.parserJsonOver("网络请求 msg=" + msg);
                                 return;
                             }
                             String data = jsonObject.getString("data");
                             parsenerJson("请求完毕，去解析", data, listener);
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

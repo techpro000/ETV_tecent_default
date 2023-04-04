@@ -28,6 +28,7 @@ public class DbTaskManager {
         List<SceneEntity> sceneEntityList = new ArrayList<SceneEntity>();
         //获取任务ID
         String taskId = taskWorkEntity.getTaskId();
+        MyLog.playTask("==== getSencenEntityFormDbByTask taskID ：" + taskId);
         List<PmListEntity> pmListEntities = getPmListFromDb(taskId);
         if (pmListEntities == null || pmListEntities.size() < 1) {
             return null;
@@ -73,10 +74,12 @@ public class DbTaskManager {
      * @return
      */
     private static List<PmListEntity> getPmListFromDb(String taskId) {
+        MyLog.playTask("==== getPmListFromDb step1");
         List<PmListEntity> pmListEntities = null;
         try {
             pmListEntities = DBTaskUtil.getPeojectorInfoListByTaskId(taskId);
             if (pmListEntities == null) {
+                MyLog.playTask("==== getPmListFromDb step2");
                 return null;
             }
             for (int i = 0; i < pmListEntities.size(); i++) {
@@ -85,10 +88,12 @@ public class DbTaskManager {
                     break;
                 }
                 String pmId = pmListEntity.getProId();  //拿到节目ID
+                MyLog.playTask("==== getPmListFromDb 节目id: " + pmId);
                 List<SceneEntity> sencenList = getSenCeListFromDbByProId(pmId);
                 pmListEntity.setSceneEntityList(sencenList);
             }
         } catch (Exception e) {
+            MyLog.playTask("==== getPmListFromDb: " + e.toString());
             e.printStackTrace();
         }
         return pmListEntities;
@@ -119,11 +124,13 @@ public class DbTaskManager {
                 //遍历场景区获取控件的属性信息
                 SceneEntity sceneEntity = listScen.get(i);
                 String sencenId = sceneEntity.getSenceId();
+                MyLog.playTask("==== getSenCeListFromDbByProId 场景id : " + sencenId);
                 List<CpListEntity> listCp = getComptionFromDbBySenId(sencenId);
                 sceneEntity.setListCp(listCp);
             }
             return listScen;
         } catch (Exception e) {
+            MyLog.playTask("==== getSenCeListFromDbByProId error: " + e.toString());
             e.printStackTrace();
         }
         return listScen;
@@ -169,9 +176,11 @@ public class DbTaskManager {
         List<CpListEntity> cpList = null;
         try {
             cpList = DBTaskUtil.getCoPInfoListByProId(sencenId);
+
             if (cpList == null || cpList.size() < 1) {
                 return null;
             }
+            MyLog.playTask("==== getComptionFromDbBySenId step");
             for (int i = 0; i < cpList.size(); i++) {
                 CpListEntity cpListEntity = cpList.get(i);
                 String cpId = cpListEntity.getCpidId();
@@ -182,6 +191,7 @@ public class DbTaskManager {
                     if (txtList != null && txtList.size() > 0) {
                         cpListEntity.setTxList(txtList);
                     }
+                    MyLog.playTask("==== getComptionFromDbBySenId txtList size : " + txtList.size() + " 文本信息： " + txtList.get(0).getTaContent());
                 } else if (TaskDealUtil.isResourceType(coType)) {    //文档，图片，音频，视频
                     MyLog.task("=======解析素材信息==" + coType);
                     List<MpListEntity> mpList = DBTaskUtil.getMpListInfoById(cpId, DBTaskUtil.MP_DEFAULT, "DbTaskManager调用");
@@ -191,6 +201,7 @@ public class DbTaskManager {
                 }
             }
         } catch (Exception e) {
+            MyLog.playTask("==== getComptionFromDbBySenId error: " + e.toString());
             e.printStackTrace();
         }
         return cpList;

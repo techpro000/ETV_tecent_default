@@ -154,7 +154,8 @@ public class SdCheckActivity extends BaseActivity implements SdCheckView {
                 //因为替换了Apk所以需要删除任务
                 String taskPath = AppInfo.BASE_TASK_URL();
                 FileUtil.deleteDirOrFilePath(taskPath, "U盘修改IP==StorageInfo.ACTION_MODIFY_IP");
-                DBTaskUtil.clearAllDbInfo("");
+                MyLog.playTask("clearAllDbInfo 1 修改IP切换服务器 ");
+                DBTaskUtil.clearAllDbInfo("修改IP切换服务器");
 
 //                PowerDbManager.clearTimeDb("用户修改IP");
 //                PowerOnOffManager.getInstance().clearPowerOnOffTime("用户修改IP");
@@ -180,6 +181,7 @@ public class SdCheckActivity extends BaseActivity implements SdCheckView {
                 addInfoToList("\n" + getString(R.string.change_load) + "\n", true);
             }
             MyLog.sdckeck("=======修改工作模式=====");
+            MyLog.playTask("clearAllDbInfo2 =====SDCHECK_ACTIVITY=== 2");
             DBTaskUtil.clearAllDbInfo("=====SDCHECK_ACTIVITY===");
             String checkPath = AppInfo.BASE_SD_PATH();
             File file = new File(filePath);

@@ -347,7 +347,7 @@ public class DBTaskUtil {
         try {
             pmListEntities = LitePal.where("taskid=?", taskid + "").find(PmListEntity.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            MyLog.playTask("==== getPeojectorInfoListByTaskId error :" + e.toString());
         }
         return pmListEntities;
     }
@@ -627,6 +627,8 @@ public class DBTaskUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        MyLog.playTask("clearAllDbInfo over");
     }
 
     /***

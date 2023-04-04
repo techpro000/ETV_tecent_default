@@ -639,6 +639,7 @@ public class TcpSocketService extends Service {
                     break;
                 case AppInfo.ORDER_WEB_DEL_DEV:  //服务器删除设备
                     PowerDbManager.clearTimeDb("指令清理定时开关机数据");
+                    MyLog.playTask("clearAllDbInfo 5");
                     DBTaskUtil.clearAllDbInfo("服务器删除设备");
                     handler.sendEmptyMessageDelayed(STOP_PLAY_TO_MIAN, 1500);
                     break;
@@ -680,6 +681,7 @@ public class TcpSocketService extends Service {
                 case AppInfo.ORDER_CLEAR_PROJECT:   //清理任务
                     sendBroadCastToView(AppInfo.RECEIVE_STOP_PLAY_TO_VIEW);  //关闭播放界面
                     sendBroadCastToView(AppInfo.STOP_DOWN_TASK_RECEIVER);  //停止下载所有的任务
+                    MyLog.playTask("clearAllDbInfo 6");
                     DBTaskUtil.clearAllDbInfo("   case AppInfo.ORDER_CLEAR_PROJECT:   //清理任务");
                     String filePath = AppInfo.BASE_TASK_URL();
                     FileUtil.deleteDirOrFilePath(filePath, "接受指令: ORDER_CLEAR_PROJECT");

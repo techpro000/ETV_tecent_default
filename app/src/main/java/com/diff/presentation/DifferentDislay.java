@@ -21,6 +21,7 @@ import com.etv.task.entity.MediAddEntity;
 import com.etv.task.entity.MpListEntity;
 import com.etv.task.entity.PositionEntity;
 import com.etv.task.entity.SceneEntity;
+import com.etv.task.entity.TaskWorkEntity;
 import com.etv.task.entity.TextInfo;
 import com.etv.task.model.TaskMudel;
 import com.etv.task.model.TaskRequestListener;
@@ -564,7 +565,7 @@ public class DifferentDislay extends Presentation {
             }
 
             @Override
-            public void parserJsonOver(String tag) {
+            public void parserJsonOver(String tag, List<TaskWorkEntity> list) {
 
             }
         });
