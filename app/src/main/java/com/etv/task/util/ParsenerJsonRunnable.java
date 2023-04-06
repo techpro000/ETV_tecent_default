@@ -263,9 +263,8 @@ public class ParsenerJsonRunnable implements Runnable {
     }
 
     private void parserJsonOver(final String desc) {
-        if (taskRequestListener == null) {
-            return;
-        }
+        MyLog.task("=====parserJsonOver " + desc);
+        taskRequestListener.parserJsonOver(desc, null);
         handlerjson.post(new Runnable() {
             @Override
             public void run() {

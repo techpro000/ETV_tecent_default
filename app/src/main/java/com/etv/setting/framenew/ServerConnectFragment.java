@@ -119,6 +119,10 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
             public void switchToggleView(View view, boolean isChooice) {
                 SharedPerManager.setSocketLineEnable(isChooice);
                 updateAutoLineView();
+                if (!isChooice) {
+                    TcpService.getInstance().dealDisOnlineDev("", false);
+                    TcpSocketService.getInstance().disconnect();
+                }
             }
         });
 
@@ -397,6 +401,10 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
         int workModel = SharedPerManager.getWorkModel();
         if (workModel != AppInfo.WORK_MODEL_NET) {
             showToast(getActivity().getString(R.string.single_errror));
+            return;
+        }
+        if (!SharedPerManager.getSocketLineEnable()) {
+            showToast(getString(R.string.str_socket_tip));
             return;
         }
         if (!NetWorkUtils.isNetworkConnected(getActivity())) {

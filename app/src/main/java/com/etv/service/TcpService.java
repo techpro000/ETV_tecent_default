@@ -744,6 +744,9 @@ public class TcpService extends Service implements SocketWebListener {
      * 老版本得，暂时不删除
      */
     public void lineSocketWeb() {
+        if (!SharedPerManager.getSocketLineEnable()) {
+            return;
+        }
         if (SharedPerUtil.SOCKEY_TYPE() == AppConfig.SOCKEY_TYPE_SOCKET) {
             return;
         }

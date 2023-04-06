@@ -46,7 +46,7 @@ public class VideoViewBitmap extends RelativeLayout implements
         TextureView.SurfaceTextureListener {
 
     View view;
-    private static MediaPlayer mMediaPlayer;
+    private MediaPlayer mMediaPlayer;
     private Surface surface;
     private TextureView textureView;
     private boolean isSetSurface;
@@ -108,7 +108,7 @@ public class VideoViewBitmap extends RelativeLayout implements
 
     }
 
-    private static void getMediaPlayerInstance(){
+    private void getMediaPlayerInstance(){
         if(mMediaPlayer == null){
             mMediaPlayer = new MediaPlayer();
         }
@@ -135,6 +135,10 @@ public class VideoViewBitmap extends RelativeLayout implements
     }
 
     public void startToPlay(MediAddEntity mediAddEntity) {
+        if (mMediaPlayer == null) {
+            MyLog.video("==========开始播放 startToPlay " + mMediaPlayer);
+            return;
+        }
         boolean isFileRight = jujleVideoFileISAll(mediAddEntity);
         if (!isFileRight && playList.size() < 2) {
             if (listener != null) {
@@ -160,7 +164,7 @@ public class VideoViewBitmap extends RelativeLayout implements
             mMediaPlayer.setOnCompletionListener(onCompletionListener);
             mMediaPlayer.setOnErrorListener(onErrorListener);
             mMediaPlayer.prepareAsync();
-        } catch (IOException e) {
+        } catch (Exception e) {
             MyLog.video("播放异常:" + e.toString());
             e.printStackTrace();
         }

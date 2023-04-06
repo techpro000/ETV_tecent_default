@@ -73,37 +73,7 @@ public class TcpSocketService extends Service {
         return instance;
     }
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            MyLog.d("cdl", "==Tcp广播==action==" + action);
-            if (action.equals(AppInfo.NET_ONLINE)) {
-                MyLog.cdl("==网络连接==取自动连接socket", true);
-                getDevHartStateInfo(1, "网络连接==取自动连接socket");
-            } else if (action.equals(AppInfo.NET_DISONLINE)) {
-                //网络断开，下线
-                MyLog.cdl("==网络断开==下线", true);
-                AppConfig.isOnline = false;
-                dealDisOnlineDev("网络断开，这里也执行断开得操作", false);
-                sendBroadCastToView(AppInfo.STOP_DOWN_TASK_RECEIVER);      //网路断开停止下载
-            } else if (action.equals(Intent.ACTION_TIME_TICK)) {  //时间变化
-                MyLog.cdl("0000时间到了====TcpSockectService");
-                int currentTime = SimpleDateUtil.getHourMin();
-                MyLog.cdl("=======当前时间==" + currentTime);
-                if (currentTime == 235 && SharedPerManager.getAutoRebootDev()) {
-                    MyLog.sleep("=======当前时间=235 设备准时重启软件=", true);
-                    SystemManagerInstance.getInstance(TcpSocketService.this).rebootDev();
-                }
-                startLocationService(1);
-                int numPlus = new Random().nextInt(3000);
-                handler.sendEmptyMessageDelayed(TIMER_ON_NOW_CHECK_SDCARD, 2000 + numPlus); //延迟5秒，因为TaskService中有准时刷新任务
-            } else if (action.equals(AppInfo.SEND_IMAGE_CAPTURE_SUCCESS)) {  //收到截图通知
-                MyLog.update("==截图回来了====");
-                updateImageToWeb(intent);
-            }
-        }
-    };
+    private BroadcastReceiver receiver;
 
     //判断server是否启动
     private boolean isServerStart = false;
@@ -112,10 +82,10 @@ public class TcpSocketService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         if (SharedPerUtil.SOCKEY_TYPE() == AppConfig.SOCKEY_TYPE_WEBSOCKET) {
             return;
         }
-        instance = this;
         initOther();
         initReceiver();
         initTimMessage();
@@ -429,6 +399,9 @@ public class TcpSocketService extends Service {
      * 链接腾讯服务器写这里
      */
     public void lineSocketWeb() {
+        if (!SharedPerManager.getSocketLineEnable()) {
+            return;
+        }
         if (SharedPerUtil.SOCKEY_TYPE() == AppConfig.SOCKEY_TYPE_WEBSOCKET) {
             return;
         }
@@ -521,6 +494,29 @@ public class TcpSocketService extends Service {
 
                 }
             });*/
+
+            sendBroadToUi(AppInfo.SOCKET_LINE_STATUS_CHANGE, -2, "The connection is broken, attempt to reconnect", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void disconnect() {
+        MyLog.netty("中断和服务器连接===disconnect()", true);
+        try {
+            AppConfig.isOnline = false;
+            //tecent  注销登录
+            ImUtils.logout(new ImUtils.LogoutCallback() {
+                @Override
+                public void onLogoutSuccess() {
+
+                }
+
+                @Override
+                public void onLogoutError(Integer code, String describe) {
+
+                }
+            });
 
             sendBroadToUi(AppInfo.SOCKET_LINE_STATUS_CHANGE, -2, "The connection is broken, attempt to reconnect", null);
         } catch (Exception e) {
@@ -812,6 +808,38 @@ public class TcpSocketService extends Service {
 
 
     private void initReceiver() {
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                MyLog.d("cdl", "==Tcp广播==action==" + action);
+                if (action.equals(AppInfo.NET_ONLINE)) {
+                    MyLog.cdl("==网络连接==取自动连接socket", true);
+                    getDevHartStateInfo(1, "网络连接==取自动连接socket");
+                } else if (action.equals(AppInfo.NET_DISONLINE)) {
+                    //网络断开，下线
+                    MyLog.cdl("==网络断开==下线", true);
+                    AppConfig.isOnline = false;
+                    dealDisOnlineDev("网络断开，这里也执行断开得操作", false);
+                    sendBroadCastToView(AppInfo.STOP_DOWN_TASK_RECEIVER);      //网路断开停止下载
+                } else if (action.equals(Intent.ACTION_TIME_TICK)) {  //时间变化
+                    MyLog.cdl("0000时间到了====TcpSockectService");
+                    int currentTime = SimpleDateUtil.getHourMin();
+                    MyLog.cdl("=======当前时间==" + currentTime);
+                    if (currentTime == 235 && SharedPerManager.getAutoRebootDev()) {
+                        MyLog.sleep("=======当前时间=235 设备准时重启软件=", true);
+                        SystemManagerInstance.getInstance(TcpSocketService.this).rebootDev();
+                    }
+                    startLocationService(1);
+                    int numPlus = new Random().nextInt(3000);
+                    handler.sendEmptyMessageDelayed(TIMER_ON_NOW_CHECK_SDCARD, 2000 + numPlus); //延迟5秒，因为TaskService中有准时刷新任务
+                } else if (action.equals(AppInfo.SEND_IMAGE_CAPTURE_SUCCESS)) {  //收到截图通知
+                    MyLog.update("==截图回来了====");
+                    updateImageToWeb(intent);
+                }
+            }
+        };
+
         IntentFilter filter = new IntentFilter();
         filter.addAction(AppInfo.NET_ONLINE);
         filter.addAction(AppInfo.NET_DISONLINE);
@@ -956,27 +984,6 @@ public class TcpSocketService extends Service {
         handler.sendMessage(message);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        //tecent 注销登录  销毁操作
-        ImUtils.logout(new ImUtils.LogoutCallback() {
-            @Override
-            public void onLogoutSuccess() {
-                MyLog.netty("ImUtils   注销登录成功", true);
-            }
-
-            @Override
-            public void onLogoutError(Integer code, String describe) {
-
-            }
-        });
-        if (receiver != null) {
-            unregisterReceiver(receiver);
-        }
-
-    }
-
     /***
      * 服务器切换IP用户名设置
      */
@@ -1014,6 +1021,27 @@ public class TcpSocketService extends Service {
             MyLog.update("==截图回来了==上传异常==" + e.toString());
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //tecent 注销登录  销毁操作
+        ImUtils.logout(new ImUtils.LogoutCallback() {
+            @Override
+            public void onLogoutSuccess() {
+                MyLog.netty("ImUtils   注销登录成功", true);
+            }
+
+            @Override
+            public void onLogoutError(Integer code, String describe) {
+
+            }
+        });
+        if (receiver != null) {
+            unregisterReceiver(receiver);
+        }
+
     }
 
 }

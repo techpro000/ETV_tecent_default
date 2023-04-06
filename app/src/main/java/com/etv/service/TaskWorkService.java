@@ -94,6 +94,8 @@ public class TaskWorkService extends Service implements TaskView {
     public static int TASK_CURRENT_TYPE = TASK_TYPE_DEFAULT;
     private List<TaskWorkEntity>  taskWorkEntityList;
 
+    private int mTimerCount;
+
     /***
      * 设置当前状态
      * @param type
@@ -152,6 +154,14 @@ public class TaskWorkService extends Service implements TaskView {
                 if (SharedPerManager.getWorkModel() != AppInfo.WORK_MODEL_NET) {
                     MyLog.timer("=====TaskService==时间变化,去检测任务,不是网络模式，中断检查");
                     return;
+                }
+                mTimerCount++;
+                if (mTimerCount >= 10) {
+                    mTimerCount = 0;
+                    if (!SharedPerManager.getSocketLineEnable()) {
+                        // socket开关处于关闭状态
+                        requestTaskInfo("socket开关处于关闭状态");
+                    }
                 }
                 MyLog.timer("=====TaskService==时间变化,去检测任务");
                 checkTrafficstatistics();
@@ -470,7 +480,7 @@ public class TaskWorkService extends Service implements TaskView {
 
             List<PmListEntity> pmListEntities = taskWorkEntity.getPmListEntities(); //节目
             for (int j = 0; j < pmListEntities.size(); j++) {
-                List<SceneEntity> sceneEntityList = pmListEntities.get(i).getSceneEntityList(); //场景
+                List<SceneEntity> sceneEntityList = pmListEntities.get(j).getSceneEntityList(); //场景
                 for (int k = 0; k < sceneEntityList.size(); k++) {
                     List<CpListEntity> listCp = sceneEntityList.get(k).getListCp();  //素材
 
