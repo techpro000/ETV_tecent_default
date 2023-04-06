@@ -250,7 +250,7 @@ public class TaskWorkModelmpl implements TaskWorkModel {
      */
     private void uploadFlowUage() {
         int currentTime = SimpleDateUtil.getHourMin();
-        if (currentTime % 2 != 0) {
+        if (currentTime % 15 != 0) {
             MyLog.d("traff", "=========15分钟内限制提交一次=====");
             return;
         }
