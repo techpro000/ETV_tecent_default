@@ -1,7 +1,8 @@
 package com.etv.db;
 
-import com.etv.util.net.AppTrafficModel;
+import android.util.Log;
 
+import com.etv.util.net.AppTrafficModel;
 
 import org.litepal.LitePal;
 
@@ -28,7 +29,6 @@ public class TraffTotalDb {
         return isSave;
     }
 
-
     /**
      * 获取统计列表
      *
@@ -40,6 +40,11 @@ public class TraffTotalDb {
             txtList = LitePal.findAll(AppTrafficModel.class);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        if (txtList == null || txtList.size() < 1) {
+            Log.e("traff", "txtList=0");
+        } else {
+            Log.e("traff", "txtList=" + txtList.size());
         }
         return txtList;
     }
@@ -65,7 +70,8 @@ public class TraffTotalDb {
     }
 
     public static void clearAllData() {
-        LitePal.deleteAll(AppTrafficModel.class);
+        int delnum = LitePal.deleteAll(AppTrafficModel.class);
+        Log.e("traff", "清理数据库数据==" + delnum);
     }
 
 }

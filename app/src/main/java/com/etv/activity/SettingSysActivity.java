@@ -18,6 +18,7 @@ import androidx.lifecycle.Observer;
 
 import com.etv.config.AppConfig;
 import com.etv.config.AppInfo;
+import com.etv.db.TraffTotalDb;
 import com.etv.setting.SettingBaseActivity;
 import com.etv.setting.framenew.AppSettingFragment;
 import com.etv.setting.framenew.NetDownWorkFragment;
@@ -30,6 +31,8 @@ import com.etv.util.SharedPerManager;
 import com.etv.util.rxjava.AppStatuesListener;
 import com.ys.etv.R;
 import com.ys.model.dialog.MyToastView;
+import com.ys.model.dialog.OridinryDialog;
+import com.ys.model.listener.OridinryDialogClick;
 
 /**
  * 系统设置界面
@@ -89,6 +92,14 @@ public class SettingSysActivity extends SettingBaseActivity implements View.OnCl
     }
 
     private void initListener() {
+        view_click_hiddle.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showClearTraffInfo();
+                return true;
+            }
+        });
+
         AppStatuesListener.getInstance().NetChange.observe(SettingSysActivity.this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean s) {
@@ -102,6 +113,24 @@ public class SettingSysActivity extends SettingBaseActivity implements View.OnCl
         });
     }
 
+    private void showClearTraffInfo() {
+        OridinryDialog oridinryDialog = new OridinryDialog(this);
+        oridinryDialog.setOnDialogClickListener(new OridinryDialogClick() {
+            @Override
+            public void sure() {
+                SharedPerManager.setLastDownTraff(0);
+                SharedPerManager.setLastUploadTraff(0);
+                TraffTotalDb.clearAllData();
+            }
+
+            @Override
+            public void noSure() {
+
+            }
+        });
+        oridinryDialog.show("清理", "是否清理流量数据？");
+    }
+
     private void initReceiver() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(AppInfo.SOCKET_LINE_STATUS_CHANGE);
@@ -113,11 +142,13 @@ public class SettingSysActivity extends SettingBaseActivity implements View.OnCl
     private FragmentManager fragmentManager;
     private TextView tv_net_status, tv_web_statues, tv_username;
     LinearLayout lin_exit;
+    View view_click_hiddle;
     TextView tv_exit;
 
     private void initView() {
         AppInfo.startCheckTaskTag = false;  //停止任务自动检查
         fragmentManager = getFragmentManager();
+        view_click_hiddle = (View) findViewById(R.id.view_click_hiddle);
         tv_net_status = (TextView) findViewById(R.id.tv_net_status);
         tv_web_statues = (TextView) findViewById(R.id.tv_web_statues);
         tv_username = (TextView) findViewById(R.id.tv_username);

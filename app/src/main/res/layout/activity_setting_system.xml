@@ -184,4 +184,10 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/view_click_hiddle"
+        android:layout_width="@dimen/dimen_100"
+        android:layout_height="@dimen/dimen_100"
+        android:layout_alignParentRight="true" />
+
 </RelativeLayout>

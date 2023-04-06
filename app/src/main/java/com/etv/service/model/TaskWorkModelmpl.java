@@ -142,7 +142,6 @@ public class TaskWorkModelmpl implements TaskWorkModel {
         }
         long downNum = appTrafficModel.getDownload();
         long saveDown = downNum - SharedPerManager.getLastDownTraff();
-
         long uploadNum = appTrafficModel.getUpload();
         long saveUpload = uploadNum - SharedPerManager.getLastUploadTraff();
         MyLog.d("traff", "==流量增加=" + downNum + "/ 上行=" + uploadNum);
@@ -188,7 +187,7 @@ public class TaskWorkModelmpl implements TaskWorkModel {
         String saveUrl = bggImageEntities.get(0).getSavePath();
         String fileName = bggImageEntities.get(0).getImageName();
         MyLog.bgg("====下载背景图==开始下载==" + saveUrl + " / " + fileName + " / " + downUrl);
-        if (!downUrl.startsWith("http")){
+        if (!downUrl.startsWith("http")) {
             return;
         }
         OkHttpUtils
@@ -250,11 +249,8 @@ public class TaskWorkModelmpl implements TaskWorkModel {
      * 上传移动流量使用数据
      */
     private void uploadFlowUage() {
-        if (!AppConfig.isOnline) {
-            return;
-        }
         int currentTime = SimpleDateUtil.getHourMin();
-        if (currentTime % 15 != 0) {
+        if (currentTime % 2 != 0) {
             MyLog.d("traff", "=========15分钟内限制提交一次=====");
             return;
         }

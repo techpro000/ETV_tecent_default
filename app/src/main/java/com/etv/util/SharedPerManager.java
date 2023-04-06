@@ -1178,7 +1178,6 @@ public class SharedPerManager {
         EtvApplication.getInstance().saveData("lastUploadTraff", lastUploadTraff);
     }
 
-
     private static int updateTraffEnable = -1;
 
     /***
