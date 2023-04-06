@@ -76,7 +76,6 @@ public class EtvApplication extends Application {
         if (CpuModel.IsRK3566() || CpuModel.IsRK3568()) {
             RootCmd.setProperty("use_nuplayer", "true");
         }
-
     }
 
     private void initSharedPerence() {
@@ -101,7 +100,6 @@ public class EtvApplication extends Application {
         initExcelSo();
         CrashExceptionHandler crashExceptionHandler = CrashExceptionHandler.getCrashInstance();
         crashExceptionHandler.init();
-//        CrashReport.initCrashReport(this, "6a63b5ad10", false);
         taskWorkEntityList = new ArrayList<TaskWorkEntity>();
         listScreen = new ArrayList<ScreenEntity>();
         initX5View();

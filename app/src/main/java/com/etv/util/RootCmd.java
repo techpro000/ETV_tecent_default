@@ -236,7 +236,7 @@ public class RootCmd {
         if (cpuModel.contains(CpuModel.CPU_MODEL_PX30)) {
             exusecmd("mount -o rw,remount /system", "安装守护进程");
             exusecmd("rm -rf /system/app/guardian.apk", "安装守护进程");
-            exusecmd("cp  " + filePath + " " + sysFilePath,  "安装守护进程");
+            exusecmd("cp  " + filePath + " " + sysFilePath, "安装守护进程");
             exusecmd("chmod 777 /system/app/guardian.apk", "安装守护进程");
             return;
         }
@@ -297,19 +297,6 @@ public class RootCmd {
             }
             return;
         }
-
-//        MyLog.guardian("====writeFileToSystemApp===9.0以上=======");
-//        exusecmd("blockdev --setrw /dev/block/by-name/system", "安装守护进程");
-//        exusecmd("mount -o rw,remount /", "安装守护进程");
-//        exusecmd("rm -rf /system/app/guardian.apk", "安装守护进程");
-//        exusecmd("cp  " + filePath + " " + sysFilePath, "安装守护进程");
-//        exusecmd("chmod 777 /system/app/guardian.apk", "安装守护进程");
-//        exusecmd("mount -o ro,remount /", "安装守护进程");
-
-//        SystemProperties.set("persist.sys.command","replace_guardian");
-//        SystemProperties.set("service.guardian.dirfile","cp guardian的路径");
-//        sleep(1);
-//        SystemProperties.set("ctl.start", "sys_command");
     }
 
     /**

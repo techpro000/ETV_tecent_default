@@ -51,11 +51,9 @@ public class AppConfig {
 
     public static final int APP_TYPE = APP_TYPE_DEFAULT;
 
-
     /***0
      * Socket 连接方式
-     *
-     *     */
+     * */
     public static final int SOCKEY_TYPE_WEBSOCKET = 0;    //webSocket
     public static final int SOCKEY_TYPE_SOCKET = 1;       //socket
 

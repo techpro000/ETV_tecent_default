@@ -245,7 +245,6 @@ public class GuardianUtil {
         if (rawSourceEntity == null) {
             return;
         }
-
         if (isApkInstall) {  //已经安装就去检查版本号
             checkGuardianAppVersion(rawSourceEntity);
         } else {   //没有安装，直接安装
@@ -330,8 +329,6 @@ public class GuardianUtil {
             } else if (cpuModel.contains(CpuModel.CPU_MODEL_3568_11)) {
                 //3568 android 11
                 rawSourceEntity = lists.get(10);
-            } else if (cpuModel.contains(CpuModel.CPU_MODEL_SMD) || cpuModel.contains(CpuModel.CPU_MODEL_MSM)) {
-                rawSourceEntity = lists.get(3);
             } else if (cpuModel.contains(CpuModel.CPU_MODEL_PX30)) {
                 rawSourceEntity = lists.get(6);
             } else if (cpuModel.contains(CpuModel.CPU_MODEL_RK_DEFAULT)) {
