@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -157,95 +158,33 @@
                 style="@style/setting_current_view_style"
                 android:layout_marginTop="10dp" />
 
-            <LinearLayout
-                android:id="@+id/lin_socket_type"
+
+            <com.ys.model.view.SettingSwitchView
+                android:id="@+id/toggle_switch_line"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="@dimen/dimen_10"
-                android:layout_marginRight="40dp"
-                android:orientation="horizontal">
+                app:img_left_switch="@drawable/ter_icon_screen"
+                app:txt_content_switch=""
+                app:txt_title_switch="@string/line_type" />
 
-                <TextView
-                    style="@style/internet_server_txt"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/line_type" />
-
-                <TextView
-                    android:id="@+id/tv_line_type"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1.0"
-                    android:textColor="@color/app_txt_color"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1.0"
-                    android:visibility="gone"
-                    android:gravity="right"
-                    android:text="@string/reboot_start"
-                    android:textColor="@color/red"
-                    android:textSize="20sp" />
-
-                <com.ys.model.view.MyToggleButton
-                    android:id="@+id/toggle_switch_line"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:layout_gravity="center_vertical" />
-
-            </LinearLayout>
+            <com.ys.model.view.SettingSwitchView
+                android:id="@+id/switch_socket_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:img_left_switch="@drawable/ter_icon_screen"
+                app:txt_content_switch=""
+                app:txt_title_switch="@string/socket_line_name" />
 
             <Button
                 android:id="@+id/bt_save_line"
                 android:layout_width="100dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dimen_30"
+                android:layout_marginTop="@dimen/dimen_10"
                 android:background="@drawable/btn_fouces_style"
                 android:text="@string/connect"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_10"
-                android:paddingLeft="@dimen/dimen_40"
-                android:paddingRight="@dimen/dimen_40">
-
-                <!--自动连接，连接记录-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:orientation="horizontal">
-
-                    <View
-                        android:id="@+id/btn_back_default"
-                        android:layout_width="0dp"
-                        android:layout_height="32dp"
-                        android:layout_weight="1.0" />
-
-                    <Button
-                        android:id="@+id/btn_line_by_hand"
-                        android:layout_width="wrap_content"
-                        android:layout_height="29dp"
-                        android:layout_gravity="center_vertical"
-                        android:background="@drawable/btn_fouces_style"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:text="@string/connect_auto"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
 
         </LinearLayout>
 

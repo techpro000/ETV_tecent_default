@@ -651,5 +651,6 @@
     <string name="text_file"> 文件 ？</string>
     <string name="delete_file">删除</string>
     <string name="thinf_again">在想想</string>
+    <string name="socket_line_name">长连接</string>
 
 </resources>

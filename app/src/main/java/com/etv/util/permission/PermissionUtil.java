@@ -9,8 +9,6 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 
-import com.etv.config.AppConfig;
-import com.etv.util.MyLog;
 import com.etv.util.SharedPerManager;
 import com.etv.util.system.CpuModel;
 
@@ -20,7 +18,6 @@ import java.lang.reflect.Method;
 /**
  * Created by Administrator on 2017/5/10 0010.
  */
-
 public class PermissionUtil {
 
     public static boolean checkFloatPermission(Context context) {

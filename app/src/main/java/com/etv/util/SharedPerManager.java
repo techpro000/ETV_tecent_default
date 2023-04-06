@@ -1472,4 +1472,23 @@ public class SharedPerManager {
         EtvApplication.getInstance().saveData("LastMediaVoiceNum", LastMediaVoiceNum);
     }
 
+    public static void setSocketLineEnable(boolean cacheEnable) {
+        socketLineEnable = cacheEnable ? 0 : 1;
+        EtvApplication.getInstance().saveData("SocketLineEnable", cacheEnable);
+    }
+
+    private static int socketLineEnable = -1;
+
+    /***
+     * 0   true
+     * 1   false
+     */
+    public static boolean getSocketLineEnable() {
+        if (socketLineEnable != -1) {
+            return socketLineEnable == 0;
+        }
+        socketLineEnable = (int) EtvApplication.getInstance().getData("SocketLineEnable", 0);
+        return socketLineEnable == 0;
+    }
+
 }

@@ -20,7 +20,6 @@ import com.etv.setting.TimeSettingActivity;
 import com.etv.util.SharedPerManager;
 import com.ys.etv.R;
 
-
 /**
  * 网络下发模式设置
  */

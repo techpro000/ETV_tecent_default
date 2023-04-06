@@ -46,9 +46,11 @@ import com.ys.model.dialog.MyToastView;
 import com.ys.model.dialog.OridinryDialog;
 import com.ys.model.dialog.WaitDialogUtil;
 import com.ys.model.listener.EditTextDialogListener;
+import com.ys.model.listener.MoreButtonToggleListener;
 import com.ys.model.listener.OridinryDialogClick;
 import com.ys.model.util.KeyBoardUtil;
 import com.ys.model.view.MyToggleButton;
+import com.ys.model.view.SettingSwitchView;
 
 public class ServerConnectFragment extends Fragment implements View.OnClickListener {
 
@@ -62,7 +64,7 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
             if (action.equals(AppInfo.UDP_SERVER_SEND_IP_PORT)) {
                 //终端UDP检索服务器，服务器下发指令，这里通知界面
                 handler.sendEmptyMessage(MESSAGE_UPDATE_VIEW);
-                MyLog.message("=====注册成功连接中：" +  " /errorrDesc= "  );
+                MyLog.message("=====注册成功连接中：" + " /errorrDesc= ");
                 updateAutoLineView();
 
             }
@@ -86,21 +88,14 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
     Button btn_modfy_port;
     LinearLayout lin_net_view;
     Button btn_username;
-    Button btn_line_by_hand;
-    TextView tv_line_type;
-    View btn_back_default;
-    MyToggleButton toggle_switch_line;
-    LinearLayout lin_socket_type;
+    SettingSwitchView toggle_switch_line;
+    SettingSwitchView switch_socket_line;
 
     private void initView(View view) {
         AppInfo.startCheckTaskTag = false;
         waitDialogUtil = new WaitDialogUtil(getActivity());
-        lin_socket_type = (LinearLayout) view.findViewById(R.id.lin_socket_type);
-        toggle_switch_line = (MyToggleButton) view.findViewById(R.id.toggle_switch_line);
-        tv_line_type = (TextView) view.findViewById(R.id.tv_line_type);
-        btn_back_default = (View) view.findViewById(R.id.btn_back_default);
-        btn_line_by_hand = (Button) view.findViewById(R.id.btn_line_by_hand);
-        btn_line_by_hand.setOnClickListener(this);
+        switch_socket_line = (SettingSwitchView) view.findViewById(R.id.switch_socket_line);
+        toggle_switch_line = (SettingSwitchView) view.findViewById(R.id.toggle_switch_line);
         lin_net_view = (LinearLayout) view.findViewById(R.id.lin_net_view);
         btn_server_address = (Button) view.findViewById(R.id.btn_server_address);
         btn_server_address.setOnClickListener(this);
@@ -119,24 +114,23 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
     }
 
     private void initListener() {
-        toggle_switch_line.setOnToggleListener(new MyToggleButton.ToggleClickListener() {
+        switch_socket_line.setOnMoretListener(new MoreButtonToggleListener() {
             @Override
-            public void click(View view, boolean isClick) {
-                if (isClick) {
+            public void switchToggleView(View view, boolean isChooice) {
+                SharedPerManager.setSocketLineEnable(isChooice);
+                updateAutoLineView();
+            }
+        });
+
+        toggle_switch_line.setOnMoretListener(new MoreButtonToggleListener() {
+            @Override
+            public void switchToggleView(View view, boolean isChooice) {
+                if (isChooice) {
                     SharedPerManager.setSocketType(AppConfig.SOCKEY_TYPE_SOCKET);
                 } else {
                     SharedPerManager.setSocketType(AppConfig.SOCKEY_TYPE_WEBSOCKET);
                 }
                 updateAutoLineView();
-                //showRebootDialog();
-            }
-        });
-
-        btn_back_default.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                showLogInfoDialog();
-                return true;
             }
         });
     }
@@ -145,7 +139,7 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
         OridinryDialog oridinryDialog = new OridinryDialog(getActivity());
         oridinryDialog.setCancelable(false);
         oridinryDialog.show(content, false, false);
-        handler.postDelayed(()-> SystemManagerUtil.rebootApp(getActivity()), 2000);
+        handler.postDelayed(() -> SystemManagerUtil.rebootApp(getActivity()), 2000);
 
         /*oridinryDialog.setOnDialogClickListener(new OridinryDialogClick() {
             @Override
@@ -170,9 +164,6 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
             case R.id.btn_server_address:  //输入IP
                 showInPutIpDialog();
                 break;
-            case R.id.btn_line_by_hand: //手动连接局域网
-                searchIpHostLocalNet();
-                break;
             case R.id.btn_modfy_port:
                 showEditDialog();
                 break;
@@ -196,7 +187,7 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
                 String ipaddress = CodeUtil.getIpAddress(getActivity(), "");
                 String sendIp = ipaddress.substring(0, ipaddress.lastIndexOf(".") + 1) + 255;
                 String sendJson = "{\"type\":\"searchServer\",\"ipaddress\":\"" + ipaddress + "\"}";
-                Log.e(TAG, "sure: "+sendJson+"/////////"+sendIp );
+                Log.e(TAG, "sure: " + sendJson + "/////////" + sendIp);
                 EtvService.getInstance().sendUdpMessage(sendJson, sendIp);
             }
 
@@ -228,6 +219,7 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
     };
 
     private void updateAutoLineView() {
+        switch_socket_line.setSwitchStatues(SharedPerManager.getSocketLineEnable());
         String username = SharedPerManager.getUserName();
         String ipaddress = SharedPerUtil.getWebHostIpAddress();
         String port = SharedPerUtil.getWebHostPort();
@@ -235,25 +227,19 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
         btn_server_address.setText(ipaddress);
         btn_modfy_port.setText(port);
         if (SharedPerUtil.SOCKEY_TYPE() == AppConfig.SOCKEY_TYPE_WEBSOCKET) {
-            tv_line_type.setText("WebSocket");
-            toggle_switch_line.setIsChoice(false);
-            btn_line_by_hand.setVisibility(View.VISIBLE);
-//            if (AppConfig.APP_TYPE==AppConfig.APP_TYPE_LK_QRCODE){
-//                btn_server_address.setText("114.132.42.167");
-//            }
+            toggle_switch_line.setTxtContent("WebSocket");
+            toggle_switch_line.setSwitchStatues(false);
         } else {
-            tv_line_type.setText("Socket");
-            toggle_switch_line.setIsChoice(true);
-//            btn_server_address.setText(IP_DEFAULT_URL_SOCKET);
-            btn_line_by_hand.setVisibility(View.GONE);
+            toggle_switch_line.setTxtContent("Socket");
+            toggle_switch_line.setSwitchStatues(true);
         }
         switch (AppConfig.APP_TYPE) {
             case AppConfig.APP_TYPE_SCHOOL_STUDY:
             case AppConfig.APP_TYPE_CHUNYN:
-                lin_socket_type.setVisibility(View.GONE);
+                toggle_switch_line.setVisibility(View.GONE);
                 break;
             default:
-                lin_socket_type.setVisibility(View.VISIBLE);
+                toggle_switch_line.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -399,13 +385,6 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
             btn_server_address.setText(ApiInfo.IP_DEFAULT_URL_WEBSOCKET);
             return;
         }
-//        if(AppConfig.APP_TYPE != APP_TYPE_ETV_ESONCLOUD_IP){
-//            if (ipAddress.contains("139.159.152.78")) {
-//                showToast(getActivity().getString(R.string.line_web_error_desc));
-//                btn_server_address.setText(IP_DEFAULT_URL_SOCKET);
-//                return;
-//            }
-//        }
         String userName = getUsername();
         if (userName.contains(" ")) { //去掉空格
             userName = userName.replace(" ", "");
@@ -428,8 +407,7 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
             showToast(getString(R.string.input_valid_username));
             return;
         }
-
-        if (AppConfig.APP_TYPE!=AppConfig.APP_TYPE_LK_QRCODE || AppConfig.APP_TYPE!=AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL){
+        if (AppConfig.APP_TYPE != AppConfig.APP_TYPE_LK_QRCODE || AppConfig.APP_TYPE != AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL) {
             if (checkIfNeedRebootDev()) {
                 // 即将切换成
                 // 即将切换成云服务器模式
@@ -437,26 +415,23 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
                 return;
             }
         }
-
         SettingSysActivity.isServerConClick = true;
         showToast(getActivity().getString(R.string.savesucc_line));
-
-
         waitDialogUtil.show(getActivity().getString(R.string.linging), 8000);
         linkToSocketWeb();
-            }
+    }
 
     private boolean checkIfNeedRebootDev() {
         String host = SharedPerManager.getWebHost();
-        if (!host.startsWith("etv.ids.esoncloud.com") && !host.equals("122.112.169.234")  && !host.equals("139.159.152.78")&& !host.equals("www.zhongbaizhihui.com")&& !host.equals("yun.won-giant.com")) {
-            toggle_switch_line.checkStatus(false);
+        if (!host.startsWith("etv.ids.esoncloud.com") && !host.equals("122.112.169.234") && !host.equals("139.159.152.78") && !host.equals("www.zhongbaizhihui.com") && !host.equals("yun.won-giant.com")) {
+            toggle_switch_line.setSwitchStatues(false);
             return AppLinkSer.getSocketType() != AppConfig.SOCKEY_TYPE_WEBSOCKET;
         }
-        toggle_switch_line.checkStatus(true);
+        toggle_switch_line.setSwitchStatues(true);
         return AppLinkSer.getSocketType() != AppConfig.SOCKEY_TYPE_SOCKET;
     }
 
-    private String getRebootContent(){
+    private String getRebootContent() {
         String host = SharedPerManager.getWebHost();
         String restart = getString(R.string.str_reboot_ing) + "，";
         if (!host.startsWith("etv")) {
