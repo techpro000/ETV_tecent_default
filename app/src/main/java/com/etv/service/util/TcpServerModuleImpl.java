@@ -879,12 +879,12 @@ public class TcpServerModuleImpl implements TcpServerModule {
                                 if (data.contains("spStatisticsPlay")) {
                                     //播放统计  0关闭 1开启
                                     int spStatisticsPlay = jsonObjectData.getInt("spStatisticsPlay");
-                                    SharedPerManager.setPlayTotalUpdate(spStatisticsPlay == 1 ? true : false);
+                                    SharedPerManager.setPlayTotalUpdate(spStatisticsPlay);
                                 }
                                 if (data.contains("spStatisticsFlow")) {
                                     //统计流量  0关闭 1开启
                                     int spStatisticsFlow = jsonObjectData.getInt("spStatisticsFlow");
-                                    SharedPerManager.setIfUpdateTraffToWeb(spStatisticsFlow == 1 ? true : false);
+                                    SharedPerManager.setIfUpdateTraffToWeb(spStatisticsFlow);
                                 }
                             }
                             if (tag.contains("location")) {
@@ -954,7 +954,7 @@ public class TcpServerModuleImpl implements TcpServerModule {
 
     private void dealMonitorZipOrCapture(Context context, String filePath) {
         List<ScreenEntity> screenEntityList = EtvApplication.getInstance().getListScreen();
-        Log.e(TAG, "dealMonitorZipOrCapture: "+filePath );
+        Log.e(TAG, "dealMonitorZipOrCapture: " + filePath);
         if (screenEntityList == null || screenEntityList.size() < 1) {
             return;
         }

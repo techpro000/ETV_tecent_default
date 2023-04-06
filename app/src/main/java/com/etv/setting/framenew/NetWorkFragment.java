@@ -69,11 +69,11 @@ public class NetWorkFragment extends MessageFragment implements TerminallView, M
     private TerminallParsener terminallPansener;
 
     private void initView(View view) {
-            mBinding.switchPlayUpdate.setOnMoretListener(new MoreButtonToggleListener() {
+        mBinding.switchPlayUpdate.setOnMoretListener(new MoreButtonToggleListener() {
             @Override
             public void switchToggleView(View view, boolean isChooice) {
-//                SharedPerManager.setPlayTotalUpdate(isChooice);
                 MyToastView.getInstance().Toast(getActivity(), getLanguageFromResurce(R.string.net_update_chooice));
+//                SharedPerManager.setPlayTotalUpdate(isChooice ? 1 : 0);
                 updateView();
             }
         });
@@ -81,8 +81,8 @@ public class NetWorkFragment extends MessageFragment implements TerminallView, M
         mBinding.switchTrafficUpdate.setOnMoretListener(new MoreButtonToggleListener() {
             @Override
             public void switchToggleView(View view, boolean isChooice) {
-//                SharedPerManager.setIfUpdateTraffToWeb(isChooice);
                 MyToastView.getInstance().Toast(getActivity(), getLanguageFromResurce(R.string.net_update_chooice));
+//                SharedPerManager.setIfUpdateTraffToWeb(isChooice ? 1 : 0);
                 updateView();
             }
         });

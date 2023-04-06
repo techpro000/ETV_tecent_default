@@ -450,13 +450,23 @@ public class SharedPerManager {
      *
      * @return
      */
+    private static int PlayTotalUpdateCache = -1;
+
     public static boolean getPlayTotalUpdate() {
-        boolean ifHdmiInSuport = ((boolean) EtvApplication.getInstance().getData("PlayTotalUpdate", false));
-        return ifHdmiInSuport;
+        if (PlayTotalUpdateCache != -1) {
+            return PlayTotalUpdateCache == 1;
+        }
+        PlayTotalUpdateCache = ((int) EtvApplication.getInstance().getData("PlayTotalUpdateNew", 0));
+        return PlayTotalUpdateCache == 1;
     }
 
-    public static void setPlayTotalUpdate(boolean PlayTotalUpdate) {
-        EtvApplication.getInstance().saveData("PlayTotalUpdate", PlayTotalUpdate);
+    /***
+     * 播放统计  0关闭 1开启
+     * @param PlayTotalUpdate
+     */
+    public static void setPlayTotalUpdate(int PlayTotalUpdate) {
+        PlayTotalUpdateCache = PlayTotalUpdate;
+        EtvApplication.getInstance().saveData("PlayTotalUpdateNew", PlayTotalUpdate);
     }
 
     /***
@@ -465,9 +475,6 @@ public class SharedPerManager {
      */
     public static boolean getBggImageFromWeb() {
         boolean defaultStatues = true;
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_SHI_WEI) {
-            defaultStatues = false;
-        }
         boolean ifHdmiInSuport = ((boolean) EtvApplication.getInstance().getData("BggImageFromWeb", defaultStatues));
         return ifHdmiInSuport;
     }
@@ -1171,22 +1178,30 @@ public class SharedPerManager {
         EtvApplication.getInstance().saveData("lastUploadTraff", lastUploadTraff);
     }
 
+
+    private static int updateTraffEnable = -1;
+
     /***
      * 是否上传流量给服务器
+     * 统计流量  0关闭 1开启
      * @return
      */
     public static boolean getIfUpdateTraffToWeb() {
-        return ((boolean) EtvApplication.getInstance().getData("ifUpdateTraffToWeb", false));
+        if (updateTraffEnable != -1) {
+            return updateTraffEnable == 1;
+        }
+        updateTraffEnable = ((int) EtvApplication.getInstance().getData("UpdateTraffToWeb", 0));
+        return updateTraffEnable == 1;
     }
 
     /***
      * 设置是否上传流量到服务器
-     * @param ifUpdateTraffToWeb
+     * 统计流量  0关闭 1开启
      */
-    public static void setIfUpdateTraffToWeb(boolean ifUpdateTraffToWeb) {
-        EtvApplication.getInstance().saveData("ifUpdateTraffToWeb", ifUpdateTraffToWeb);
+    public static void setIfUpdateTraffToWeb(int UpdateTraffToWeb) {
+        updateTraffEnable = UpdateTraffToWeb;
+        EtvApplication.getInstance().saveData("UpdateTraffToWeb", UpdateTraffToWeb);
     }
-
 
     /**
      * 获取缓存的守护进程的状态
