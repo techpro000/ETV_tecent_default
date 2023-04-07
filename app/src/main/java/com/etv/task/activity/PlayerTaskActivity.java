@@ -8,7 +8,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
- import android.os.IBinder;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -65,24 +65,19 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
     //触摸，从别个界面回来的.需要恢复播放
     private static final int ONRESUME_PLAY_VIEW = 2356;
 
-
-
     private BroadcastReceiver receiverPlayTask = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             MyLog.playTask("=======播放界面广播===" + action);
             if (action.equals(AppInfo.DOWN_TASK_SUCCESS)) {
                 //任务下载完成，准备刷新界面
-
                 updateViewInfo("======任务下载完毕，去布局绘制界面");
             } else if (action.equals(Intent.ACTION_TIME_TICK)) {
                 MyLog.cdl("0000时间到了====PlayTaskActivity");
                 if (!isPlayForst) {
                     MyLog.playTask("播放界面不再前台,打断操作");
-
                     return;
                 }
-
                 if (playTaskParsener == null) {
                     return;
                 }
@@ -114,23 +109,6 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
 
     ActivityPlayTaskBinding mBingding;
 
-
-
-    private EtvParsener etvParsener;
-    private EtvService etvService;
-    private IntentFilter intentFilter;
-
-
-    class EtvParsener extends BroadcastReceiver{
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            playGpioPosition = intent.getIntExtra("theGpioDeskPosition", 0);
-            Log.e("TAG", "onReceive+theGpioDeskPosition: " + playGpioPosition);
-            startGpioPosition(playGpioPosition);
-        }
-    }
-
     @Override
     protected void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
@@ -145,22 +123,9 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
         }
         mBingding = ActivityPlayTaskBinding.inflate(getLayoutInflater());
         setContentView(mBingding.getRoot());
-        getIntentDate();
         initView();
         initListener();
         initTaskReceiver();
-        intentFilter = new IntentFilter();
-        intentFilter.addAction("thePositionGpio");
-        etvParsener = new EtvParsener();
-        registerReceiver(etvParsener, intentFilter);
-    }
-
-    int playGpioPosition = 0;
-
-    private void getIntentDate() {
-        playGpioPosition = getIntent().getIntExtra("theGpioNotDeskPosition",0);
-        startGpioPosition(playGpioPosition);
-        MyLog.cdl("======onKeyDown========" + "/////"+playGpioPosition);
     }
 
     private void initListener() {
@@ -238,8 +203,7 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
     private void initView() {
         playTaskParsener = new PlayTaskParsener(PlayerTaskActivity.this, this);
         playTaskParsener.updateMediaVoiceNum();
-        updateViewInfo("onResume");
-        if(AppConfig.APP_TYPE==AppConfig.APP_TYPE_CHUNYN){
+        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_CHUNYN) {
             mBingding.viewClickRight.setVisibility(View.VISIBLE);
         }
     }
@@ -249,16 +213,15 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
         mBingding.downSyatues.relaDownTag.setVisibility(isShow ? View.VISIBLE : View.GONE);
         mBingding.downSyatues.tvDownDesc.setText(desc);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         ISVIEW_FORST = true;
-        int widthScreen = SharedPerUtil.getScreenWidth();
-        int screenheight = SharedPerUtil.getScreenHeight();
-        Log.e("cdl", "=======currentSencent==" + widthScreen + " / " + screenheight);
         JUMP_TO_VIEW = JUMP_DEFAULT;
         TaskWorkService.isStartApk = false;  //startApk  归位
         AppInfo.startCheckTaskTag = true;
+        updateViewInfo("onResume");
         if (playTaskParsener == null) {
             return;
         }
@@ -310,7 +273,6 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
         MyLog.playTask("===========刷新界面===" + tag + "  /时间==" + System.currentTimeMillis());
         EtvService.getInstance().updateDevStatuesToWeb(PlayerTaskActivity.this);
         playTaskParsener.getTaskToView(tag);           //获取数据
-
     }
 
     /**
@@ -506,17 +468,17 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         MyLog.cdl("======onKeyDown===666=====" + keyCode);
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Log.e("TAG", "onKeyDown: "+"快进" );
+            Log.e("TAG", "onKeyDown: " + "快进");
             showBaseSettingDialogNew();
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
             //快进 87
-            Log.e("TAG", "onKeyDown: "+"快进" );
+            Log.e("TAG", "onKeyDown: " + "快进");
             playTaskParsener.moveViewForward(true);
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
             //快退 88
-            Log.e("TAG", "onKeyDown: "+"快进" );
+            Log.e("TAG", "onKeyDown: " + "快进");
             playTaskParsener.moveViewForward(false);
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_MEDIA_STOP) {
@@ -528,41 +490,28 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
             playTaskParsener.resumePlayView();
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_1) {
-            Intent intent = new Intent(PlayerTaskActivity.this,PlayTaskTriggerActivity.class);
-            intent.putExtra("playPosition",0);
+            Intent intent = new Intent(PlayerTaskActivity.this, PlayTaskTriggerActivity.class);
+            intent.putExtra("playPosition", 0);
             startActivity(intent);
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_2) {
-            Intent intent = new Intent(PlayerTaskActivity.this,PlayTaskTriggerActivity.class);
-            intent.putExtra("playPosition",1);
+            Intent intent = new Intent(PlayerTaskActivity.this, PlayTaskTriggerActivity.class);
+            intent.putExtra("playPosition", 1);
             startActivity(intent);
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_3) {
-            Intent intent = new Intent(PlayerTaskActivity.this,PlayTaskTriggerActivity.class);
-            intent.putExtra("playPosition",2);
+            Intent intent = new Intent(PlayerTaskActivity.this, PlayTaskTriggerActivity.class);
+            intent.putExtra("playPosition", 2);
             startActivity(intent);
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_4) {
-            Intent intent = new Intent(PlayerTaskActivity.this,PlayTaskTriggerActivity.class);
-            intent.putExtra("playPosition",3);
+            Intent intent = new Intent(PlayerTaskActivity.this, PlayTaskTriggerActivity.class);
+            intent.putExtra("playPosition", 3);
             startActivity(intent);
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
-
-
-    private void startGpioPosition(int position) {
-        playGpioPosition = position ;
-        Log.e("TAG", "startGpioPosition 333333333333: "+playGpioPosition );
-        if (playTaskParsener == null) {
-            return;
-        }
-        Log.e("TAG", "startGpioPosition 111111: "+ playTaskParsener );
-        playTaskParsener.clearMemory();
-        playTaskParsener.playNextSencenView(true);
-    }
-
 
     //用来监听触摸，跳转屏保场景的
     @Override
@@ -604,7 +553,6 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(etvParsener);
         try {
             if (viewInsertTextManager != null) {
                 viewInsertTextManager.onDestoryBall();
@@ -664,7 +612,7 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
     int hdmiY;
     int hdmiWidth;
     int hdmiHeight;
-    
+
 
     /**
      * 加载HdmiIn的功能
@@ -685,7 +633,7 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
 
     private void loadHdmiView(int x, int y, int width, int height) {
         boolean isSuportHdmi = SharedPerManager.getIfHdmiInSuport();
-        Log.e("TAG", "loadHdmiView: "+isSuportHdmi );
+        Log.e("TAG", "loadHdmiView: " + isSuportHdmi);
         if (!isSuportHdmi) {
             showToastView(getString(R.string.hdmi_in_support_not));
             return;

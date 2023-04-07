@@ -158,7 +158,6 @@ public class DBTaskUtil {
         return listBack;
     }
 
-
     /**
      * 获取所有得需要下载得素材
      *
@@ -185,7 +184,7 @@ public class DBTaskUtil {
                 //场景截图
                 if (imagePath != null && imagePath.length() > 5) {
                     mpList.add(new MpListEntity(sceneEntity.getTaskid(), sceneEntity.getProgramId(), "-1",
-                            imagePath, "-1", "-1", bggImageSize, "-1", pmType, "-1", AppInfo.VIEW_IMAGE));
+                            imagePath, "-1", "-1", bggImageSize, "-1", pmType, "-1", AppInfo.VIEW_IMAGE, ""));
                 }
             }
         }
@@ -215,7 +214,7 @@ public class DBTaskUtil {
                     String fileLength = textInfo.getTaBgimageSize();
                     if (imagePath != null && imagePath.length() > 5) {
                         mpList.add(new MpListEntity(taskId, "", "-1",
-                                imagePath, "-1", "-1", fileLength, "-1", pmType, "-1", AppInfo.VIEW_BUTTON));
+                                imagePath, "-1", "-1", fileLength, "-1", pmType, "-1", AppInfo.VIEW_BUTTON, ""));
                     }
 
                 }

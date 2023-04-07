@@ -121,20 +121,4 @@ public class TaskGetFromDbRxJava {
         MyLog.task("====backTaskInfo==最后解析==null");
         return null;
     }
-
-//    private void backTaskList(final List<TaskWorkEntity> list, String tag) {
-//        if (handler == null) {
-//            return;
-//        }
-//        if (listener == null) {
-//            return;
-//        }
-//        handler.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                listener.getTaskFromDb(list);
-//            }
-//        });
-//    }
-
 }

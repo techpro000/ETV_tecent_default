@@ -3,31 +3,30 @@ package com.etv.task.parsener;
 import android.content.Context;
 
 import com.etv.config.ApiInfo;
+import com.etv.config.AppConfig;
 import com.etv.config.AppInfo;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 import com.etv.service.TaskWorkService;
 import com.etv.task.entity.SceneEntity;
 import com.etv.task.entity.TaskWorkEntity;
 import com.etv.task.model.TaskCheckLimitListener;
-import com.etv.task.model.TaskGetDbListener;
-import com.etv.task.model.TaskModelUtil;
 import com.etv.task.model.TaskModelmpl;
 import com.etv.task.model.TaskMudel;
 import com.etv.task.model.TaskRequestListener;
 import com.etv.task.view.TaskView;
+import com.etv.util.FileUtil;
 import com.etv.util.MyLog;
 import com.etv.util.NetWorkUtils;
 import com.etv.util.SharedPerManager;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
 
-public class TaskParsener implements TaskRequestListener {
+public class TaskParsener {
 
     Context context;
     TaskView taskView;
@@ -41,26 +40,52 @@ public class TaskParsener implements TaskRequestListener {
 
     public void requestTaskUrl(String printTag) {
         if (!NetWorkUtils.isNetworkConnected(context)) {
+            parsenerJsonOverFromWeb("requestTaskUrl", null);   //没有网络去加载本地的素材
             return;
         }
-        taskMudel.requestTaskInfo(this, printTag);
+        taskMudel.requestTaskInfo(taskRequestListener, printTag);
     }
 
+    private TaskRequestListener taskRequestListener = new TaskRequestListener() {
+
+        @Override
+        public void finishMySelf(String errorDesc) {
+            MyLog.task("=========finishMySelf========" + errorDesc);
+            TaskWorkService.setCurrentTaskType(TaskWorkService.TASK_TYPE_DEFAULT, "解析完成，这里恢复原始状态");
+            if (taskView == null) {
+                return;
+            }
+            taskView.finishMyShelf(errorDesc);
+        }
+
+        @Override
+        public void parserJsonOver(String tag, List<TaskWorkEntity> list) {
+            parsenerJsonOverFromWeb(tag, list);
+        }
+
+        @Override
+        public void modifyTxtInfoStatues(boolean isSuccess, String desc) {
+
+        }
+
+        @Override
+        public void playNextProgram(boolean isBack, List<SceneEntity> sceneEntities, int tag) {
+
+        }
+
+    };
+
     /***
-     * 不管解析成功还是失败
-     * 都要去从数据库中获取数据来判断是否需要下载新文件
+     * 解析完成，回调这里
      * @param tag
+     * @param list
      */
-    @Override
-    public void parserJsonOver(String tag, List<TaskWorkEntity> list) {
-        MyLog.d("liujk", "解析完成 parserJsonOver");
+    private void parsenerJsonOverFromWeb(String tag, List<TaskWorkEntity> list) {
+        MyLog.task("解析完毕==" + tag + " /list is null =  " + (list == null));
         TaskWorkService.setCurrentTaskType(TaskWorkService.TASK_TYPE_DEFAULT, "解析完成，这里恢复状态");
-        //检查已经下载得文件信息。主要是清理多余得素材
         if (taskView == null) {
             return;
         }
-
-        //解析完成，需要从服务器中获取TaskWorkEntity 集合
         if (list == null || list.size() < 1) {
             MyLog.task("========parserJsonOver=======没有获取到任务=====1");
             taskView.finishMyShelf("没有合适的任务");
@@ -68,36 +93,6 @@ public class TaskParsener implements TaskRequestListener {
         }
         MyLog.task("========parserJsonOver=======准备去播放===== " + tag + " / " + list.size());
         taskView.backTaskList(list, tag);
-
-
-        //不再从客户端获取数据
-//        taskMudel.getPlayTaskListFormDb(new TaskGetDbListener() {
-//            @Override
-//            public void getTaskFromDb(List<TaskWorkEntity> taskWorkEntityList) {
-//                if (taskWorkEntityList == null || taskWorkEntityList.size() < 1) {
-//                    MyLog.task("========parserJsonOver=======没有获取到任务=====");
-//                    taskView.finishMyShelf("没有合适的任务");
-//                    return;
-//                }
-//                MyLog.task("========parserJsonOver=======准备去播放===== " + tag + " / " + taskWorkEntityList.size());
-//                taskView.backTaskList(taskWorkEntityList, tag);
-//            }
-//
-//            @Override
-//            public void getTaskTigerFromDb(TaskWorkEntity taskWorkEntity) {
-//
-//            }
-//        }, "========请求解析完成，准备去播放=====", TaskModelUtil.DEL_LASTDATE_ONLY);
-    }
-
-    @Override
-    public void finishMySelf(String errorDesc) {
-        TaskWorkService.setCurrentTaskType(TaskWorkService.TASK_TYPE_DEFAULT, "解析完成，这里恢复原始状态");
-        MyLog.task("=========finishMySelf========" + errorDesc);
-        if (taskView == null) {
-            return;
-        }
-        taskView.finishMyShelf(errorDesc);
     }
 
     /**
@@ -166,22 +161,5 @@ public class TaskParsener implements TaskRequestListener {
         }
         taskMudel.checkDownLimit(limitListener);
     }
-
-
-    @Override
-    public void modifyTxtInfoStatues(boolean isSuccess, String desc) {
-
-    }
-
-    /***
-     * 判断取播放下一个节目，playTaskActivity界面调用
-     * @param isBack
-     * @param listPm
-     */
-    @Override
-    public void playNextProgram(boolean isBack, List<SceneEntity> listPm, int tag) {
-
-    }
-
 
 }

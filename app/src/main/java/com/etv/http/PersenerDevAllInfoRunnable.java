@@ -330,7 +330,6 @@ public class PersenerDevAllInfoRunnable implements Runnable {
                     return;
                 }
             }
-            DbFontInfo.clearAllData();
             for (int i = 0; i < num; i++) {
                 JSONObject jsonDate = jsonArray.getJSONObject(i);
                 int fontId = jsonDate.getInt("id");

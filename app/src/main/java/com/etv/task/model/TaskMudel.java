@@ -50,16 +50,6 @@ public interface TaskMudel {
     void getPlayTaskTigerFormDb(TaskGetDbListener listener, String printTag);
 
     /**
-     * 新接口
-     * 获取更具任务列表，获取下载地址
-     *
-     * @param lists
-     * @param taskGetDownListListener
-     * @return
-     */
-    void getTaskDownListInfoFromDbByTaskIdRunnable(List<TaskWorkEntity> lists, TaskGetDownListListener taskGetDownListListener, String printTag);
-
-    /**
      * 检查当前有没有下载资格
      *
      * @param listener

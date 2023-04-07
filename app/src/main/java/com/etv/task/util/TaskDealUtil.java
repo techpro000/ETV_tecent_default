@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 
@@ -133,7 +134,7 @@ public class TaskDealUtil {
 
             width = StringToFloat(cpEntity.getCoWidth());
             height = StringToFloat(cpEntity.getCoHeight());
-            System.out.println("aaaaaaaaaaaaaa ====diff布局的坐标点-aab--> " + width+"/");
+            System.out.println("aaaaaaaaaaaaaa ====diff布局的坐标点-aab--> " + width + "/");
             PositionEntity positionEntity = new PositionEntity(leftPosition, topPosition, width, height);
             logCpPosition("==pmResolutionType=positionEntity=" + positionEntity.toString(), false);
             return positionEntity;
@@ -169,7 +170,7 @@ public class TaskDealUtil {
         logCpPosition("==pmResolutionType=pmWidth=" + pmWidth + " / " + pmHeight, false);
         int devScreenWidth = SharedPerUtil.getScreenWidth();
         int devScreenHeight = SharedPerUtil.getScreenHeight();
-        float  jujleWidthSize = (float) (pmWidth * 1.0 / devScreenWidth);
+        float jujleWidthSize = (float) (pmWidth * 1.0 / devScreenWidth);
         float jujleWHeightSize = (float) (pmHeight * 1.0 / devScreenHeight);
         logCpPosition("==pmResolutionType=pmWidth=" + devScreenWidth + " / " + devScreenHeight
                 + " /jujleWidthSize=" + jujleWidthSize + " / " + jujleWHeightSize, true);
@@ -1301,11 +1302,13 @@ public class TaskDealUtil {
     /***
      * 判断任务素材是否存在或者下载完毕
      * @param mpListEntities
+     * true   都存在
+     * false  文件不齐全
      * @return
      */
     public static boolean compairMpListFileExict(List<MpListEntity> mpListEntities) {
         if (mpListEntities == null || mpListEntities.size() < 1) {
-            return true;
+            return false;
         }
         boolean isBack = true;
         for (MpListEntity mpListEntity : mpListEntities) {
@@ -1314,14 +1317,20 @@ public class TaskDealUtil {
                 break;
             }
             String backFilePath = mpListEntity.getUrl();
-            if (backFilePath == null || backFilePath.length() < 3) {
+            MyLog.cdl("===isFileExice==backFilePath=" + backFilePath);
+            if (TextUtils.isEmpty(backFilePath)) {
                 isBack = false;
                 break;
             }
-            String downName = backFilePath.substring(backFilePath.lastIndexOf("/") + 1, backFilePath.length());
+            String downName = backFilePath.substring(backFilePath.lastIndexOf("/") + 1);
             String saveFilePath = AppInfo.BASE_TASK_URL() + "/" + downName;
             String fileLength = mpListEntity.getSize();
+            File file = new File(saveFilePath);
+            if (file.exists()) {
+                MyLog.cdl("===isFileExice==fileLength=" + fileLength + "  / " + file.length());
+            }
             boolean isFileExice = FileUtil.ifFileHasExict(saveFilePath, fileLength);
+            MyLog.cdl("===isFileExice===" + isFileExice + "  / " + saveFilePath);
             if (!isFileExice) {
                 isBack = false;
                 break;
@@ -1578,9 +1587,9 @@ public class TaskDealUtil {
         MyLog.playTask("=======screen=====4k support=" + Support + " / videoList=" + videoList.get(0).getUrl());
         if (Support) {
             MyLog.video("=====screen======其他转=主板===Surface");
-            if (CpuModel.getMobileType().equals(CpuModel.CPU_MODEL_T982) ){
+            if (CpuModel.getMobileType().equals(CpuModel.CPU_MODEL_T982)) {
                 generatorView = new ViewVideoGenertrator(context, cpEntity, leftPosition, topPosition, width, height, videoList, AppInfo.PROGRAM_POSITION_MAIN, false);
-            }else {
+            } else {
                 generatorView = new ViewVideoSurfaceGenertrator(context, cpEntity, leftPosition, topPosition, width, height, videoList, AppInfo.PROGRAM_POSITION_MAIN, false);
             }
         } else {

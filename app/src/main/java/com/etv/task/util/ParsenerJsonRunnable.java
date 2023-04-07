@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.etv.config.AppConfig;
 import com.etv.config.AppInfo;
 import com.etv.service.EtvService;
 import com.etv.task.db.DBTaskUtil;
@@ -15,12 +14,9 @@ import com.etv.task.entity.SceneEntity;
 import com.etv.task.entity.TaskWorkEntity;
 import com.etv.task.entity.TextInfo;
 import com.etv.task.model.TaskRequestListener;
-import com.etv.util.ConsumerUtil;
 import com.etv.util.MyLog;
 import com.etv.util.SharedPerManager;
-import com.etv.util.SharedPerUtil;
 import com.etv.util.SimpleDateUtil;
-import com.etv.util.system.CpuModel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,6 +24,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/***
+ * 任务解析
+ */
 public class ParsenerJsonRunnable implements Runnable {
 
     private String json;
@@ -45,20 +44,19 @@ public class ParsenerJsonRunnable implements Runnable {
     public void run() {
         if (isParsenerNet) {  //网络模式节目解析
             if (json == null || json.length() < 8) {
-                parserJsonOver("网络任务 = 解析异常,没有相关的 JSON 数据");
+                taskRequestListener.parserJsonOver("网络任务 = 解析异常,没有相关的 JSON 数据", null);
                 return;
             }
             List<TaskWorkEntity> taskWorkEntityList = parsenerTaskEntity(json);
-            MyLog.d("liujk", "服务器任务 size:" + taskWorkEntityList.size());
             taskRequestListener.parserJsonOver("解析数据完成", taskWorkEntityList);
             return;
         }
         //离线单机任务
-        if (json == null || json.length() < 8) {
-            parserJsonOver("单机软件 = 解析异常,没有相关的 JSON 数据");
-            return;
-        }
-        parsenerSingleTaskEntity(json);
+//        if (json == null || json.length() < 8) {
+//            parserJsonOver("单机软件 = 解析异常,没有相关的 JSON 数据");
+//            return;
+//        }
+//        parsenerSingleTaskEntity(json);
     }
 
     /***
@@ -78,26 +76,22 @@ public class ParsenerJsonRunnable implements Runnable {
             //如果解析到节目数据，清理数据库，重新保存
             for (int i = 0; i < lengthArray; i++) {
                 JSONObject jsonData = jsonArray.getJSONObject(i);
-                String taskid = jsonData.getString("id");
-                String etName = jsonData.getString("etName");
                 String etLevel = jsonData.getString("etLevel"); //1替换 2追加 3插播  4同步  5触发
                 Log.e("TAG", "parsenerTaskEntity: " + etLevel);
                 if (etLevel.contains(AppInfo.TASK_PLAY_PLAY_SAME)) {
                     MyLog.task("=====任务的数据=当前同步关闭直接跳过任务=");
                     continue;
                 }
-                String startDate = null;
-                String startTime = null;
+                String taskid = jsonData.getString("id");
+                String etName = jsonData.getString("etName");
+                String startDate = jsonData.getString("etStartDate");
+                String startTime = jsonData.getString("etStartTime");
 //              修改任务的起始时间
-                if (etLevel.equals("1")) {
+                if (etLevel.equals(AppInfo.TASK_PLAY_REPLACE)) {
                     startDate = "1990-01-01";
                     startTime = jsonData.getString("etStartTime");
-                    Log.e("TAG", "parsenerTaskEntity: " + startDate + "////" + startTime);
-                } else {
-                    startDate = jsonData.getString("etStartDate");
-                    startTime = jsonData.getString("etStartTime");
-                    Log.e("TAG", "parsenerTaskEntity: " + startDate + "////" + startTime);
                 }
+                MyLog.task("parsenerTaskEntity: " + startDate + "/" + startTime);
                 String etTaskType = jsonData.getString("etTaskType");  // 1普通节目任务 2双屏异显任务
                 String endDate = jsonData.getString("etEndDate");
                 String endTime = jsonData.getString("etEndTime");
@@ -147,29 +141,25 @@ public class ParsenerJsonRunnable implements Runnable {
                 if (endDateTask < currentDate) { //过期的任务
                     MyLog.task("=====当前任务的结束时间在当前时候之前，删除任务");
                     delTaskByIdOrParsenError("111当前任务的结束时间在当前时候之前，删除任务", taskid);
+                    continue;
                 }
                 if (endDateTask == currentDate) {  //当天的任务，就比任务的结束时间
                     if (endTimeTask < currentHoMin) {
                         MyLog.task("=====当前任务的结束时间在当前时候之前，删除任务");
                         delTaskByIdOrParsenError("000当前任务的结束时间在当前时候之前，删除任务", taskid);
                     }
+                    continue;
                 }
-                //解析保存任务到数据库
                 //保存成功并且是普通任务
                 String pmList = jsonData.getString("pmList");
                 MyLog.task("=====节目列表=" + pmList);
                 List<PmListEntity> pmListEntityList = parsenerPmList(taskid, etLevel, pmList, etIsLinkScreeen);
                 workEntity.setPmListEntities(pmListEntityList);
-
                 taskWorkEntityList.add(workEntity);
-
-
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        parserJsonOver("任务解析完成--往界面进行回调");
-
         return taskWorkEntityList;
     }
 
@@ -180,97 +170,96 @@ public class ParsenerJsonRunnable implements Runnable {
      * @param data
      */
     public void parsenerSingleTaskEntity(String data) {
-        try {
-            if (data == null || TextUtils.isEmpty(data)) {
-                finishMySelf("JSON异常，解析停止");
-                return;
-            }
-            MyLog.playTask("clearAllDbInfo 8");
-            DBTaskUtil.clearAllDbInfo("parsenerSingleTaskEntity");
-            JSONObject jsonData = new JSONObject(data);
-            String taskid = jsonData.getString("id");
-            String etName = jsonData.getString("etName");
-            String etLevel = jsonData.getString("etLevel"); //1替换 2追加 3插播
-            String etTaskType = jsonData.getString("etTaskType");  // 1普通节目任务 2双屏异显任务
-            String startDate = "2000-01-01";        //开始日期
-            String startTime = "00:00:00";          //开始时间
-            String endDate = "2100-01-01";          //结束日期
-            String endTime = "23:59:59";            //单机时间
-            String etMon = jsonData.getString("etMon");
-            String etTue = jsonData.getString("etTue");
-            String etWed = jsonData.getString("etWed");
-            String etThur = jsonData.getString("etThur");
-            String etFri = jsonData.getString("etFri");
-            String etSat = jsonData.getString("etSat");
-            String etSun = jsonData.getString("etSun");
-            int etIsLinkScreeen = 1;   //是否联动
-            if (jsonData.toString().contains("etIsLinkScreeen")) {
-                String linkScreen = jsonData.getString("etIsLinkScreeen").trim();
-                if (linkScreen != null && linkScreen.length() > 0) {
-                    etIsLinkScreeen = Integer.parseInt(linkScreen);
-                }
-            }
-            TaskWorkEntity workEntity = new TaskWorkEntity();
-            workEntity.setEtIsLinkScreeen(etIsLinkScreeen);
-            workEntity.setTaskId(taskid);
-            workEntity.setEtName(etName);
-            workEntity.setStartDate(startDate);
-            workEntity.setEndDate(endDate);
-            workEntity.setStartTime(startTime);
-            workEntity.setEndTime(endTime);
-            workEntity.setEtMon(etMon);
-            workEntity.setEtTue(etTue);
-            workEntity.setEtWed(etWed);
-            workEntity.setEtThur(etThur);
-            workEntity.setEtFri(etFri);
-            workEntity.setEtSat(etSat);
-            workEntity.setEtSun(etSun);
-            workEntity.setEtLevel(etLevel);
-            workEntity.setEtTaskType(etTaskType);
-            workEntity.setSendTime(SimpleDateUtil.StringToLongTime("2019-07-01 11:50:03"));
-            //获取任务的结束日期
-            long endDateTask = SimpleDateUtil.formatStringtoDate(endDate);
-            long endTimeTask = SimpleDateUtil.formatStringTime(endTime);
-            long currentDate = SimpleDateUtil.getCurrentDateLong();
-            long currentHoMin = SimpleDateUtil.getCurrentHourMinSecond();
-            MyLog.task("===任务的中止日期=" + endDateTask + " / " + endTimeTask + " /当前时间=" + currentDate + " / " + currentHoMin);
-            if (endDateTask < currentDate) { //过期的任务
-                MyLog.task("=====当前任务的结束时间在当前时候之前，删除任务");
-                delTaskByIdOrParsenError("111当前任务的结束时间在当前时候之前，删除任务", taskid);
-            }
-            if (endDateTask == currentDate) {
-                //当天的任务，就比任务的结束时间
-                if (endTimeTask < currentHoMin) {
-                    MyLog.task("=====当前任务的结束时间在当前时候之前，删除任务");
-                    delTaskByIdOrParsenError("000当前任务的结束时间在当前时候之前，删除任务", taskid);
-                }
-            }
-            boolean isSaveTask = DBTaskUtil.saveTaskEntity(workEntity);
-            MyLog.task("=====保存任务到数据库状态000===" + isSaveTask + " /taskId=" + taskid);
-            if (isSaveTask) {
-                //保存成功并且是普通任务
-                String pmList = jsonData.getString("pmList");
-                MyLog.task("=====节目列表=" + pmList);
-                parsenerPmList(taskid, etLevel, pmList, etIsLinkScreeen);
-            } else {
-                finishMySelf("任务解析失败");
-            }
-        } catch (Exception e) {
-            MyLog.ExceptionPrint("解析任务error: " + e.toString());
-            e.printStackTrace();
-        }
-        parserJsonOver("parsenerSingleTaskEntity");
+//        try {
+//            if (data == null || TextUtils.isEmpty(data)) {
+//                finishMySelf("JSON异常，解析停止");
+//                return;
+//            }
+//            MyLog.playTask("clearAllDbInfo 8");
+//            DBTaskUtil.clearAllDbInfo("parsenerSingleTaskEntity");
+//            JSONObject jsonData = new JSONObject(data);
+//            String taskid = jsonData.getString("id");
+//            String etName = jsonData.getString("etName");
+//            String etLevel = jsonData.getString("etLevel"); //1替换 2追加 3插播
+//            String etTaskType = jsonData.getString("etTaskType");  // 1普通节目任务 2双屏异显任务
+//            String startDate = "2000-01-01";        //开始日期
+//            String startTime = "00:00:00";          //开始时间
+//            String endDate = "2100-01-01";          //结束日期
+//            String endTime = "23:59:59";            //单机时间
+//            String etMon = jsonData.getString("etMon");
+//            String etTue = jsonData.getString("etTue");
+//            String etWed = jsonData.getString("etWed");
+//            String etThur = jsonData.getString("etThur");
+//            String etFri = jsonData.getString("etFri");
+//            String etSat = jsonData.getString("etSat");
+//            String etSun = jsonData.getString("etSun");
+//            int etIsLinkScreeen = 1;   //是否联动
+//            if (jsonData.toString().contains("etIsLinkScreeen")) {
+//                String linkScreen = jsonData.getString("etIsLinkScreeen").trim();
+//                if (linkScreen != null && linkScreen.length() > 0) {
+//                    etIsLinkScreeen = Integer.parseInt(linkScreen);
+//                }
+//            }
+//            TaskWorkEntity workEntity = new TaskWorkEntity();
+//            workEntity.setEtIsLinkScreeen(etIsLinkScreeen);
+//            workEntity.setTaskId(taskid);
+//            workEntity.setEtName(etName);
+//            workEntity.setStartDate(startDate);
+//            workEntity.setEndDate(endDate);
+//            workEntity.setStartTime(startTime);
+//            workEntity.setEndTime(endTime);
+//            workEntity.setEtMon(etMon);
+//            workEntity.setEtTue(etTue);
+//            workEntity.setEtWed(etWed);
+//            workEntity.setEtThur(etThur);
+//            workEntity.setEtFri(etFri);
+//            workEntity.setEtSat(etSat);
+//            workEntity.setEtSun(etSun);
+//            workEntity.setEtLevel(etLevel);
+//            workEntity.setEtTaskType(etTaskType);
+//            workEntity.setSendTime(SimpleDateUtil.StringToLongTime("2019-07-01 11:50:03"));
+//            //获取任务的结束日期
+//            long endDateTask = SimpleDateUtil.formatStringtoDate(endDate);
+//            long endTimeTask = SimpleDateUtil.formatStringTime(endTime);
+//            long currentDate = SimpleDateUtil.getCurrentDateLong();
+//            long currentHoMin = SimpleDateUtil.getCurrentHourMinSecond();
+//            MyLog.task("===任务的中止日期=" + endDateTask + " / " + endTimeTask + " /当前时间=" + currentDate + " / " + currentHoMin);
+//            if (endDateTask < currentDate) { //过期的任务
+//                MyLog.task("=====当前任务的结束时间在当前时候之前，删除任务");
+//                delTaskByIdOrParsenError("111当前任务的结束时间在当前时候之前，删除任务", taskid);
+//            }
+//            if (endDateTask == currentDate) {
+//                //当天的任务，就比任务的结束时间
+//                if (endTimeTask < currentHoMin) {
+//                    MyLog.task("=====当前任务的结束时间在当前时候之前，删除任务");
+//                    delTaskByIdOrParsenError("000当前任务的结束时间在当前时候之前，删除任务", taskid);
+//                }
+//            }
+//            boolean isSaveTask = DBTaskUtil.saveTaskEntity(workEntity);
+//            MyLog.task("=====保存任务到数据库状态000===" + isSaveTask + " /taskId=" + taskid);
+//            if (isSaveTask) {
+//                //保存成功并且是普通任务
+//                String pmList = jsonData.getString("pmList");
+//                MyLog.task("=====节目列表=" + pmList);
+//                parsenerPmList(taskid, etLevel, pmList, etIsLinkScreeen);
+//            } else {
+//                finishMySelf("任务解析失败");
+//            }
+//        } catch (Exception e) {
+//            MyLog.ExceptionPrint("解析任务error: " + e.toString());
+//            e.printStackTrace();
+//        }
+//        parserJsonOver("parsenerSingleTaskEntity");
     }
 
-    private void parserJsonOver(final String desc) {
-        MyLog.task("=====parserJsonOver " + desc);
-        taskRequestListener.parserJsonOver(desc, null);
-        handlerjson.post(new Runnable() {
-            @Override
-            public void run() {
-            }
-        });
-    }
+//    private void parserJsonOver(  String desc) {
+//        handlerjson.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                taskRequestListener.parserJsonOver(desc, null);
+//            }
+//        });
+//    }
 
     private void finishMySelf(final String desc) {
         if (taskRequestListener == null) {
@@ -295,7 +284,6 @@ public class ParsenerJsonRunnable implements Runnable {
     private List<PmListEntity> parsenerPmList(String taskid, String etLevel, String pmList, int etIsLinkScreeen) {
         List<PmListEntity> pmListEntityList = new ArrayList<>();
         try {
-
             pmList = pmList.trim();
             if (TextUtils.isEmpty(pmList) || pmList.length() < 3) { //获取的数据为null
                 delTaskByIdOrParsenError("解析节目获取的数据为null", taskid);
@@ -593,7 +581,8 @@ public class ParsenerJsonRunnable implements Runnable {
                 String volume = jsonMplist.getString("volume");          //音量
                 String parentCoId = DBTaskUtil.MP_RELATION + "";
                 String type = jsonMplist.getString("type");
-                MpListEntity mpListEntity = new MpListEntity(taskId, mid, cpid, url, playParam, cartoon, size, volume, pmType, parentCoId, type);
+                String md5 = jsonMplist.optString("md5");
+                MpListEntity mpListEntity = new MpListEntity(taskId, mid, cpid, url, playParam, cartoon, size, volume, pmType, parentCoId, type, md5);
                 mpListEntityList.add(mpListEntity);
             }
         } catch (Exception e) {
@@ -716,6 +705,7 @@ public class ParsenerJsonRunnable implements Runnable {
                 String cartoon = jsonMplist.getString("cartoon");      //动画特效
                 String volume = jsonMplist.getString("volume");
                 String type = jsonMplist.getString("type");
+                String md5 = jsonMplist.optString("md5");
                 if (playParam == null || playParam.length() < 1) {
                     playParam = "10";
                 }
@@ -724,7 +714,7 @@ public class ParsenerJsonRunnable implements Runnable {
                     url = url.replace("\\", "/");
                 }
                 String parentCoId = DBTaskUtil.MP_DEFAULT + "";
-                MpListEntity mpListEntity = new MpListEntity(taskId, mid, cpid, url, playParam, cartoon, size, volume, pmType, parentCoId, type);
+                MpListEntity mpListEntity = new MpListEntity(taskId, mid, cpid, url, playParam, cartoon, size, volume, pmType, parentCoId, type, md5);
                 mpListEntityList.add(mpListEntity);
             }
         } catch (Exception e) {

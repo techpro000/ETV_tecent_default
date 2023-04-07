@@ -17,6 +17,7 @@ public class DownFileEntity {
     int downSpeed;       //下载的速度
     long fileLength;
     String taskId;
+    String fileMd5;
 
     public DownFileEntity() {
 
@@ -35,7 +36,7 @@ public class DownFileEntity {
      * @param fileLength
      */
     public DownFileEntity(int downState, int progress, boolean isDown, String desc,
-                          String downPath, String savePath, int downSpeed, long fileLength, String taskId) {
+                          String downPath, String savePath, int downSpeed, long fileLength, String taskId, String fileMd5) {
         this.downState = downState;
         this.progress = progress;
         this.isDown = isDown;
@@ -45,19 +46,17 @@ public class DownFileEntity {
         this.downSpeed = downSpeed;
         this.fileLength = fileLength;
         this.taskId = taskId;
+        this.fileMd5 = fileMd5;
     }
 
-//    public DownFileEntity(int downState, int progress, boolean isDown, String desc,
-//                          String downPath, String savePath, int downSpeed) {
-//        this.downState = downState;
-//        this.progress = progress;
-//        this.isDown = isDown;
-//        this.desc = desc;
-//        this.downPath = downPath;
-//        this.savePath = savePath;
-//        this.downSpeed = downSpeed;
-//    }
 
+    public String getFileMd5() {
+        return fileMd5;
+    }
+
+    public void setFileMd5(String fileMd5) {
+        this.fileMd5 = fileMd5;
+    }
 
     public String getTaskId() {
         return taskId;

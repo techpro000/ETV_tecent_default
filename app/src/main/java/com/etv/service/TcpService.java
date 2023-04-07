@@ -156,7 +156,6 @@ public class TcpService extends Service implements SocketWebListener {
     private static final int TIMER_ON_NOW_CHECK_SDCARD = 5658;  //定时到了，检测SD卡信息内存
     private static final int TIMER_ON_NOW_HEART_TO_WEB = 5659;  //定时到了，检测心跳
     private static final int CHECK_BGG_IMAGE_STATUES = 5665;  //检测背景图得状态
-    private static final int SOCKET_LINE_SUCCESS_UPDATE_TASK_INFO = 5668;  //服务器连接成功,同步任务信息
     private static final int MESSAGE_TTS_SPESK = 5669;  //语音TTS
 
     private boolean isOnlineCheck = false;
@@ -171,10 +170,6 @@ public class TcpService extends Service implements SocketWebListener {
                     String tts = (String) msg.obj;
                     MyLog.message("====语音TTS===" + tts);
                     startToSpeak(tts);
-                    break;
-                case SOCKET_LINE_SUCCESS_UPDATE_TASK_INFO:
-                    //延迟十秒去同步任务信息
-                    sendBroadCastToView(TaskWorkService.GET_TASK_FROM_WEB_NO_DOWN);
                     break;
                 case CHECK_BGG_IMAGE_STATUES://背景图检测下载相关得
                     //获取字体信息
@@ -566,7 +561,7 @@ public class TcpService extends Service implements SocketWebListener {
         ImageCaptureUtil.captureScreen(TcpService.this, new CaptureImageListener() {
             @Override
             public void getCaptureImagePath(boolean isSuucess, String imagePath) {
-                MyLog.update("=========截圖返回-------------" + isSuucess+" / "+imagePath, true);
+                MyLog.update("=========截圖返回-------------" + isSuucess + " / " + imagePath, true);
                 updateScreenshotToWeb();
             }
         });
@@ -860,7 +855,6 @@ public class TcpService extends Service implements SocketWebListener {
             handler.sendEmptyMessage(CHECK_POWER_ON_OFF);  //去更新定时开关机
             handler.sendEmptyMessageDelayed(CHECK_BGG_IMAGE_STATUES, 3000);  //去检测背景图相关信息
             getSystemImfoFormWeb();      //更新系统设置的信息
-            handler.sendEmptyMessageDelayed(SOCKET_LINE_SUCCESS_UPDATE_TASK_INFO, 10 * 1000);
         }
     }
 

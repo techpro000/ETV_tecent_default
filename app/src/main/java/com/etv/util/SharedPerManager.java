@@ -641,19 +641,25 @@ public class SharedPerManager {
 
     //获取限制速度
     public static int getLimitSpeed() {
-        int limitspeed = ((int) EtvApplication.getInstance().getData("limitspeed", 2000));
+        if (limitSpeedCache != -1) {
+            return limitSpeedCache;
+        }
+        limitSpeedCache = ((int) EtvApplication.getInstance().getData("limitspeed", 2000));
         String ipAddress = getWebHost();
         if (ipAddress.contains("119.23.220.53") || ipAddress.contains(ApiInfo.IP_DEFAULT_URL_WEBSOCKET)) {
-            limitspeed = 1500;
+            limitSpeedCache = 1500;
         }
         if (ipAddress.contains("139.159.152.78") || ipAddress.contains(ApiInfo.IP_DEFAULT_URL_SOCKET)) {
-            limitspeed = 1500;
+            limitSpeedCache = 1500;
         }
-        return limitspeed;
+        return limitSpeedCache;
     }
+
+    private static int limitSpeedCache = -1;
 
     //设置下载速度
     public static void setLimitSpeed(int limitspeed) {
+        limitSpeedCache = limitspeed;
         EtvApplication.getInstance().saveData("limitspeed", limitspeed);
     }
 

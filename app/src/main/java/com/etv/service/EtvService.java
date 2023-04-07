@@ -121,7 +121,7 @@ public class EtvService extends Service {
             } else if (action.equals(AppInfo.RED_LINE_LISTENER_IN)) {
                 MyLog.phone("IO广播==人来了==");
                 if (etvParsener == null) {
-                    Log.e(TAG, "onReceive: "+"99999999" );
+                    Log.e(TAG, "onReceive: " + "99999999");
                     return;
                 }
                 etvParsener.dealRedGpioInfoPeronComeIn();
@@ -163,7 +163,7 @@ public class EtvService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        if(APP_TYPE ==APP_TYPE_JIANGJUN_YUNCHENG){
+        if (APP_TYPE == APP_TYPE_JIANGJUN_YUNCHENG) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 NotificationChannel channel = manager.getNotificationChannel(getPackageName());
@@ -182,41 +182,14 @@ public class EtvService extends Service {
         initParsener();
         initReceiver();
         initTimeClick();
-        Message msgm=  new Message();
-        msgm.what=SET_SYSTEM_TIME;
-        handler.sendMessageDelayed(msgm,2000);
+        Message msgm = new Message();
+        msgm.what = SET_SYSTEM_TIME;
+        handler.sendMessageDelayed(msgm, 2000);
     }
 
     private void initTimeClick() {
         TimerDealUtil.getInstance().startToTimerMinRxJava();
     }
-
-
-//    private void startToPlayTriggleActivity(int playPosition) {
-//        int model = TaskWorkService.getCurrentTaskType();
-//        if (model != TaskWorkService.TASK_TYPE_DEFAULT) {
-//            return;
-//        }
-//        if (PlayTaskTriggerActivity.ISVIEW_FORST) {
-//            Log.e(LogUtils.TAG, "startToPlayTriggleActivity: "+playPosition);
-//            //在前台  发广播  把位置发过去
-//            Intent intentSendPosition = new Intent();
-//            intentSendPosition.setAction("thePositionGpio");
-//            intentSendPosition.putExtra("theGpioDeskPosition", playPosition);
-//            sendBroadCastToViewToView(intentSendPosition);
-//            return;
-//        } else {
-//            //不在前台  启动界面， 传递位置
-//            Intent intent = new Intent(this, PlayTaskTriggerActivity.class);
-//            intent.putExtra("theGpioNotDeskPosition", playPosition);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intent);
-//        }
-//    }
-
-
-
-
 
     /***
      * @param isBackOn
@@ -305,7 +278,7 @@ public class EtvService extends Service {
                     ProjectorUtil.setProjectorSavePath(EtvService.this, "外置存储设备插入");
                     String path = (String) msg.obj;
                     initParsener();
-                    MyLog.usb("=======准备读取USB 内容===="+path);
+                    MyLog.usb("=======准备读取USB 内容====" + path);
                     etvParsener.SDorUSBcheckIn(EtvService.this, path);
                     break;
                 case SEARCH_MESSAGE_SDCARD_OUT:  //SD out
@@ -313,7 +286,7 @@ public class EtvService extends Service {
                     ProjectorUtil.setProjectorSavePath(EtvService.this, "外置存储设备拔出");
                     break;
                 case SET_SYSTEM_TIME:
-                    if (EtvParsener.isDealTime){
+                    if (EtvParsener.isDealTime) {
                         return;
                     }
                     initParsener();

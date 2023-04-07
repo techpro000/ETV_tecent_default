@@ -24,6 +24,22 @@ public class DbFontInfo {
         if (entity == null) {
             return isAddBack;
         }
+        List<FontEntity> fontEntityList = getFontInfoList();
+        if (fontEntityList == null || fontEntityList.size() < 1) {
+            return entity.save();
+        }
+        boolean hasSame = false;
+        String fontNameSane = entity.getFontName();
+        for (FontEntity fontEntity : fontEntityList) {
+            String fontName = fontEntity.getFontName();
+            if (fontNameSane.equals(fontName)) {
+                hasSame = true;
+                break;
+            }
+        }
+        if (hasSame) {
+            return true;
+        }
         try {
             isAddBack = entity.save();
         } catch (Exception e) {

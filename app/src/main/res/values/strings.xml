@@ -646,7 +646,7 @@
     <string name="switch_local_server">即将切换成局域网或私有云模式</string>
     <string name="switch_yun_server">即将切换成云服务器模式</string>
     <string name="str_reboot_ing">正在重启</string>
-    <string name="no_resource_need_play">没有素材信息需要播放</string>
+    <string name="no_resource_need_play">文件校验不通过</string>
     <string name="delete_or_not_delete">是否删除 </string>
     <string name="text_file"> 文件 ？</string>
     <string name="delete_file">删除</string>

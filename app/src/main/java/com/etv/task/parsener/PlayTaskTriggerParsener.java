@@ -126,13 +126,11 @@ public class PlayTaskTriggerParsener {
     List<CacheMemory> genratorViewList = new ArrayList<CacheMemory>();
 
     private void parsenerTaskInfo(TaskWorkEntity taskWorkEntity) {
-        Log.e("TAG", "getPmFromTask: " + 1011011011);
         List<MpListEntity> mpListEntities = DBTaskUtil.getMpListInfoAll();
         boolean isFileExict = TaskDealUtil.compairMpListFileExict(mpListEntities);
-//        MyLog.playTask("==========比对数据库文件是否存在==比对完成，是否全部存在" + isFileExict);
+        MyLog.playTask("==========比对数据库文件是否存在==比对完成，是否全部存在" + isFileExict);
         if (!isFileExict) {
             playTaskView.showViewError("没有素材信息需要播放");
-
             return;
         }
         sceneEntityListCache.clear();
@@ -145,12 +143,11 @@ public class PlayTaskTriggerParsener {
             playTaskView.showViewError("获取任务场景失败");
             return;
         }
-
         getPmFromTask(currentSencenPosition, "parsenerTaskFromDb");
     }
 
     private void getPmFromTask(int position, String tag) {
-        Log.e("TAG", "getPmFromTask: " + 6666666);
+        Log.e("TAG", "getPmFromTask: " + tag);
         SceneEntity currentSceneEntity = sceneEntityListCache.get(position);
         if (currentSceneEntity == null) {
             playTaskView.showViewError("获取场景信息异常");
@@ -169,7 +166,6 @@ public class PlayTaskTriggerParsener {
             parperToShowView(cpListEntity);
         }
     }
-
 
     public void parperToShowView(CpListEntity cpEntity) {
         Log.e("TAG", "getPmFromTask: " + 99999999);

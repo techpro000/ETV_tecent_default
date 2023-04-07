@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litepal>
     <dbname value="etv_db_im" />
-    <version value="118" />
+    <version value="121" />
 
     <list>
         <mapping class="com.etv.entity.PoliceNumEntity" />

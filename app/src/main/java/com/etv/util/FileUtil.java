@@ -5,12 +5,21 @@ import android.util.Log;
 import com.etv.config.AppInfo;
 import com.etv.entity.StorageInfo;
 import com.etv.http.util.FileWriteToSdInfoRunnable;
+import com.etv.listener.FileMd5CompaireListener;
 import com.etv.service.EtvService;
+import com.etv.task.entity.LocalEntity;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 public class FileUtil {
 
@@ -21,7 +30,7 @@ public class FileUtil {
         return deleteDirOrFile(new File(Path), tag);
     }
 
-    private static boolean deleteDirOrFile(File file, String tag) {
+    public static boolean deleteDirOrFile(File file, String tag) {
         MyLog.cdl("文件删除调用====" + (file.getPath()) + " / " + tag, true);
         if (file.isFile()) {
             file.delete();
@@ -59,26 +68,23 @@ public class FileUtil {
         if (!fileSave.exists()) {
             MyLog.task("=======比对数据库文件是否存在==5555=文件不存在，直接下载:" + saveFilePath);
             return false;
-        } else {  //文件存在去比对文件大小
-            long fileDownLength = fileSave.length();
-            if (fileDownLength < 1024 * 2) {
-                MyLog.task("=======比对数据库文件是否存在==5555=本地=是文件太小了，直接默认fale==" + fileDownLength + " / " + saveFilePath);
-                FileUtil.deleteDirOrFilePath(saveFilePath, "==比对文件，本地文件小于5 kb，删除文件重新下载====");
-                return false;
-            }
-            long downFileLengthLong = Long.parseLong(fileLength);
-            long distanceSize = Math.abs(downFileLengthLong - fileDownLength);
-            MyLog.task("=======比对数据库文件是否存在==5555=本地=" + fileDownLength + " / " + downFileLengthLong + " / " + distanceSize + " / " + saveFilePath);
-            if (distanceSize > (10 * 1024)) {
-                //本地文件大于下载得文件，重新下载
-                if ((fileDownLength - downFileLengthLong) > 1024 * 10) {
-                    MyLog.task("=======比对数据库文件是否存在==5555=本地文件太大，直接删除重新下载=" + saveFilePath);
-                    FileUtil.deleteDirOrFilePath(saveFilePath, "==比对文件，本地文件比服务器得文件大,直接删除，重新下载");
-                }
-                return false;
-            }
         }
-        return true;
+        //文件存在去比对文件大小
+        long fileDownLength = fileSave.length();
+        if (fileDownLength < 1024 * 2) {
+            MyLog.task("=======比对数据库文件是否存在==5555=本地=是文件太小了，直接默认fale==" + fileDownLength + " / " + saveFilePath);
+            FileUtil.deleteDirOrFilePath(saveFilePath, "==比对文件，本地文件小于5 kb，删除文件重新下载====");
+            return false;
+        }
+        long downFileLengthLong = Long.parseLong(fileLength);
+        if (downFileLengthLong == fileDownLength) {
+            return true;
+        }
+        if (downFileLengthLong > fileDownLength) {
+            FileUtil.deleteDirOrFilePath(saveFilePath, "==比对文件，本地文件比服务器得文件大,直接删除，重新下载");
+            return false;
+        }
+        return false;
     }
 
 
@@ -234,6 +240,54 @@ public class FileUtil {
         }
     }
 
+    public static List<LocalEntity> getFiles() {
+        List<LocalEntity> entityList = new ArrayList<>();
+        File file = new File(AppInfo.BASE_TASK_URL());
+        File[] files = file.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            File childFile = files[i];
+            String childName = childFile.getName();
+            long fileSize = formetFileSize(childFile);
+            MyLog.d("liujk", "文件名称： " + childName + " 文件大小： " + fileSize);
+            LocalEntity entity = new LocalEntity(childName, String.valueOf(fileSize));
+            entityList.add(entity);
+        }
+        return entityList;
+    }
+
+    private static long formetFileSize(File file) {
+        long fileLength = 0;
+        if (file == null) {
+            return fileLength;
+        }
+        fileLength = file.length();
+        return fileLength;
+    }
+
+
+    /**
+     * 删除单个文件
+     *
+     * @param filePathName 要删除的文件的文件名
+     * @return 单个文件删除成功返回true，否则返回false
+     */
+    public static boolean deleteSingleFile(String filePathName) {
+        File file = new File(filePathName);
+        // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
+        if (file.exists() && file.isFile()) {
+            if (file.delete()) {
+                MyLog.d("liujk", "Copy_Delete.deleteSingleFile: 删除单个文件" + filePathName + "成功！");
+                return true;
+            } else {
+                MyLog.d("liujk", filePathName + "失败！");
+                return false;
+            }
+        } else {
+            MyLog.d("liujk", "删除单个文件失败：" + filePathName + "不存在！");
+            return false;
+        }
+    }
+
     /**
      * 将信息写入SD卡
      *
@@ -244,4 +298,6 @@ public class FileUtil {
         FileWriteToSdInfoRunnable runnable = new FileWriteToSdInfoRunnable(wirteJson, registerPath);
         EtvService.getInstance().executor(runnable);
     }
+
+
 }

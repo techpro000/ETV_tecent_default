@@ -127,7 +127,6 @@ public class PlayTaskParsener {
         tv_video_error = playTaskView.getM11VideoErrorText();
     }
 
-
     public void getTaskToView(String tag) {
         lastUpdateWeatherTime = 0;
         //播放之前先去清理多余得素材
@@ -141,7 +140,6 @@ public class PlayTaskParsener {
             taskModel.getPlayTaskListFormDb(new TaskGetDbListener() {
                 @Override
                 public void getTaskFromDb(List<TaskWorkEntity> list) {
-                    MyLog.playTask("==== getTaskFromDb " + (list == null ? " list == null" : " list size :" + list.size()));
                     if (list == null || list.size() < 1) {
                         MyLog.playTask("======播放界面===没有获取到需要播放的任务，去检查插播消息");
                         checkTxtInsertTask(false, "当前没有任务，去检查字幕插播", false);
@@ -166,7 +164,6 @@ public class PlayTaskParsener {
         } catch (Exception e) {
             MyLog.playTask("==== getPlayTaskListFormDb " + e.toString());
             e.printStackTrace();
-
         }
     }
 
@@ -175,9 +172,10 @@ public class PlayTaskParsener {
      * @param taskWorkEntityList
      */
     private void parsenerTaskFromDb(List<TaskWorkEntity> taskWorkEntityList) {
-        MyLog.playTask("==== parsenerTaskFromDb :" + (taskWorkEntityList == null ? "taskWorkEntityList == null" : taskWorkEntityList.size()));
         List<MpListEntity> mpListEntities = DBTaskUtil.getMpListInfoAll();
+        MyLog.playTask("校验素材信息==000=" + mpListEntities);
         boolean isFileExict = TaskDealUtil.compairMpListFileExict(mpListEntities);
+        MyLog.playTask("校验素材信息==111=" + isFileExict);
         if (!isFileExict) {
             playTaskView.showViewError(context.getString(R.string.no_resource_need_play));
             return;
@@ -190,7 +188,6 @@ public class PlayTaskParsener {
             if (taskWorkEntity == null) {
                 break;
             }
-
             List<SceneEntity> listCacheSenc = DbTaskManager.getSencenEntityFormDbByTask(taskWorkEntity);
             if (listCacheSenc != null && listCacheSenc.size() > 0) {
                 sceneEntityListCache.addAll(listCacheSenc);
@@ -300,7 +297,7 @@ public class PlayTaskParsener {
             String sencenId = currentSceneEntity.getSenceId();   // 场景得ID
             MyLog.playTask("===== 场景ID " + sencenId);
             List<CpListEntity> cpList = DbTaskManager.getComptionFromDbBySenId(sencenId);
-            MyLog.playTask("===== 场景cpList " +  (cpList == null ? "无法获取到" : cpList.size()));
+            MyLog.playTask("===== 场景cpList " + (cpList == null ? "无法获取到" : cpList.size()));
             if (cpList == null || cpList.size() < 1) {
                 playTaskView.showViewError("获取控件异常");
                 return;
@@ -309,8 +306,6 @@ public class PlayTaskParsener {
             //对控件进行排序
             cpCacheList.clear();
             cpCacheList = TaskDealUtil.mathCpListOrder(cpList);
-            MyLog.playTask("====添加到集合的顺序00排序后的个数==" + cpCacheList.size());
-            MyLog.playTask("=====当前播放的场景ID===" + sencenId);
             //如果是互动节目，就要检查触摸返回得时间
             String pmType = currentSceneEntity.getPmType();
             if (pmType.contains(AppInfo.PROGRAM_TOUCH)) {
@@ -891,7 +886,7 @@ public class PlayTaskParsener {
                     MyLog.playTask("===== 文本数据size: " + txtList.size());
                     generatorView = new ViewDateGenerate(context, leftPosition, topPosition, width, height);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
-                    MyLog.playTask("==== textInfo ： "  + txtList.get(0).toString());
+                    MyLog.playTask("==== textInfo ： " + txtList.get(0).toString());
                     generatorView.updateView(txtList.get(0), true);
                     addViewToList(generatorView, coType, false);
                     break;

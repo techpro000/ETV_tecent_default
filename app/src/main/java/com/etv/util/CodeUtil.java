@@ -28,9 +28,6 @@ public class CodeUtil {
     public static String OTHER_KEY_ADD = "012345678901234567890123";
 
     public static String getUniquePsuedoID() {
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_TEST) {
-            return "301F9A852871fa19";
-        }
         String macAddress = getUniqueOnly();
         if (macAddress.length() < 16) {
             macAddress = macAddress + OTHER_KEY_ADD;

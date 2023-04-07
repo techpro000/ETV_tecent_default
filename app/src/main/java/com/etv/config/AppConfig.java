@@ -51,6 +51,7 @@ public class AppConfig {
 
     public static final int APP_TYPE = APP_TYPE_DEFAULT;
 
+
     /***0
      * Socket 连接方式
      * */

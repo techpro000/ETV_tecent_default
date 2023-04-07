@@ -24,9 +24,10 @@ public class MpListEntity extends LitePalSupport {
     private String volume;       //音量大小
     private String type;         //文件得类型
     private String parentCoId;   //关联控件id  -1是普通得控件  有数值得是关联得ID
+    String md5;
 
     public MpListEntity(String taskId, String mid, String cpId, String url, String playParam,
-                        String cartoon, String size, String volume, String pmType, String parentCoId, String type) {
+                        String cartoon, String size, String volume, String pmType, String parentCoId, String type, String md5) {
         this.taskId = taskId;
         this.playParam = playParam;
         this.mid = mid;
@@ -38,6 +39,15 @@ public class MpListEntity extends LitePalSupport {
         this.pmType = pmType;
         this.parentCoId = parentCoId;
         this.type = type;
+        this.md5 = md5;
+    }
+
+    public String getMd5() {
+        return md5;
+    }
+
+    public void setMd5(String md5) {
+        this.md5 = md5;
     }
 
     public String getType() {
@@ -139,6 +149,7 @@ public class MpListEntity extends LitePalSupport {
                 ", url='" + url + '\'' +
                 ", size='" + size + '\'' +
                 ", volume='" + volume + '\'' +
+                ", md5='" + md5 + '\'' +
                 '}';
     }
 }

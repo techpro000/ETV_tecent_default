@@ -12,4 +12,6 @@ public interface TaskGetDownListListener {
      */
     void getTaskDownFileListFromDb(List<TaskDownEntity> list);
 
+
+
 }

@@ -11,7 +11,6 @@ import com.etv.service.TaskWorkService;
 import com.etv.task.entity.CpListEntity;
 import com.etv.task.entity.SceneEntity;
 import com.etv.task.entity.TaskWorkEntity;
-import com.etv.task.util.GetTaskDownFileListRunnable;
 import com.etv.task.util.ParsenerJsonRunnable;
 import com.etv.task.util.TaskGetFromDbRxJava;
 import com.etv.task.util.TaskGetTigerFromDbRXJava;
@@ -36,13 +35,6 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 
 public class TaskModelmpl implements TaskMudel {
-
-    @Override
-    public void getTaskDownListInfoFromDbByTaskIdRunnable(List<TaskWorkEntity> lists, TaskGetDownListListener taskGetDownListListener, String printTag) {
-        MyLog.cdl("=====获取下载列表信息===" + printTag);
-        GetTaskDownFileListRunnable runnable = new GetTaskDownFileListRunnable(lists, taskGetDownListListener);
-        EtvService.getInstance().executor(runnable);
-    }
 
     /**
      * 检查有没有下载资格
@@ -106,21 +98,19 @@ public class TaskModelmpl implements TaskMudel {
     @Override
     public void getPlayTaskListFormDb(TaskGetDbListener listener, String printTag, int delTag) {
         MyLog.task("==从服务器中获取任务==" + printTag);
-//        TaskGetFromDbRunnable runnable = new TaskGetFromDbRunnable(listener, printTag, delTag);
-//        EtvService.getInstance().executor(runnable);
         if (listener == null) {
             return;
         }
         Observable.just(0).map(new Function<Integer, List<TaskWorkEntity>>() {
-            @Override
-            public List<TaskWorkEntity> apply(@NonNull Integer integer) throws Exception {
-                if (taskGetFromDbRxJava == null) {
-                    taskGetFromDbRxJava = new TaskGetFromDbRxJava();
-                }
-                taskGetFromDbRxJava.setPrintTag(delTag);
-                return taskGetFromDbRxJava.getNextPlayTaskListFromDb();
-            }
-        })
+                    @Override
+                    public List<TaskWorkEntity> apply(@NonNull Integer integer) throws Exception {
+                        if (taskGetFromDbRxJava == null) {
+                            taskGetFromDbRxJava = new TaskGetFromDbRxJava();
+                        }
+                        taskGetFromDbRxJava.setPrintTag(delTag);
+                        return taskGetFromDbRxJava.getNextPlayTaskListFromDb();
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<TaskWorkEntity>>() {
@@ -150,14 +140,14 @@ public class TaskModelmpl implements TaskMudel {
         }
         Observable.just(0).map(new Function<Integer, TaskWorkEntity>() {
 
-            @Override
-            public TaskWorkEntity apply(@NonNull Integer integer) throws Exception {
-                if (taskGetTigerFromDbRXJava == null) {
-                    taskGetTigerFromDbRXJava = new TaskGetTigerFromDbRXJava();
-                }
-                return taskGetTigerFromDbRXJava.getTaskTigerFromDb();
-            }
-        }).subscribeOn(Schedulers.io())
+                    @Override
+                    public TaskWorkEntity apply(@NonNull Integer integer) throws Exception {
+                        if (taskGetTigerFromDbRXJava == null) {
+                            taskGetTigerFromDbRXJava = new TaskGetTigerFromDbRXJava();
+                        }
+                        return taskGetTigerFromDbRXJava.getTaskTigerFromDb();
+                    }
+                }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<TaskWorkEntity>() {
                     @Override
@@ -285,10 +275,11 @@ public class TaskModelmpl implements TaskMudel {
      */
     @Override
     public void requestTaskInfo(final TaskRequestListener listener, final String printTag) {
-        if (SharedPerManager.getWorkModel() != AppInfo.WORK_MODEL_NET) {
+        if (Biantai.isRequestTaskInfo()) {
             return;
         }
-        if (Biantai.isRequestTaskInfo()) {
+        if (listener == null) {
+            TaskWorkService.setCurrentTaskType(TaskWorkService.TASK_TYPE_REQUEST, "请求Task listener==null");
             return;
         }
         TaskWorkService.setCurrentTaskType(TaskWorkService.TASK_TYPE_REQUEST, "开启请求任务信息");
@@ -307,9 +298,7 @@ public class TaskModelmpl implements TaskMudel {
                     public void onError(Call call, String errorDesc, int id) {
                         TaskWorkService.setCurrentTaskType(TaskWorkService.TASK_TYPE_DEFAULT, "请求失败，返回信息");
                         MyLog.task("===failed==" + errorDesc);
-                        if (listener != null) {
-                            listener.parserJsonOver("网络请求失败: " + errorDesc, new ArrayList<>());
-                        }
+                        listener.parserJsonOver("网络请求失败: " + errorDesc, null);
                     }
 
                     @Override
@@ -317,6 +306,7 @@ public class TaskModelmpl implements TaskMudel {
                         TaskWorkService.setCurrentTaskType(TaskWorkService.TASK_TYPE_DEFAULT, "请求成功，恢复状态");
                         MyLog.task("任务请求success=" + json);
                         if (json == null || json.length() < 5) {
+                            listener.parserJsonOver("网络请求失败: json null", null);
                             return;
                         }
                         try {
@@ -324,11 +314,11 @@ public class TaskModelmpl implements TaskMudel {
                             int code = jsonObject.getInt("code");
                             String msg = jsonObject.getString("msg");
                             if (code != 0) { //获取信息失败，清理数据库
+                                listener.parserJsonOver(msg, null);
                                 return;
                             }
                             String data = jsonObject.getString("data");
                             parsenerJson("请求完毕，去解析", data, listener);
-
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -337,7 +327,7 @@ public class TaskModelmpl implements TaskMudel {
     }
 
     public void parsenerJson(String tag, String data, final TaskRequestListener listener) {
-        MyLog.task("=======谁在解析？==" + tag);
+        MyLog.task("=======开始解析任务信息==" + tag);
         try {
             TaskWorkService.setCurrentTaskType(TaskWorkService.TASK_TYPE_PARSENER_JSON, "请求成功，切换解析状态");
             ParsenerJsonRunnable runnable = new ParsenerJsonRunnable(true, data, listener);

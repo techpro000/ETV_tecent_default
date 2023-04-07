@@ -71,7 +71,7 @@ public class EtvParsener {
             return;
         }
         boolean isOpenPoliceEnable = SharedPerManager.getGpioAction();
-        if(AppConfig.APP_TYPE== APP_TYPE_AD_JH){
+        if (AppConfig.APP_TYPE == APP_TYPE_AD_JH) {
             isOpenPoliceEnable = true;
         }
         if (!isOpenPoliceEnable) {
@@ -93,26 +93,26 @@ public class EtvParsener {
         }
     }
 
-        private void startToPlayTriggleActivity(int playPosition) {
-        int model = TaskWorkService.getCurrentTaskType();
-        if (model != TaskWorkService.TASK_TYPE_DEFAULT) {
-            return;
-        }
-        if (PlayerTaskActivity.ISVIEW_FORST) {
-            MyLog.phone("startToPlayTriggleActivity: "+playPosition);
-            //在前台  发广播  把位置发过去
-            Intent intentSendPosition = new Intent();
-            intentSendPosition.setAction("thePositionGpio");
-            intentSendPosition.putExtra("theGpioDeskPosition", playPosition);
-            context.sendBroadcast(intentSendPosition);
-            return;
-        } else {
-            //不在前台  启动界面， 传递位置
-            Intent intent = new Intent(context, PlayTaskTriggerActivity.class);
-            intent.putExtra("theGpioNotDeskPosition", playPosition);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-        }
+    private void startToPlayTriggleActivity(int playPosition) {
+//        int model = TaskWorkService.getCurrentTaskType();
+//        if (model != TaskWorkService.TASK_TYPE_DEFAULT) {
+//            return;
+//        }
+//        if (PlayerTaskActivity.ISVIEW_FORST) {
+//            MyLog.phone("startToPlayTriggleActivity: " + playPosition);
+//            //在前台  发广播  把位置发过去
+//            Intent intentSendPosition = new Intent();
+//            intentSendPosition.setAction("thePositionGpio");
+//            intentSendPosition.putExtra("theGpioDeskPosition", playPosition);
+//            context.sendBroadcast(intentSendPosition);
+//            return;
+//        } else {
+//            //不在前台  启动界面， 传递位置
+//            Intent intent = new Intent(context, PlayTaskTriggerActivity.class);
+//            intent.putExtra("theGpioNotDeskPosition", playPosition);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            context.startActivity(intent);
+//        }
     }
 
 
@@ -317,7 +317,7 @@ public class EtvParsener {
         }
     }
 
-    public static boolean isDealTime  =false;
+    public static boolean isDealTime = false;
 
     public void checkSytemTimeFromWeb(EtvService etvService) {
 

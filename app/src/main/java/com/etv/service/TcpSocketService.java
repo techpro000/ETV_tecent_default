@@ -141,10 +141,6 @@ public class TcpSocketService extends Service {
                     AppStatuesListener.getInstance().objectLiveDate.postValue(AppStatuesListener.LIVE_DATA_POWERONOFF);
 
                     break;
-                case SOCKET_LINE_SUCCESS_UPDATE_TASK_INFO:
-                    //延迟十秒去同步任务信息
-                    sendBroadCastToView(TaskWorkService.GET_TASK_FROM_WEB_NO_DOWN);
-                    break;
                 case CHANGE_DEVICE_TO_OTHER: //修改设备归属
                     initOther();
                     tcpParsener.updateDevInformation(TcpSocketService.this, "changeUsername");

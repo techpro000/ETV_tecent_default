@@ -13,7 +13,7 @@ public class TaskDownEntity implements Serializable {
     String savePath;
     String fileLength;
     boolean isDownOver;
-
+    String md5;
 
     /***
      *
@@ -24,14 +24,22 @@ public class TaskDownEntity implements Serializable {
      * @param fileLength
      * @param isDownOver
      */
-    public TaskDownEntity(String taskId, String downUrl, String savePath, String fileLength, boolean isDownOver) {
+    public TaskDownEntity(String taskId, String downUrl, String savePath, String fileLength, boolean isDownOver, String md5) {
         this.taskId = taskId;
         this.downUrl = downUrl;
         this.savePath = savePath;
         this.fileLength = fileLength;
         this.isDownOver = isDownOver;
+        this.md5 = md5;
     }
 
+    public String getMd5() {
+        return md5;
+    }
+
+    public void setMd5(String md5) {
+        this.md5 = md5;
+    }
 
     public boolean isDownOver() {
         return isDownOver;

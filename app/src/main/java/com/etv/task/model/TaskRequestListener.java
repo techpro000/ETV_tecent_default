@@ -27,8 +27,6 @@ public interface TaskRequestListener {
      */
     void playNextProgram(boolean isBack, List<SceneEntity> sceneEntities, int tag);
 
-//    void requestStatus(boolean isSuccess, String json, String errorDesc, String printTag);
-
     void finishMySelf(String errorDesc);
 
     /***
