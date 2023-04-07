@@ -435,7 +435,7 @@ public class TaskWorkService extends Service implements TaskView {
      */
     @Override
     public void backTaskList(List<TaskWorkEntity> lists, String printTag) {
-        MyLog.d("liujk", "返回需要下载播放的任务集合任务结合" + lists.size());
+        MyLog.task("返回需要下载播放的任务集合任务结合" + lists.size());
         setCurrentTaskType(TASK_TYPE_DEFAULT, "恢复原始状态");
         if (lists == null || lists.size() < 1) {
             //没有需要下载的任务，直接关闭播放界面
@@ -475,7 +475,7 @@ public class TaskWorkService extends Service implements TaskView {
         MyLog.task("===去判断有没有需要下载得资源====" + printTag);
         if (taskEntityList == null || taskEntityList.size() < 1) {
             MyLog.task("判断是否有需要下载的文件==0");
-            startPlayTaskActivity("======不需要下载，直接去播放===");
+            SynchronizeDatabaseFromList();
             return;
         }
         MyLog.task("判断是否有需要下载的文件==" + taskEntityList.size());
@@ -493,6 +493,23 @@ public class TaskWorkService extends Service implements TaskView {
         //检查下载进度
         isHasDownLimit = false;
         handler.sendEmptyMessage(CHECK_LIMIT_DOWN_NUM);      //开始检测下载资格
+    }
+
+    private void SynchronizeDatabaseFromList() {
+        if (listTaskSaveDbCache == null || listTaskSaveDbCache.size() < 1) {
+            startPlayTaskActivity("======没有数据需要同步，直接去播放");
+            return;
+        }
+        //下载完毕
+        SaveDataRunnable saveDataRunnable = new SaveDataRunnable(listTaskSaveDbCache, new SaveDateToDbListener() {
+            @Override
+            public void saveDataToDbOk(Boolean isSaveOk) {
+                setCurrentTaskType(TASK_TYPE_DEFAULT, "数据库操作完成");
+                MyLog.task("保存数据成功： " + isSaveOk);
+                startPlayTaskActivity("数据库同步保存成功，准备播放");
+            }
+        });
+        EtvService.getInstance().executor(saveDataRunnable);
     }
 
     boolean isHasDownLimit = false;  //检查是否有下载资格
@@ -697,17 +714,8 @@ public class TaskWorkService extends Service implements TaskView {
     private void startDownNextOneFile() {
         MyLog.task("开始下载下一个文件===000");
         if (downFileList == null || downFileList.size() < 1) {
-            MyLog.task("开始下载下一个文件==下载完成");
-            //下载完毕
-            SaveDataRunnable saveDataRunnable = new SaveDataRunnable(listTaskSaveDbCache, new SaveDateToDbListener() {
-                @Override
-                public void saveDataToDbOk(Boolean isSaveOk) {
-                    setCurrentTaskType(TASK_TYPE_DEFAULT, "数据库操作完成");
-                    MyLog.task("保存数据成功： " + isSaveOk);
-                    startPlayTaskActivity("数据保存成功，准备播放");
-                }
-            });
-            EtvService.getInstance().executor(saveDataRunnable);
+            MyLog.task("开始下载下一个文件==下载完成,准备同步数据");
+            SynchronizeDatabaseFromList();
             return;
         }
         downFileList.remove(0);
