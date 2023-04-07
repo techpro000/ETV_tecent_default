@@ -240,21 +240,6 @@ public class FileUtil {
         }
     }
 
-    public static List<LocalEntity> getFiles() {
-        List<LocalEntity> entityList = new ArrayList<>();
-        File file = new File(AppInfo.BASE_TASK_URL());
-        File[] files = file.listFiles();
-        for (int i = 0; i < files.length; i++) {
-            File childFile = files[i];
-            String childName = childFile.getName();
-            long fileSize = formetFileSize(childFile);
-            MyLog.d("liujk", "文件名称： " + childName + " 文件大小： " + fileSize);
-            LocalEntity entity = new LocalEntity(childName, String.valueOf(fileSize));
-            entityList.add(entity);
-        }
-        return entityList;
-    }
-
     private static long formetFileSize(File file) {
         long fileLength = 0;
         if (file == null) {

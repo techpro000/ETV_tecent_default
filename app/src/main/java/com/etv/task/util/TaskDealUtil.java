@@ -1325,10 +1325,6 @@ public class TaskDealUtil {
             String downName = backFilePath.substring(backFilePath.lastIndexOf("/") + 1);
             String saveFilePath = AppInfo.BASE_TASK_URL() + "/" + downName;
             String fileLength = mpListEntity.getSize();
-            File file = new File(saveFilePath);
-            if (file.exists()) {
-                MyLog.cdl("===isFileExice==fileLength=" + fileLength + "  / " + file.length());
-            }
             boolean isFileExice = FileUtil.ifFileHasExict(saveFilePath, fileLength);
             MyLog.cdl("===isFileExice===" + isFileExice + "  / " + saveFilePath);
             if (!isFileExice) {

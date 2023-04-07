@@ -1092,9 +1092,7 @@ public class PlayTaskParsener {
         }
         try {
             //控件播放完毕,回掉监听
-            MyLog.task("=====准备更新温度===添加View===" + coType + " / " + genratorViewList);
             genratorViewList.add(new CacheMemory(generatorView, coType, isRelation));
-            MyLog.task("=====准备更新温度===添加View===" + (genratorViewList.size()) + " / " + genratorViewList);
             generatorView.setPlayStateChangeListener(new TaskPlayStateListener() {
 
                 @Override
@@ -2241,7 +2239,7 @@ public class PlayTaskParsener {
                 String fileLocalName = fileLocal.getName();
                 if (webFileName.startsWith(fileLocalName)) {
                     listFilelocal.remove(fileLocal);
-//                    MyLog.playTask("compairDbFileAndlocal 名字相同==" + webFileName + " / " + fileLocal);
+                    MyLog.playTask("compairDbFileAndlocal 名字相同==" + webFileName + " / " + fileLocal);
                 }
             }
         }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 //import android.support.v7.widget.AppCompatTextView;
+import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.TextView;
@@ -40,8 +41,8 @@ public class TextViewScroll extends AppCompatTextView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        scrollType(scrollType);
         super.onDraw(canvas);
+        //scrollType(scrollType);
     }
 
     private void scrollType(int type) {
@@ -52,42 +53,60 @@ public class TextViewScroll extends AppCompatTextView {
                     if (x >= getTextWidth()) {
                         x = -getWidth();
                     }
-                    scrollTo(x, 0);
+                    scrollXY(x, 0);
                     x = x + speed;
-                    postInvalidate();
                     break;
                 case FROM_LEFT:
                     // 左到右
                     if (x <= -getWidth()) {
                         x = getTextWidth();
                     }
-                    scrollTo(x, 0);
+                    scrollXY(x, 0);
                     x = x - speed;
-                    postInvalidate();
                     break;
                 case FROM_TOP:
                     // 上到下
                     if (y <= -getHeight()) {
                         y = getTextHeight();
                     }
-                    scrollTo(0, y);
+                    scrollXY(0, y);
                     y = y - speed;
-                    postInvalidate();
                     break;
                 case FROM_BOTTOM:
                     // 下到上
                     if (y >= getTextHeight()) {
                         y = -getHeight();
                     }
-                    scrollTo(0, y);
+                    scrollXY(0, y);
                     y = y + speed;
-                    postInvalidate();
                     break;
 
                 default:
                     break;
             }
         }
+    }
+
+    Thread thread;
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        start();
+    }
+
+    private void start() {
+        thread = new Thread(() -> {
+            while (isAttachedToWindow()) {
+                scrollType(scrollType);
+                SystemClock.sleep(50);
+            }
+        });
+        thread.start();
+    }
+
+    private void scrollXY(int x, int y) {
+        post(() -> scrollTo(x, y));
     }
 
     // 获取字体行宽度
@@ -133,7 +152,7 @@ public class TextViewScroll extends AppCompatTextView {
     }
 
     public void setSpeed(int speed) {
-        this.speed = speed;
+        this.speed = speed + 3;
     }
 
     public boolean isScrollStatus() {
