@@ -25,11 +25,9 @@ public class ImageUtil {
      */
     public static int getShowBggLogo() {
         int imageBggDefault = R.mipmap.app_logo_default;
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_SHI_WEI) {
-            imageBggDefault = R.mipmap.app_logo_default;
-        } else if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_MIKE) {
+        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_MIKE) {
             imageBggDefault = R.mipmap.icon_mike;
-        }   else if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_HUANGZUNNIANHUA) {
+        } else if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_HUANGZUNNIANHUA) {
             imageBggDefault = R.mipmap.app_logo_default_hznh;
         } else {
             imageBggDefault = R.mipmap.app_logo_default;

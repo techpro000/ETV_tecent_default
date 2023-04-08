@@ -166,11 +166,7 @@ public class PlaySingleTaskParsener {
                     return;
                 }
                 //视威使用触摸版本的，其他的使用混播模式
-                if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_SHI_WEI) {
-                    generatorView = new ViewImgVideoGenerate(context, null, leftPosition, topPosition, width, height, list_entity_cache, AppInfo.PROGRAM_POSITION_MAIN);
-                } else {
-                    generatorView = new ViewImgVideoNetGenerate(context, null, null, leftPosition, topPosition, width, height, list_entity_cache, true, 0, AppInfo.PROGRAM_POSITION_MAIN, false);
-                }
+                generatorView = new ViewImgVideoNetGenerate(context, null, null, leftPosition, topPosition, width, height, list_entity_cache, true, 0, AppInfo.PROGRAM_POSITION_MAIN, false);
                 addViewToList(generatorView);
                 view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                 break;

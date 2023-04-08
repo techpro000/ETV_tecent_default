@@ -55,9 +55,7 @@ public class DbBggImageUtil {
      */
     public static int getDefaultBggImage() {
         int imageIBack = R.mipmap.play_bgg;
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_SHI_WEI) {  //视威
-            imageIBack = R.mipmap.main_shiwei;
-        } else if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_AD_JH) {
+        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_AD_JH) {
             imageIBack = R.mipmap.ad_jh_bgg;
         } else if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_THREE_VIEW_STAND) {   //三视立
             imageIBack = R.mipmap.three_view;

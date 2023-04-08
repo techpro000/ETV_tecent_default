@@ -14,7 +14,6 @@ public class AppConfig {
     public static long TIME_CHECK_POWER_REDUCE = 20220210101010L;
 
     public static final int APP_TYPE_DEFAULT = 0;               //default
-    public static final int APP_TYPE_SHI_WEI = 1;               //视威-广州
     public static final int APP_TYPE_MIKE = 2;                  //米可
     public static final int APP_TYPE_QINGFENG_DEFAULT = 4;      //广州青蜂--主界面图标显示
     public static final int APP_TYPE_QINGFENG_NOT_QR = 4001;    //广州青蜂--去掉二维码

@@ -41,10 +41,6 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
             startAppFromReceive(context);
             return;
         }
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_SHI_WEI) {  //视威 默认开机启动，因为没有守护进程
-            startAppFromReceive(context);
-        }
-
     }
 
     public void startAppFromReceive(Context context) {

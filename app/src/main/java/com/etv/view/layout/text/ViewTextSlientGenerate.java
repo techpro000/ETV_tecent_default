@@ -69,9 +69,6 @@ public class ViewTextSlientGenerate extends Generator {
         tv_text_show.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_SHI_WEI) {
-                    return true;
-                }
                 listener.longClickView(cpListEntity, textInfoShow);
                 return true;
             }

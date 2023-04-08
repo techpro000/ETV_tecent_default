@@ -171,7 +171,6 @@ public class SharedPerManager {
     public static boolean getBluetooth() {
         boolean defaulrOpen = false;
         switch (AppConfig.APP_TYPE) {
-            case AppConfig.APP_TYPE_SHI_WEI:
             case AppConfig.APP_TYPE_QINGFENG_DEFAULT:
             case AppConfig.APP_TYPE_QINGFENG_NOT_QR:
                 defaulrOpen = true;
@@ -810,11 +809,6 @@ public class SharedPerManager {
      */
     public static String getWebPort() {
         String webPortDefaulr = "8899";
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_SHI_WEI) {
-            webPortDefaulr = "8088";
-        } else {
-            webPortDefaulr = "8899";
-        }
         String webPort = ((String) EtvApplication.getInstance().getData("webPort", webPortDefaulr));
         return webPort;
     }
@@ -848,9 +842,6 @@ public class SharedPerManager {
                 break;
             case AppConfig.APP_TYPE_CHUNYN:
                 ipAddressDefault = "8.209.119.199";
-                break;
-            case AppConfig.APP_TYPE_SHI_WEI:
-                ipAddressDefault = "106.53.206.158"; //视威
                 break;
             case AppConfig.APP_TYPE_AD_JH:  //深远通--景华广告--汕头
                 ipAddressDefault = "183.237.107.34";

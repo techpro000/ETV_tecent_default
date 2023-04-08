@@ -181,14 +181,6 @@ public class InitViewActivity extends BaseActivity implements InitView {
      */
     private void updateTopBottomViewStatues() {
         //如果不是默认版本，不操作此指令
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_SHI_WEI) {
-            MyManager manager = MyManager.getInstance(this);
-            boolean isMenuOPen = manager.isSlideShowNotificationBarOpen();
-            if (!isMenuOPen) {
-                manager.setSlideShowNotificationBar(false); //关闭下拉菜单
-            }
-            manager.setSlideShowNavBar(true);  //打开滑出底部菜单
-        }
     }
 
 

@@ -178,9 +178,6 @@ public class SingleWorkFragment extends Fragment implements View.OnClickListener
         } else {
             lin_layout_second.setVisibility(View.VISIBLE);
         }
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_SHI_WEI) {
-            lin_layout_second.setVisibility(View.GONE);
-        }
         int viewSecondId = SharedPerManager.getSingleSecondLayoutTag();
         int imageSecondId = SingleParsener.getLayoutFromId(getActivity(), viewSecondId);
         iv_show_layout_second.setBackgroundResource(imageSecondId);

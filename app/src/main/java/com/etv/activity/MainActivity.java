@@ -39,7 +39,6 @@ import com.etv.task.entity.TaskWorkEntity;
 import com.etv.task.model.TaskGetDbListener;
 import com.etv.task.model.TaskModelUtil;
 import com.etv.task.model.TaskModelmpl;
-import com.etv.task.shiwei.PlaySingleShiWeiActivity;
 import com.etv.util.APKUtil;
 import com.etv.util.Biantai;
 import com.etv.util.MyLog;
@@ -133,10 +132,6 @@ public class MainActivity extends TaskActivity implements
     private void initView() {
         tv_down_desc = (TextView) findViewById(R.id.tv_down_desc);
         rela_down_tag = (RelativeLayout) findViewById(R.id.rela_down_tag);
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_SHI_WEI) {
-            //视威--默认关闭守护进程
-            GuardianUtil.setGuardianStaues(MainActivity.this, false);
-        }
         AppInfo.startCheckTaskTag = true;
         tv_mac_main = (TextView) findViewById(R.id.tv_mac_main);
         lin_qf_logo = (LinearLayout) findViewById(R.id.lin_qf_logo);
@@ -447,12 +442,7 @@ public class MainActivity extends TaskActivity implements
                     return;
                 }
                 Intent intent = new Intent();
-                if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_SHI_WEI) {
-                    intent.setClass(MainActivity.this, PlaySingleShiWeiActivity.class);
-                } else {
-                    intent.setClass(MainActivity.this, PlaySingleActivity.class);
-                }
-
+                intent.setClass(MainActivity.this, PlaySingleActivity.class);
                 startActivity(intent);
             }
         });
