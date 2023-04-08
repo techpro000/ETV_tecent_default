@@ -137,17 +137,17 @@ public class TaskWorkModelmpl implements TaskWorkModel {
         }
         AppTrafficModel appTrafficModel = TraffLisUtil.trafficMonitor(context);
         if (appTrafficModel == null) {
-            MyLog.d("traff", "=======没有获取到流量监控==");
+            MyLog.traff("=======没有获取到流量监控==");
             return;
         }
         long downNum = appTrafficModel.getDownload();
         long saveDown = downNum - SharedPerManager.getLastDownTraff();
         long uploadNum = appTrafficModel.getUpload();
         long saveUpload = uploadNum - SharedPerManager.getLastUploadTraff();
-        MyLog.d("traff", "==流量增加=" + downNum + "/ 上行=" + uploadNum);
-        MyLog.d("traff", "==流量统计==添加==downNum=" + saveDown + "/ 上行=" + saveUpload);
+        MyLog.traff("==流量增加=" + downNum + "/ 上行=" + uploadNum);
+        MyLog.traff("==流量统计==添加==downNum=" + saveDown + "/ 上行=" + saveUpload);
         boolean isSave = TraffTotalDb.saveTraffTotalToLocal(new AppTrafficModel(saveDown, saveUpload));
-        MyLog.d("traff", "==流量统计==添加保存===" + isSave + " / " + appTrafficModel.toString() + " /downNum =  " + (downNum / 1024));
+        MyLog.traff("==流量统计==添加保存===" + isSave + " / " + appTrafficModel.toString() + " /downNum =  " + (downNum / 1024));
         SharedPerManager.setLastDownTraff(downNum);
         SharedPerManager.setLastUploadTraff(uploadNum);
     }
@@ -251,13 +251,13 @@ public class TaskWorkModelmpl implements TaskWorkModel {
     private void uploadFlowUage() {
         int currentTime = SimpleDateUtil.getHourMin();
         if (currentTime % 15 != 0) {
-            MyLog.d("traff", "=========15分钟内限制提交一次=====");
+            MyLog.traff("=========15分钟内限制提交一次=====");
             return;
         }
-        MyLog.d("traff", "=========15分钟内提交一次=====");
+        MyLog.traff("=========15分钟内提交一次=====");
         List<AppTrafficModel> appTrafficModelList = TraffTotalDb.getTraffInfoList();
         if (appTrafficModelList == null || appTrafficModelList.size() < 1) {
-            MyLog.d("traff", "当前没有流量需要上传");
+            MyLog.traff("当前没有流量需要上传");
             return;
         }
         long usedData = 0;
@@ -267,7 +267,7 @@ public class TaskWorkModelmpl implements TaskWorkModel {
             usedData += downData + updateData;
         }
         if (usedData < 10240) {
-            MyLog.d("traff", "提交的流量信息太小了，晚点再提交==" + usedData);
+            MyLog.traff("提交的流量信息太小了，晚点再提交==" + usedData);
             return;
         }
         usedData = usedData / 1024;
@@ -292,12 +292,12 @@ public class TaskWorkModelmpl implements TaskWorkModel {
 
                     @Override
                     public void onError(Call call, String errorDesc, int id) {
-                        MyLog.d("traff", "提交移动流量使用数据失败: " + errorDesc);
+                        MyLog.traff("提交移动流量使用数据failed: " + errorDesc, true);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-                        MyLog.d("traff", "=======提交移动流量使用数据json==: " + response);
+                        MyLog.traff("提交移动流量使用数据SUCCESS= " + response, true);
                         if (TextUtils.isEmpty(response)) {
                             return;
                         }

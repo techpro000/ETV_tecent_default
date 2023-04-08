@@ -210,7 +210,7 @@ public class CodeUtil {
         String appVersion = "(" + getAppVersion(context) + ")";
         codeBack = sysCode + appVersion;
         SYSTEM_CODE_VERSION = codeBack;
-        Log.e("TAG", "getSystCodeVersion: "+codeBack );
+        Log.e("TAG", "getSystCodeVersion: " + codeBack);
         return codeBack;
     }
 

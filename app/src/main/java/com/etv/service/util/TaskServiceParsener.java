@@ -40,7 +40,7 @@ public class TaskServiceParsener {
         }
         boolean isUpdateTraff = SharedPerManager.getIfUpdateTraffToWeb();
         if (!isUpdateTraff) {
-            MyLog.d("traff", "====流量上传拦截===开关没有打开=");
+            MyLog.traff( "====流量上传拦截===开关没有打开=");
             return;
         }
         taskWorkModel.checkTrafficstatistics(context);

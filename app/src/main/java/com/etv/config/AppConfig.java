@@ -50,23 +50,18 @@ public class AppConfig {
 
     public static final int APP_TYPE = APP_TYPE_DEFAULT;
 
-
     /***0
      * Socket 连接方式
      * */
     public static final int SOCKEY_TYPE_WEBSOCKET = 0;    //webSocket
     public static final int SOCKEY_TYPE_SOCKET = 1;       //socket
 
-
     // 软件是否打印日志
     public static final boolean IF_PRINT_LOG = true;
-
 
     /***
      * 守护进程的版本号================================================================================
      */
-
-
     public static final int APP_BACK_TIME_MIX = 5;  //互动节目，返回ETV的最小时间
 
     /***

@@ -67,7 +67,6 @@ public class PlayTaskTriggerParsener {
         this.playTaskView = playTaskView;
         taskModel = new TaskModelmpl();
         currentSencenPosition = playPosition;
-        Log.e("TAG", "PlayTaskTriggerParsener: " + currentSencenPosition);
         getView();
     }
 
@@ -75,10 +74,8 @@ public class PlayTaskTriggerParsener {
     AbsoluteLayout view_abous;
 
     private void getView() {
-        Log.e("TAG", "getPmFromTask: " + 11111111);
         view_abous = playTaskView.getAbsoluteLayout();
         iv_back_bgg = playTaskView.getBggImageView();
-        Log.e("TAG", "getPmFromTask: " + 33333333);
     }
 
     public void setPlayPosition(int playPosition) {
@@ -87,11 +84,7 @@ public class PlayTaskTriggerParsener {
 
 
     public void getTaskToView(String tag) {
-        MyLog.playTask("==== getTaskToView");
         clearMemory();
-//        if (Biantai.isTwoClick()) {
-//            return;
-//        }
         taskModel.getPlayTaskTigerFormDb(new TaskGetDbListener() {
             @Override
             public void getTaskFromDb(List<TaskWorkEntity> list) {
@@ -100,14 +93,13 @@ public class PlayTaskTriggerParsener {
 
             @Override
             public void getTaskTigerFromDb(TaskWorkEntity taskWorkEntity) {
-                Log.e("TAG", "getTaskTigerFromDb: " + taskWorkEntity);
+                MyLog.playTask("getTaskTigerFromDb: " + taskWorkEntity);
                 if (taskWorkEntity == null) {
                     MyLog.playTask("===获取得任务===null");
                     playTaskView.showViewError("没有需要播放得任务");
                     return;
                 }
                 MyLog.playTask("===获取得任务===" + taskWorkEntity.toString());
-                Log.e("TAG", "getPmFromTask: " + 2222222);
                 parsenerTaskInfo(taskWorkEntity);
             }
         }, "====播放界面，这里获取任务数据====");
@@ -147,7 +139,7 @@ public class PlayTaskTriggerParsener {
     }
 
     private void getPmFromTask(int position, String tag) {
-        Log.e("TAG", "getPmFromTask: " + tag);
+        MyLog.task("getPmFromTask: " + tag);
         SceneEntity currentSceneEntity = sceneEntityListCache.get(position);
         if (currentSceneEntity == null) {
             playTaskView.showViewError("获取场景信息异常");
@@ -168,7 +160,7 @@ public class PlayTaskTriggerParsener {
     }
 
     public void parperToShowView(CpListEntity cpEntity) {
-        Log.e("TAG", "getPmFromTask: " + 99999999);
+        MyLog.task("getPmFromTask: " + 99999999);
         if (cpEntity == null) {
             playTaskView.showViewError("控件解析失败");
             return;
@@ -437,7 +429,7 @@ public class PlayTaskTriggerParsener {
         if (sceneEntityListCache == null || sceneEntityListCache.size() < 1) {
             return null;
         }
-        Log.e("TAG", "getPmFromTask: " + 10101010);
+        MyLog.task("getPmFromTask: " + 10101010);
         return sceneEntityListCache.get(currentSencenPosition);
     }
 
@@ -451,7 +443,7 @@ public class PlayTaskTriggerParsener {
      * 是否是关联控件
      */
     public void addViewToList(Generator generatorView, String coType, boolean isRelation) {
-        Log.e("TAG", "getPmFromTask: " + 888888888);
+        MyLog.task("getPmFromTask: " + 888888888);
         MyLog.playTask("======添加view到集合中，类型=" + coType + " /是否是关联==" + isRelation);
         if (generatorView == null) {
             return;
@@ -515,7 +507,7 @@ public class PlayTaskTriggerParsener {
      * 这是测试代码
      */
     private void changeProjectView(int playTag) {
-        Log.e("TAG", "getPmFromTask: " + 55555555);
+        MyLog.task("getPmFromTask: " + 55555555);
         //判断是否是互动节目
         if (sceneEntityListCache == null || sceneEntityListCache.size() < 1) {
             MyLog.playTask("===当前只有一个节目，不跳转====");
@@ -589,7 +581,7 @@ public class PlayTaskTriggerParsener {
 
     //获取当前场景得播放时间
     private int getCurrentSencenPlayTime() {
-        Log.e("TAG", "getPmFromTask: " + 777777777);
+        MyLog.task("getPmFromTask: " + 777777777);
         int backTime = 0;
         if (sceneEntityListCache == null || sceneEntityListCache.size() < 2) {
             return backTime;

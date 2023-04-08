@@ -133,8 +133,6 @@ public class TaskModelmpl implements TaskMudel {
 
     @Override
     public void getPlayTaskTigerFormDb(TaskGetDbListener listener, String printTag) {
-//        TaskGetTigerFromDbRunnable runnable = new TaskGetTigerFromDbRunnable(listener);
-//        EtvService.getInstance().executor(runnable);
         if (listener == null) {
             return;
         }

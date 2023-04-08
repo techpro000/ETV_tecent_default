@@ -546,8 +546,6 @@ public class TcpServerModuleImpl implements TcpServerModule {
         String clIp = CodeUtil.getIpAddress(context, "====设备注册调用===");
         String clLatitude = SharedPerManager.getmLatitude();
         String clLongitude = SharedPerManager.getmLongitude();
-
-
         String clScreenNum = ScreenUtil.getScreenNum();  //屏幕得个数
         String clResolution = ScreenUtil.getresolution(); //屏幕得分辨率
         String sdcardPath = Environment.getExternalStorageDirectory().getPath();
@@ -561,21 +559,6 @@ public class TcpServerModuleImpl implements TcpServerModule {
         if (!"zh".equals(Locale.getDefault().getLanguage())) {
             lang = "en";
         }
-
-//         .addParams("clNo", clNO)
-//                .addParams("clName", clName)
-//                .addParams("clMac", clMac)
-//                .addParams("clLatitude", clLatitude + "")
-//                .addParams("clLongitude", clLongitude + "")
-//                .addParams("clIp", clIp)
-//                .addParams("clScreenNum", clScreenNum)
-//                .addParams("clResolution", clResolution)
-//                .addParams("userName", userName)
-//                .addParams("clDisk", sizeLast + "M")
-//                .addParams("clLineState", clLineState)
-//                .addParams("clVersion", clVersion)
-//                .addParams("clAddress", clAddress)
-
         OkHttpUtils
                 .post()
                 .url(requestUrl)

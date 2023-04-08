@@ -4,8 +4,6 @@ import com.etv.entity.RegisterEntity;
 import com.etv.util.CodeUtil;
 import com.etv.util.MyLog;
 import com.etv.util.SharedPerUtil;
-import com.etv.util.TextUtils;
-import com.etv.util.aes.AESTool;
 
 public class ApiInfo {
 

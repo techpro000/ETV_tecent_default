@@ -5,16 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.AbsoluteLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.etv.activity.MainActivity;
-import com.etv.service.EtvService;
 import com.etv.task.entity.CpListEntity;
-import com.etv.task.parsener.PlayTaskParsener;
 import com.etv.task.parsener.PlayTaskTriggerParsener;
 import com.etv.task.view.PlayTaskView;
 import com.etv.util.MyLog;
@@ -30,20 +27,13 @@ public class PlayTaskTriggerActivity extends TaskActivity implements PlayTaskVie
     public void showDownStatuesView(boolean isShow, String desc) {
 
     }
+
+
     @Override
     protected void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
         setContentView(R.layout.activity_play_task);
         initView();
-        getIntentDate();
-
-    }
-
-    int playGpioPosition = 0;
-
-    private void getIntentDate() {
-        playGpioPosition = getIntent().getIntExtra("theGpioNotDeskPosition",0);
-        MyLog.cdl("======onKeyDown========" + "/////"+playGpioPosition);
     }
 
     ImageView iv_back_bgg;
@@ -54,16 +44,16 @@ public class PlayTaskTriggerActivity extends TaskActivity implements PlayTaskVie
     private void initView() {
         iv_back_bgg = (ImageView) findViewById(R.id.iv_back_bgg);
         view_abous = (AbsoluteLayout) findViewById(R.id.view_abous);
-        playTaskParsener = new PlayTaskTriggerParsener(PlayTaskTriggerActivity.this, this,playGpioPosition);
+        playTaskParsener = new PlayTaskTriggerParsener(PlayTaskTriggerActivity.this, this, 0);
     }
 
-
-
+    public static boolean ISVIEW_FORST = false;
 
     @Override
     protected void onResume() {
         super.onResume();
-        MyLog.playTask( this.getClass().getName() + " onResume");
+        ISVIEW_FORST = true;
+        MyLog.playTask(this.getClass().getName() + " onResume");
         updateViewInfo("onResume");
     }
 
@@ -74,14 +64,12 @@ public class PlayTaskTriggerActivity extends TaskActivity implements PlayTaskVie
         playTaskParsener.getTaskToView(tag);           //获取数据
     }
 
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             showBaseSettingDialogNew();
             return true;
-        }
-        else if (keyCode == KeyEvent.KEYCODE_1) {
+        } else if (keyCode == KeyEvent.KEYCODE_1) {
             playTaskParsener.clearMemory();
             playTaskParsener.setPlayPosition(0);
             playTaskParsener.getTaskToView("keyCode 1");
@@ -104,7 +92,6 @@ public class PlayTaskTriggerActivity extends TaskActivity implements PlayTaskVie
         }
         return super.onKeyDown(keyCode, event);
     }
-
 
 
     /***
@@ -200,6 +187,7 @@ public class PlayTaskTriggerActivity extends TaskActivity implements PlayTaskVie
     @Override
     protected void onStop() {
         super.onStop();
+        ISVIEW_FORST = false;
         playTaskParsener.clearMemory();
     }
 

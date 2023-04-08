@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.EtvApplication;
@@ -697,7 +698,7 @@ public class TcpService extends Service implements SocketWebListener {
             return;
         }
         String UserName = SharedPerManager.getUserName();
-        if (UserName == null || UserName.length() < 2) {
+        if (TextUtils.isEmpty(UserName)) {
             return;
         }
         if (UserName.contains("Null")) {
@@ -731,7 +732,6 @@ public class TcpService extends Service implements SocketWebListener {
         initOther();
         tcpParsener.registerDev(context, userName, listener);
     }
-
 
     SiteWebsocket siteWebsocket;
 

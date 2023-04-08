@@ -70,14 +70,6 @@ public class EtvParsener {
             MyLog.phone("=Server还没有起来，这里不往下走了==");
             return;
         }
-        boolean isOpenPoliceEnable = SharedPerManager.getGpioAction();
-        if (AppConfig.APP_TYPE == APP_TYPE_AD_JH) {
-            isOpenPoliceEnable = true;
-        }
-        if (!isOpenPoliceEnable) {
-            MyLog.phone("=一键报警开关未打开,请操作==");
-            return;
-        }
         MyLog.phone("IO广播==人来了开始处理业务逻辑==");
         switch (AppConfig.APP_TYPE) {
             case AppConfig.APP_TYPE_POLICE_ALERT:
@@ -94,25 +86,15 @@ public class EtvParsener {
     }
 
     private void startToPlayTriggleActivity(int playPosition) {
-//        int model = TaskWorkService.getCurrentTaskType();
-//        if (model != TaskWorkService.TASK_TYPE_DEFAULT) {
-//            return;
-//        }
-//        if (PlayerTaskActivity.ISVIEW_FORST) {
-//            MyLog.phone("startToPlayTriggleActivity: " + playPosition);
-//            //在前台  发广播  把位置发过去
-//            Intent intentSendPosition = new Intent();
-//            intentSendPosition.setAction("thePositionGpio");
-//            intentSendPosition.putExtra("theGpioDeskPosition", playPosition);
-//            context.sendBroadcast(intentSendPosition);
-//            return;
-//        } else {
-//            //不在前台  启动界面， 传递位置
-//            Intent intent = new Intent(context, PlayTaskTriggerActivity.class);
-//            intent.putExtra("theGpioNotDeskPosition", playPosition);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            context.startActivity(intent);
-//        }
+        MyLog.task("进入触发节目模式==" + playPosition);
+        if (PlayTaskTriggerActivity.ISVIEW_FORST) {
+            return;
+        }
+        MyLog.task("进入触发节目模式==启动界面");
+        //不在前台  启动界面， 传递位置
+        Intent intent = new Intent(context, PlayTaskTriggerActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
 

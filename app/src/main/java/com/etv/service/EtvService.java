@@ -1,7 +1,6 @@
 package com.etv.service;
 
 import static com.etv.config.AppConfig.APP_TYPE;
-import static com.etv.config.AppConfig.APP_TYPE_BEIJING_MG;
 import static com.etv.config.AppConfig.APP_TYPE_JIANGJUN_YUNCHENG;
 import static com.etv.util.FileUtil.TAG;
 
@@ -25,13 +24,11 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 import com.etv.activity.MainActivity;
-import com.etv.config.ApiInfo;
 import com.etv.config.AppConfig;
 import com.etv.config.AppInfo;
 import com.etv.service.parsener.EtvParsener;
 import com.etv.setting.InterestActivity;
 import com.etv.socket.online.SocketWebListener;
-import com.etv.task.activity.PlayTaskTriggerActivity;
 import com.etv.udp.UdpParnsener;
 import com.etv.util.CodeUtil;
 import com.etv.util.MyLog;
@@ -40,25 +37,12 @@ import com.etv.util.ProjectorUtil;
 import com.etv.util.SharedPerManager;
 import com.etv.util.TimerDealUtil;
 import com.etv.util.rxjava.AppStatuesListener;
-import com.etv.util.system.CpuModel;
 import com.etv.util.system.LeaderBarUtil;
 import com.etv.util.system.LightUtil;
-import com.etv.util.system.SystemManagerInstance;
-import com.youth.banner.util.LogUtils;
 import com.ys.etv.R;
-import com.ys.rkapi.MyManager;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import okhttp3.Call;
 
 public class EtvService extends Service {
 
@@ -121,14 +105,11 @@ public class EtvService extends Service {
             } else if (action.equals(AppInfo.RED_LINE_LISTENER_IN)) {
                 MyLog.phone("IO广播==人来了==");
                 if (etvParsener == null) {
-                    Log.e(TAG, "onReceive: " + "99999999");
                     return;
                 }
                 etvParsener.dealRedGpioInfoPeronComeIn();
             } else if (action.equals(AppInfo.RED_LINE_LISTENER_OUT)) {
                 MyLog.phone("IO广播==人走了==");
-
-
             }
         }
     };

@@ -378,6 +378,7 @@ public class MyLog {
     }
 
     private static void printExceptionToSd(String printTag, String message) {
+        Log.d("printInfo", printTag + " : " + message);
         if (!AppInfo.PERMISSION_COMPLAIY) {
             return;
         }
@@ -398,5 +399,14 @@ public class MyLog {
         }
     }
 
+    public static void traff(String s) {
+        traff(s, false);
+    }
 
+    public static void traff(String s, boolean b) {
+        d("traff", s);
+        if (b) {
+            printExceptionToSd("traff", s);
+        }
+    }
 }

@@ -102,7 +102,6 @@ public class TcpParsener {
         });
     }
 
-
     /***
      * 注册设备
      * @param context
@@ -112,6 +111,10 @@ public class TcpParsener {
     public void registerDev(Context context, String userName, RegisterDevListener listener) {
         if (!NetWorkUtils.isNetworkConnected(context)) {
             MyLog.cdl("注册设备么有网络，终端操作");
+            return;
+        }
+        if (!SharedPerManager.getSocketLineEnable() && AppInfo.isDevRegister) {
+            listener.registerDevState(true, "已经注册成功了，不用重复注册", 0);
             return;
         }
         initOther();
@@ -205,7 +208,7 @@ public class TcpParsener {
                 tcpServerModule.monitorUpdateImage(context.getApplicationContext(), AppInfo.CAPTURE_MAIN);
             }
         } catch (Exception e) {
-            MyLog.update("==截图回来了==上传异常==" + e.toString(),true);
+            MyLog.update("==截图回来了==上传异常==" + e.toString(), true);
             e.printStackTrace();
         }
     }
