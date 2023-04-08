@@ -313,9 +313,6 @@ public class SharedPerManager {
      */
     public static boolean getTaskTouchEnable() {
         boolean isDefaultEnable = true;
-        if (CpuModel.isMLogic() || CpuModel.getMobileType().startsWith(CpuModel.CPU_MODEL_MTK_M11)) {
-            isDefaultEnable = false;
-        }
         boolean taskTouchEnable = (boolean) EtvApplication.getInstance().getData("taskTouchEnable", isDefaultEnable);
         return taskTouchEnable;
     }

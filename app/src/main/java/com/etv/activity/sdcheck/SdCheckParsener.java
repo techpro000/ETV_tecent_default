@@ -29,6 +29,9 @@ import com.etv.util.MyLog;
 import com.etv.util.NetWorkUtils;
 import com.etv.util.SharedPerManager;
 import com.etv.util.SharedPerUtil;
+import com.etv.util.down.SaveDataRunnable;
+import com.etv.util.down.SaveDataRxJave;
+import com.etv.util.down.SaveDateToDbListener;
 import com.etv.util.image.CompressImageUtil;
 import com.etv.util.system.LanguageChangeUtil;
 import com.ys.etv.R;
@@ -272,10 +275,10 @@ public class SdCheckParsener implements SdCheckListener {
         try {
 
             /*
-            * {"ip":"192.168.1.1","port":"8899","userName":"139999999999","lineType":"0"}
-            * 0 : WebSocket
-            * 1 : Socket
-            * */
+             * {"ip":"192.168.1.1","port":"8899","userName":"139999999999","lineType":"0"}
+             * 0 : WebSocket
+             * 1 : Socket
+             * */
             JSONObject jsonObject = new JSONObject(txtInfo);
             Log.e("TAG", "modifySharedIpAddress: " + jsonObject);
             String serverIP = jsonObject.getString("ip");
@@ -344,10 +347,26 @@ public class SdCheckParsener implements SdCheckListener {
 
             @Override
             public void parserJsonOver(String tag, List<TaskWorkEntity> list) {
-                //清理当前的task.以防下次误判
-                String file = AppInfo.BASE_TASK_URL() + "/task.txt";
-                FileUtil.deleteDirOrFilePath(file, "====解析完成==parserJsonOver====");
-                sdCheckView.setThreeClose(context.getString(R.string.parsener_success));
+                MyLog.task("节目解析完成==" + tag);
+                if (list == null || list.size() < 1) {
+                    sdCheckView.setThreeClose(context.getString(R.string.parsener_error));
+                    return;
+                }
+                SaveDataRxJave saveDataRxJave = new SaveDataRxJave();
+                saveDataRxJave.startSyncInfoToDb(list, new SaveDateToDbListener() {
+                    @Override
+                    public void saveDataToDbOk(Boolean isSaveOk) {
+                        MyLog.task("同步数据到数据库=" + isSaveOk);
+                        if (!isSaveOk) {
+                            sdCheckView.setThreeClose(context.getString(R.string.parsener_error));
+                            return;
+                        }
+                        //清理当前的task.以防下次误判
+                        String file = AppInfo.BASE_TASK_URL() + "/task.txt";
+                        FileUtil.deleteDirOrFilePath(file, "====解析完成==parserJsonOver====");
+                        sdCheckView.setThreeClose(context.getString(R.string.parsener_success));
+                    }
+                });
             }
         });
     }
