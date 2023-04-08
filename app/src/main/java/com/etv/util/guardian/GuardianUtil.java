@@ -304,54 +304,74 @@ public class GuardianUtil {
     }
 
     private RawSourceEntity getResourceGuardianEntity() {
-        RawSourceEntity rawSourceEntity = null;
+        RawSourceEntity rawSourceEntity = new RawSourceEntity(R.raw.guardian_71, 3395008, "7.0通用版本", 77);
         try {
-            List<RawSourceEntity> lists = new ArrayList<RawSourceEntity>();
-            lists.add(new RawSourceEntity(R.raw.guardian_44, 3359565, "4.4通用版本", 55));         //4.4 系统通用       0
-            lists.add(new RawSourceEntity(R.raw.guardian_51, 1624725, "5.1通用版本", 43));         //5.0 系统通用       1
-            lists.add(new RawSourceEntity(R.raw.guardian_71, 3395008, "7.0通用版本", 77));         // 7.1 系统通用       2
-            lists.add(new RawSourceEntity(R.raw.guardian_gt_81, 1597440, "8.1高通通用版本", 43));   //高通8.1版本      3
-            lists.add(new RawSourceEntity(R.raw.guardian_lg, 1615652, "朗国主板", 43));            //朗国主板          4
-            lists.add(new RawSourceEntity(R.raw.guardian_a20, 1593887, "视美泰", 43));             //视美泰A20  4.2    5
-            lists.add(new RawSourceEntity(R.raw.guardian_81, 3389505, "8.1通用版本", 48));         //8.1 PX30 系统通用         6
-            lists.add(new RawSourceEntity(R.raw.guardian_91, 3397722, "9.0", 74));                                      //a88 9.0版本               7
-            lists.add(new RawSourceEntity(R.raw.guardian_mlogic91, 3365824, "mlogic9.0", 47));    //MLOCIC_91              8
-            lists.add(new RawSourceEntity(R.raw.guardian_11_3588, 3394988, "3588-android-11", 78));    //Android-11  3568       9
-            lists.add(new RawSourceEntity(R.raw.guardian_3568, 3394812, "3568-android-3568", 76));    //Android  3568       10
-            lists.add(new RawSourceEntity(R.raw.guardian_982, 3399823, "3568-android-982", 75));    //Android  982       11
+//            lists.add(new RawSourceEntity(R.raw.guardian_44, 3359565, "4.4通用版本", 55));         //4.4 系统通用       0
+//            lists.add(new RawSourceEntity(R.raw.guardian_51, 1624725, "5.1通用版本", 43));         //5.0 系统通用       1
+//            lists.add(new RawSourceEntity(R.raw.guardian_71, 3395008, "7.0通用版本", 77));         // 7.1 系统通用       2
+//            lists.add(new RawSourceEntity(R.raw.guardian_gt_81, 1597440, "8.1高通通用版本", 43));   //高通8.1版本      3
+//            lists.add(new RawSourceEntity(R.raw.guardian_lg, 1615652, "朗国主板", 43));            //朗国主板          4
+//            lists.add(new RawSourceEntity(R.raw.guardian_a20, 1593887, "视美泰", 43));             //视美泰A20  4.2    5
+//            lists.add(new RawSourceEntity(R.raw.guardian_81, 3389505, "8.1通用版本", 48));         //8.1 PX30 系统通用         6
+//            lists.add(new RawSourceEntity(R.raw.guardian_91, 3397722, "9.0", 74));                                      //a88 9.0版本               7
+//            lists.add(new RawSourceEntity(R.raw.guardian_mlogic91, 3365824, "mlogic9.0", 47));    //MLOCIC_91              8
+//            lists.add(new RawSourceEntity(R.raw.guardian_11_3588, 3394988, "3588-android-11", 78));    //Android-11  3568       9
+//            lists.add(new RawSourceEntity(R.raw.guardian_3568, 3394812, "3568-android-3568", 76));    //Android  3568       10
+//            lists.add(new RawSourceEntity(R.raw.guardian_982, 3399823, "3568-android-982", 75));    //Android  982       11
             String cpuModel = CpuModel.getMobileType();
             MyLog.guardian("=====获取守护进程Raw id==" + cpuModel);
             if (cpuModel.contains(CpuModel.CPU_MODEL_MLOGIC)) {
-                rawSourceEntity = lists.get(8);
-            } else if (cpuModel.contains(CpuModel.CPU_MODEL_T982)) {
-                //982 主
-                rawSourceEntity = lists.get(11);
-            } else if (cpuModel.contains(CpuModel.CPU_MODEL_3568_11)) {
-                //3568 android 11
-                rawSourceEntity = lists.get(10);
-            } else if (cpuModel.contains(CpuModel.CPU_MODEL_PX30)) {
-                rawSourceEntity = lists.get(6);
-            } else if (cpuModel.contains(CpuModel.CPU_MODEL_RK_DEFAULT)) {
+                //PX30主板
+                rawSourceEntity = new RawSourceEntity(R.raw.guardian_mlogic91, 3365824, "mlogic9.0", 47);
+                return rawSourceEntity;
+            }
+            if (cpuModel.contains(CpuModel.CPU_MODEL_T982)) {
+                //T-982
+                rawSourceEntity = new RawSourceEntity(R.raw.guardian_982, 3399823, "3568-android-982", 75);
+                return rawSourceEntity;
+            }
+            if (cpuModel.contains(CpuModel.CPU_MODEL_3568_11)) {
+                //rk-3568 android 11
+                rawSourceEntity = new RawSourceEntity(R.raw.guardian_3568, 3394812, "3568-android-3568", 76);
+                return rawSourceEntity;
+            }
+            if (cpuModel.contains(CpuModel.CPU_MODEL_PX30)) {
+                //PX-30 8.0系统
+                rawSourceEntity = new RawSourceEntity(R.raw.guardian_81, 3389505, "8.1通用版本", 48);
+                return rawSourceEntity;
+            }
+            if (cpuModel.contains(CpuModel.CPU_MODEL_RK_DEFAULT)) {
                 int sdkCode = Build.VERSION.SDK_INT;
                 MyLog.guardian("==当前SDK 得版本===" + sdkCode);
                 if (sdkCode > Build.VERSION_CODES.Q) {
-                    // 11.0
-                    rawSourceEntity = lists.get(9);
-                } else if ((sdkCode > Build.VERSION_CODES.P || sdkCode == Build.VERSION_CODES.P) && sdkCode < Build.VERSION_CODES.Q) {
-                    //9.0	28	Pie (Android P)
-                    rawSourceEntity = lists.get(7);
-                } else if (sdkCode > Build.VERSION_CODES.O) {
+                    //RK-11.0
+                    rawSourceEntity = new RawSourceEntity(R.raw.guardian_11_3588, 3394988, "3588-android-11", 78);
+                    return rawSourceEntity;
+                }
+                if ((sdkCode > Build.VERSION_CODES.P || sdkCode == Build.VERSION_CODES.P) && sdkCode < Build.VERSION_CODES.Q) {
+                    //RK_9.0	28	Pie (Android P)
+                    rawSourceEntity = new RawSourceEntity(R.raw.guardian_91, 3397722, "9.0", 74);
+                    return rawSourceEntity;
+                }
+                if (sdkCode > Build.VERSION_CODES.O) {
                     // 8.0
-                    rawSourceEntity = lists.get(6);
-                } else if (sdkCode > Build.VERSION_CODES.N && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                    rawSourceEntity = new RawSourceEntity(R.raw.guardian_81, 3389505, "8.1通用版本", 48);
+                    return rawSourceEntity;
+                }
+                if (sdkCode > Build.VERSION_CODES.N && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                     // 7.0系统需要系统签名
-                    rawSourceEntity = lists.get(2);
-                } else if (sdkCode > Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    rawSourceEntity = new RawSourceEntity(R.raw.guardian_71, 3395008, "7.0通用版本", 77);
+                    return rawSourceEntity;
+                }
+                if (sdkCode > Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                     // 5<Code<6.0  //需要系统签名
-                    rawSourceEntity = lists.get(1);
-                } else if (sdkCode > Build.VERSION_CODES.JELLY_BEAN && sdkCode < Build.VERSION_CODES.LOLLIPOP) {
+                    rawSourceEntity = new RawSourceEntity(R.raw.guardian_51, 1624725, "5.1通用版本", 43);
+                    return rawSourceEntity;
+                }
+                if (sdkCode > Build.VERSION_CODES.JELLY_BEAN && sdkCode < Build.VERSION_CODES.LOLLIPOP) {
                     //4.0~5.0
-                    rawSourceEntity = lists.get(0);
+                    rawSourceEntity = new RawSourceEntity(R.raw.guardian_44, 3359565, "4.4通用版本", 55);
+                    return rawSourceEntity;
                 }
             }
         } catch (Exception e) {

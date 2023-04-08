@@ -8,8 +8,6 @@ import com.etv.util.SharedPerManager;
 public class CpuModel {
 
     public static final String CPU_MODEL_PX30 = "px30";      //RK_PX30_8.1
-    public static final String CPU_MODEL_SMD = "smd";        //1高通通用版本
-    public static final String CPU_MODEL_MSM = "msm";        //1高通通用版本
     public static final String CPU_MODEL_RK_DEFAULT = "rk";
     public static final String CPU_MODEL_MLOGIC = "x301";    //mlogic_X301
     public static final String CPU_MODEL_RK_3128 = "rk312";  //RK_3128
