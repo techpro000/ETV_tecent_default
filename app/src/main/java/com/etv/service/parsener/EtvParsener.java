@@ -194,7 +194,7 @@ public class EtvParsener {
      * @param progress int taskId, int progress, int downKb
      */
     public void updateProgressToWebRegister(String tag, String taskId, String totalNum, int progress, int downKb, String type) {
-//        MyLog.cdl("===下载进度标记==" + tag + " /taskId=" + taskId + " /totalNum=" + totalNum + " /progress= " + progress + " /downKb=" + downKb);
+        MyLog.cdl("===下载进度标记==" + tag + " /taskId=" + taskId + " /totalNum=" + totalNum + " /progress= " + progress + " /downKb=" + downKb);
         initOther();
         etvServerModule.updateProgressToWebRegister(taskId, totalNum, progress, downKb, type);
     }

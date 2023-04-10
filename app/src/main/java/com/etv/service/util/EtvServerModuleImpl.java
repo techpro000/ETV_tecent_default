@@ -455,10 +455,6 @@ public class EtvServerModuleImpl implements EtvServerModule {
             if (taskId == null || taskId.length() < 2) {
                 return;
             }
-            if (!AppConfig.isOnline) {
-                MyLog.update("设备未链接，中止更新进度");
-                return;
-            }
             String requestUrl = ApiInfo.UPDATE_DOWN_PROGRESS();
             String devId = CodeUtil.getUniquePsuedoID();
             int randomNum = new Random().nextInt(10);
