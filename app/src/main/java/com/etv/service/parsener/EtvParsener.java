@@ -236,10 +236,6 @@ public class EtvParsener {
             MyLog.update("==统计===非网路模式");
             return;
         }
-        if (!AppConfig.isOnline) {
-            MyLog.update("==统计===设备不在线");
-            return;
-        }
         try {
             initOther();
             String timeUpdate = SimpleDateUtil.parsenerSratisDate(System.currentTimeMillis());

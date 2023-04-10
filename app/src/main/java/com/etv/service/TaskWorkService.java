@@ -1169,10 +1169,6 @@ public class TaskWorkService extends Service implements TaskView {
             MyLog.phone("=====单机模式==不去检查");
             return;
         }
-        if (!AppConfig.isOnline) {
-            MyLog.phone("=====设备不在线，不上传");
-            return;
-        }
         initOther();
         taskServiceParsener.updateVideoFileToWeb(listFileSearch);
     }

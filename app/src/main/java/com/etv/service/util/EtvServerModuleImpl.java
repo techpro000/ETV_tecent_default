@@ -187,9 +187,6 @@ public class EtvServerModuleImpl implements EtvServerModule {
             if (workModel != AppInfo.WORK_MODEL_NET) { //非网络模式
                 return;
             }
-            if (!AppConfig.isOnline) {
-                return;
-            }
             if (!NetWorkUtils.isNetworkConnected(context)) { //网络未连接
                 return;
             }
