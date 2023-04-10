@@ -1141,7 +1141,11 @@ public class SharedPerManager {
     }
 
     public static String getPackageNameBySp() {
-        return ((String) EtvApplication.getInstance().getData("packageName", "com.ys.etv"));
+        if (!TextUtils.isEmpty(packageNameCache)) {
+            return packageNameCache;
+        }
+        packageNameCache = ((String) EtvApplication.getInstance().getData("packageName", "com.ys.etv"));
+        return packageNameCache;
     }
 
     public static String getPackageNameByYuncheng() {
@@ -1149,7 +1153,10 @@ public class SharedPerManager {
     }
 
 
+    private static String packageNameCache = "";
+
     public static void setPackageName(String packageName, String tag) {
+        packageNameCache = packageName;
         EtvApplication.getInstance().saveData("packageName", packageName);
     }
 

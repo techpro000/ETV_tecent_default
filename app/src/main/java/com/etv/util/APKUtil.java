@@ -5,6 +5,7 @@ import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -37,6 +38,23 @@ public class APKUtil {
         this.context = context;
     }
 
+    /***
+     * 获取应用得Uid
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static synchronized int getUid(Context context, String packageName) {
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+            int uid = applicationInfo.uid;
+            return uid;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     /***
      * 获取APP的软件版本号

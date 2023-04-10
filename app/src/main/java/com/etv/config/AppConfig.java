@@ -59,6 +59,9 @@ public class AppConfig {
     // 软件是否打印日志
     public static final boolean IF_PRINT_LOG = true;
 
+    //流量统计提交得间隔时间
+    public static final int TRAFF_UPDATE_TIME = 15;
+
     /***
      * 守护进程的版本号================================================================================
      */
@@ -72,7 +75,6 @@ public class AppConfig {
      * 是否已经初始化腾讯socket的sdk
      */
     public static boolean isInitedTimSDK = false;
-
 
     /***
      * 地图定位的间隔时间
