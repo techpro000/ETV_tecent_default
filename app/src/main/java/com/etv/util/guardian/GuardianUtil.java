@@ -306,18 +306,6 @@ public class GuardianUtil {
     private RawSourceEntity getResourceGuardianEntity() {
         RawSourceEntity rawSourceEntity = new RawSourceEntity(R.raw.guardian_71, 3395008, "7.0通用版本", 77);
         try {
-//            lists.add(new RawSourceEntity(R.raw.guardian_44, 3359565, "4.4通用版本", 55));         //4.4 系统通用       0
-//            lists.add(new RawSourceEntity(R.raw.guardian_51, 1624725, "5.1通用版本", 43));         //5.0 系统通用       1
-//            lists.add(new RawSourceEntity(R.raw.guardian_71, 3395008, "7.0通用版本", 77));         // 7.1 系统通用       2
-//            lists.add(new RawSourceEntity(R.raw.guardian_gt_81, 1597440, "8.1高通通用版本", 43));   //高通8.1版本      3
-//            lists.add(new RawSourceEntity(R.raw.guardian_lg, 1615652, "朗国主板", 43));            //朗国主板          4
-//            lists.add(new RawSourceEntity(R.raw.guardian_a20, 1593887, "视美泰", 43));             //视美泰A20  4.2    5
-//            lists.add(new RawSourceEntity(R.raw.guardian_81, 3389505, "8.1通用版本", 48));         //8.1 PX30 系统通用         6
-//            lists.add(new RawSourceEntity(R.raw.guardian_91, 3397722, "9.0", 74));                                      //a88 9.0版本               7
-//            lists.add(new RawSourceEntity(R.raw.guardian_mlogic91, 3365824, "mlogic9.0", 47));    //MLOCIC_91              8
-//            lists.add(new RawSourceEntity(R.raw.guardian_11_3588, 3394988, "3588-android-11", 78));    //Android-11  3568       9
-//            lists.add(new RawSourceEntity(R.raw.guardian_3568, 3394812, "3568-android-3568", 76));    //Android  3568       10
-//            lists.add(new RawSourceEntity(R.raw.guardian_982, 3399823, "3568-android-982", 75));    //Android  982       11
             String cpuModel = CpuModel.getMobileType();
             MyLog.guardian("=====获取守护进程Raw id==" + cpuModel);
             if (cpuModel.contains(CpuModel.CPU_MODEL_MLOGIC)) {
@@ -327,7 +315,7 @@ public class GuardianUtil {
             }
             if (cpuModel.contains(CpuModel.CPU_MODEL_T982)) {
                 //T-982
-                rawSourceEntity = new RawSourceEntity(R.raw.guardian_982, 3399823, "3568-android-982", 75);
+                rawSourceEntity = new RawSourceEntity(R.raw.guardian_982, 3211268, "3568-android-982", 79);
                 return rawSourceEntity;
             }
             if (cpuModel.contains(CpuModel.CPU_MODEL_3568_11)) {

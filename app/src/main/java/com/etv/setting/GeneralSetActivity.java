@@ -99,13 +99,6 @@ public class GeneralSetActivity extends SettingBaseActivity implements View.OnCl
                 mBinding.btnVoice.setVisibility(View.GONE);
                 mBinding.switchHdmiButton.setVisibility(View.GONE);
                 break;
-            case CpuModel.CPU_MODEL_3566_11:
-                mBinding.btnLanguageSet.setVisibility(View.GONE);
-                mBinding.btnVoice.setVisibility(View.GONE);
-                mBinding.btnHdmiSet.setVisibility(View.GONE);
-                mBinding.btnHdmiShow.setVisibility(View.GONE);
-                mBinding.switchHdmiButton.setVisibility(View.GONE);
-                break;
             default:
                 /*mBinding.btnHdmiSet.setVisibility(View.GONE);
                 mBinding.btnHdmiShow.setVisibility(View.GONE);

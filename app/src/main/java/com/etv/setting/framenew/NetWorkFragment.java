@@ -121,10 +121,6 @@ public class NetWorkFragment extends MessageFragment implements TerminallView, M
     }
 
     private void hiddenView() {
-        if (CpuModel.CPU_MODEL_3566_11.equals(CpuModel.getMobileType())) {
-            mBinding.btnMidifyTouchback.setVisibility(View.GONE);
-            mBinding.btnEthSetting.setVisibility(View.GONE);
-        }
     }
 
 

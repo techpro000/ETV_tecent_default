@@ -95,10 +95,6 @@ public class APKUtil {
      * @param context
      */
     public static void openFileManagerApk(Context context) {
-        if (CpuModel.getMobileType().startsWith(CpuModel.CPU_MODEL_3566_11)) {
-            openRkDefaultFileManager(context);
-            return;
-        }
         if (CpuModel.getMobileType().startsWith(CpuModel.CPU_MODEL_MTK_M11)) {
             String packageName = "com.android.rk";
             Intent parama96 = new Intent("android.intent.action.MAIN");

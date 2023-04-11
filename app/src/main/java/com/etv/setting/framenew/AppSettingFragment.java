@@ -63,10 +63,6 @@ public class AppSettingFragment extends Fragment implements View.OnClickListener
     }
 
     private void hiddenView() {
-        if (CpuModel.CPU_MODEL_3566_11.equals(CpuModel.getMobileType())) {
-            mBinding.btnPoliceSet.setVisibility(View.GONE);
-            mBinding.btnApkJumpBack.setVisibility(View.GONE);
-        }
     }
 
     @Override

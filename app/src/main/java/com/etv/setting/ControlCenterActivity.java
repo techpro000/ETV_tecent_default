@@ -40,13 +40,7 @@ public class ControlCenterActivity extends SettingBaseActivity implements MoreBu
     }
 
     private void hiddenView() {
-        if (CpuModel.CPU_MODEL_3566_11.equals(CpuModel.getMobileType())) {
-            mBinding.switchShowToggle.setVisibility(View.GONE);
-            mBinding.switchTaskTouch.setVisibility(View.GONE);
-            mBinding.switchVideoSize.setVisibility(View.GONE);
-            mBinding.switchBlueTeeth.setVisibility(View.GONE);
-            mBinding.switchDoubleScreen.setVisibility(View.GONE);
-        }
+
     }
 
     @Override

@@ -80,12 +80,6 @@ public class ScreenShowSetting extends SettingBaseActivity implements View.OnCli
             btn_double_show_type.setVisibility(View.GONE);
             btn_double_image_roate.setVisibility(View.GONE);
         }
-
-        if (CpuModel.CPU_MODEL_3566_11.equals(CpuModel.getMobileType())) {
-            btn_touch_show_type.setVisibility(View.GONE);
-            btn_double_show_type.setVisibility(View.GONE);
-            btn_double_image_roate.setVisibility(View.GONE);
-        }
     }
 
 

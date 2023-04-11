@@ -73,7 +73,7 @@ public class EtvApplication extends Application {
             }
         });
 
-        if (CpuModel.IsRK3566() || CpuModel.IsRK3568()) {
+        if (CpuModel.IsRK3568()) {
             RootCmd.setProperty("use_nuplayer", "true");
         }
     }

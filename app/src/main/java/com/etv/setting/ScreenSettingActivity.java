@@ -55,9 +55,6 @@ public class ScreenSettingActivity extends SettingBaseActivity implements View.O
     }
 
     private void hiddenView() {
-        if (CpuModel.CPU_MODEL_3566_11.equals(CpuModel.getMobileType())) {
-            mBingding.switchOpenPower.setVisibility(View.GONE);
-        }
     }
 
     @Override

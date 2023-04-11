@@ -14,7 +14,6 @@ public class CpuModel {
     public static final String CPU_MODEL_RK_3399 = "rk3399";  //RK_3399
     public static final String CPU_MODEL_RK_3288 = "rk3288";  //RK_3288
     public static final String CPU_MODEL_MTK_M11 = "mt5862";  //M11主板
-    public static final String CPU_MODEL_3566_11 = "rk3566";
     public static final String CPU_MODEL_3568_11 = "rk3568";  //3568-android-11
     public static final String CPU_MODEL_T982 = "t982"; // 982
 
@@ -63,10 +62,6 @@ public class CpuModel {
         return false;
     }
 
-    public static boolean IsRK3566() {
-        String cpuModel = getMobileType();
-        return cpuModel.startsWith(CPU_MODEL_3566_11);
-    }
 
     public static boolean IsRK3568() {
         String cpuModel = getMobileType();
