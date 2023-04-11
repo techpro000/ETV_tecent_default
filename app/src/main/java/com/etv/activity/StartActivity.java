@@ -2,7 +2,9 @@ package com.etv.activity;
 
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import com.etv.config.AppConfig;
@@ -61,8 +64,6 @@ public class StartActivity extends FragmentActivity {
         iv_logo_show.setBackgroundResource(showBggImage);
         AppInfo.startCheckTaskTag = false;
         SharedPerManager.setExitDefault(false);
-
-
         //RK的主板才检测定时开关机
         checkCpuModelInfo();
     }
@@ -138,10 +139,43 @@ public class StartActivity extends FragmentActivity {
 
     private void startGoToView() {
         AppInfo.PERMISSION_COMPLAIY = true;
-        //startActivity(new Intent(StartActivity.this, TestActivity.class));
         startActivity(new Intent(StartActivity.this, SplashLowActivity.class));
         finish();
+//        boolean islocationEnable = isLocServiceEnable(StartActivity.this);
+//        MyLog.location("判断设备是否有定位权限==" + islocationEnable);
+//        if (!islocationEnable) {
+//            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//            startActivityForResult(intent, 3);
+//        }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_CANCELED && requestCode == 3) {
+            if (isLocServiceEnable(StartActivity.this)) {
+                MyLog.location("位置信息已打开，做接下来的操作");
+            } else {
+                MyLog.location("未开启GPS或定位服务，无法进入");
+            }
+        }
+    }
+
+    /**
+     * 手机是否开启位置服务，如果没有开启那么所有app将不能使用定位功能
+     */
+    public static boolean isLocServiceEnable(Context context) {
+        LocationManager locationManager = (LocationManager)
+                context.getSystemService(Context.LOCATION_SERVICE);
+        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        // 有一个为true，就代表定位服务已经打开
+        if (gps || network) {
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * 提示用户
