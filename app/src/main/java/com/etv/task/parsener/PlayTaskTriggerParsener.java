@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.etv.config.ApiInfo;
 import com.etv.config.AppInfo;
 import com.etv.listener.TaskPlayStateListener;
+import com.etv.service.EtvService;
 import com.etv.task.db.DBTaskUtil;
 import com.etv.task.db.DbTaskManager;
 import com.etv.task.entity.CacheMemory;
@@ -454,19 +455,9 @@ public class PlayTaskTriggerParsener {
 
                 @Override
                 public void playComplete(int playTag) {
-                    MyLog.playTask("播放结束回调==" + playTag);
-//                    String playTagShow = TaskPlayStateListener.getPlayTag(playTag);
-//                    if (generatorView.getClass() == ViewImgVideoNetGenerate.class) {
-//                        //混播得View 得和 混播得标记融合
-//                        if (playTag == TaskPlayStateListener.TAG_PLAY_VIDEO_IMAGE) {
-//                            changeProjectView(playTag);
-//                        }
-//                        return;
-//                    }
-//                    changeProjectView(playTag);
-
-                    playTaskView.playCompanyBack();
-
+                    MyLog.playTask("播放结束回调==" + playTag + " / " + EtvService.GPIO_STATUES_CURRENT);
+                    //触发节目不需要切换节目
+                    changeProjectView(playTag);
                 }
 
                 /**
@@ -507,31 +498,13 @@ public class PlayTaskTriggerParsener {
      * 这是测试代码
      */
     private void changeProjectView(int playTag) {
-        MyLog.task("getPmFromTask: " + 55555555);
-        //判断是否是互动节目
-        if (sceneEntityListCache == null || sceneEntityListCache.size() < 1) {
-            MyLog.playTask("===当前只有一个节目，不跳转====");
-            return;
-        }
         SceneEntity sceneEntity = sceneEntityListCache.get(currentSencenPosition);
         if (sceneEntity == null) {
+            playTaskView.playCompanyBack();
             return;
         }
-        String pmType = sceneEntity.getPmType();
-        MyLog.playTask("========检查节目得类型==" + pmType);
-        if (pmType.contains(AppInfo.PROGRAM_TOUCH)) {
-            MyLog.playTask("=====互动节目，不跳转====");
-            return;
-        }
-        //当前有场景切换时间，这里中断操作
-        int scenPlayTime = getCurrentSencenPlayTime();
-        if (scenPlayTime > 4) {
-            //有场景时间，这里中断操作
-            MyLog.playTask("=====场景有设定播放时间，这里中断操作====");
-            return;
-        }
-        MyLog.playTask("=====changeProjectView====" + playTag);
-        taskModel.playNextProgram(sceneEntityListCache, currentSencenPosition, playTag, new TaskRequestListener() {
+        MyLog.playTask("=====播放完成回调====" + playTag);
+        taskModel.playNextProgram(sceneEntityListCache, currentSencenPosition, playTag, AppInfo.TASK_TYPE_TRIGGER, new TaskRequestListener() {
             @Override
             public void modifyTxtInfoStatues(boolean isSuccess, String desc) {
 
@@ -539,12 +512,18 @@ public class PlayTaskTriggerParsener {
 
             @Override
             public void playNextProgram(boolean isBack, List<SceneEntity> sceneEntities, int tag) {
-                if (tag < 0) {
-                    //表示触发得节目播放完毕，这里结束播放
-                    playTaskView.findTaskNew();
-
-
+                MyLog.playTask("=====播放完成回调==playNextProgram==" + isBack);
+                if (!isBack) {
+                    return;
                 }
+                MyLog.playTask("=====播放完成回调==准备切换下一个状态==");
+                if (EtvService.GPIO_STATUES_CURRENT == EtvService.GPIO_STATUES_COME) {
+                    //人还在前台，继续轮询播放
+                    MyLog.playTask("=====播放完成回调==人还没有走，继续播放一轮==");
+                    return;
+                }
+                MyLog.playTask("=====播放完成回调==停止播放触发节目==");
+                playTaskView.playCompanyBack();
             }
 
             @Override

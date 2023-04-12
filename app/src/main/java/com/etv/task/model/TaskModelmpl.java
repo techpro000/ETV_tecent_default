@@ -166,23 +166,26 @@ public class TaskModelmpl implements TaskMudel {
      * 判断是否可以播放下一个节目
      * @param sceneEntityList
      * @param playTag
+     * @param taskType
+     * 普通任务
+     * 触发任务
      * @return
      */
     @Override
-    public void playNextProgram(List<SceneEntity> sceneEntityList, int currentPositionPm, int playTag, TaskRequestListener listener) {
+    public void playNextProgram(List<SceneEntity> sceneEntityList, int currentPositionPm, int playTag, String taskType, TaskRequestListener listener) {
+        if ((sceneEntityList == null || sceneEntityList.size() < 2) && !taskType.equals(AppInfo.TASK_TYPE_TRIGGER)) {
+            listener.playNextProgram(false, null, -1);
+            MyLog.playTask("2222====节目==场景数量只有0个或者一天，不用切换");
+            return;
+        }
+        SceneEntity sceneEntity = sceneEntityList.get(currentPositionPm);
+        List<CpListEntity> cpList = sceneEntity.getListCp();
+        if (cpList == null || cpList.size() < 1) {
+            MyLog.playTask("2222====获取的控件信息==null");
+            listener.playNextProgram(false, null, 0);
+            return;
+        }
         try {
-            if (sceneEntityList == null || sceneEntityList.size() < 2) {
-                listener.playNextProgram(false, null, -1);
-                MyLog.playTask("2222====节目==场景数量只有0个或者一天，不用切换");
-                return;
-            }
-            SceneEntity sceneEntity = sceneEntityList.get(currentPositionPm);
-            List<CpListEntity> cpList = sceneEntity.getListCp();
-            if (cpList == null || cpList.size() < 1) {
-                MyLog.playTask("2222====获取的控件信息==null");
-                listener.playNextProgram(false, null, 0);
-                return;
-            }
             //2:混播的优先级次之
             boolean isHasVideoImage = false;
             for (int i = 0; i < cpList.size(); i++) {

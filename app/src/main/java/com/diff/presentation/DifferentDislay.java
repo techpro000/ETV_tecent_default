@@ -545,7 +545,7 @@ public class DifferentDislay extends Presentation {
         if (taskModel == null) {
             return;
         }
-        taskModel.playNextProgram(sceneEntityListSecond, currentPosition, playTag, new TaskRequestListener() {
+        taskModel.playNextProgram(sceneEntityListSecond, currentPosition, playTag, AppInfo.TASK_TYPE_DEFAULT, new TaskRequestListener() {
             @Override
             public void modifyTxtInfoStatues(boolean isSuccess, String desc) {
 

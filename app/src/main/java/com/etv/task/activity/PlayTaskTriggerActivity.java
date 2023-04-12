@@ -28,7 +28,6 @@ public class PlayTaskTriggerActivity extends TaskActivity implements PlayTaskVie
 
     }
 
-
     @Override
     protected void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);

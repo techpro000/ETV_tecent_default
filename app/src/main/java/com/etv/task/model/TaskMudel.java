@@ -27,7 +27,7 @@ public interface TaskMudel {
      */
     void modifyTextInfoToWeb(String txtId, String content, TaskRequestListener listener);
 
-    void playNextProgram(List<SceneEntity> listsSence, int currentPosition, int playTag, TaskRequestListener listener);
+    void playNextProgram(List<SceneEntity> listsSence, int currentPosition, int playTag,String taskType, TaskRequestListener listener);
 
     /***
      * 和服务器请求数据

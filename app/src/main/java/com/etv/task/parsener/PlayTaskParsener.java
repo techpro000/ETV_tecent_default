@@ -1566,7 +1566,7 @@ public class PlayTaskParsener {
             return;
         }
         MyLog.playTask("=====changeProjectView====" + playTag);
-        taskModel.playNextProgram(sceneEntityListMain, currentSencenPosition, playTag, new TaskRequestListener() {
+        taskModel.playNextProgram(sceneEntityListMain, currentSencenPosition, playTag, AppInfo.TASK_TYPE_DEFAULT, new TaskRequestListener() {
             @Override
             public void modifyTxtInfoStatues(boolean isSuccess, String desc) {
 

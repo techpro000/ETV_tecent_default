@@ -103,6 +103,7 @@ public class EtvService extends Service {
                 MyLog.d("cdl", "===========添加统计请求===广播==========");
                 addPlayNumToWeb();
             } else if (action.equals(AppInfo.RED_LINE_LISTENER_IN)) {
+                GPIO_STATUES_CURRENT = GPIO_STATUES_COME;
                 MyLog.phone("IO广播==人来了==");
                 if (etvParsener == null) {
                     return;
@@ -110,9 +111,14 @@ public class EtvService extends Service {
                 etvParsener.dealRedGpioInfoPeronComeIn();
             } else if (action.equals(AppInfo.RED_LINE_LISTENER_OUT)) {
                 MyLog.phone("IO广播==人走了==");
+                GPIO_STATUES_CURRENT = GPIO_STATUES_LIVE;
             }
         }
     };
+
+    public static int GPIO_STATUES_COME = 0;
+    public static int GPIO_STATUES_LIVE = 1;
+    public static int GPIO_STATUES_CURRENT = GPIO_STATUES_LIVE;
 
     private BroadcastReceiver receiverSdUsb = new BroadcastReceiver() {
         @Override
