@@ -504,6 +504,7 @@ public class TaskWorkService extends Service implements TaskView {
     }
 
     private void SynchronizeDatabaseFromList() {
+        setCurrentTaskType(TASK_TYPE_DEFAULT, "数据库操作完成");
         if (listTaskSaveDbCache == null || listTaskSaveDbCache.size() < 1) {
             startPlayTaskActivity("======没有数据需要同步，直接去播放");
             return;
@@ -512,7 +513,6 @@ public class TaskWorkService extends Service implements TaskView {
         SaveDataRunnable saveDataRunnable = new SaveDataRunnable(listTaskSaveDbCache, new SaveDateToDbListener() {
             @Override
             public void saveDataToDbOk(Boolean isSaveOk) {
-                setCurrentTaskType(TASK_TYPE_DEFAULT, "数据库操作完成");
                 MyLog.task("保存数据成功： " + isSaveOk);
                 startPlayTaskActivity("数据库同步保存成功，准备播放");
             }
