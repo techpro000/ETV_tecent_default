@@ -428,7 +428,7 @@ public class PlayTaskParsener {
             clearLogoView();
             Generator generatorView = new ViewLogoImageGenertrator(context, positionEntity.getLeftPosition(),
                     positionEntity.getTopPosition(), positionEntity.getWidth(), positionEntity.getHeight(), allPath);
-            addViewToList(generatorView, AppInfo.VIEW_LOGO, false);
+            addViewToList(generatorView, AppInfo.VIEW_LOGO, false, null);
             generatorView.getView().setTag(generatorView);
             view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
             generatorView.updateView(null, true);
@@ -622,7 +622,7 @@ public class PlayTaskParsener {
                 String moveWeb = textInfo.getTaMove();
                 Generator generatorView = TaskDealUtil.getWebViewBySpeedString(context, moveWeb, leftPosition, topPosition, width, height, txtContentWeb);
                 view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
-                addViewToList(generatorView, AppInfo.VIEW_WEB_PAGE, true);
+                addViewToList(generatorView, AppInfo.VIEW_WEB_PAGE, true, null);
                 return;
             }
             MyLog.playTask("======parperToShowAreaView===去加载素材资源====" + cpId);
@@ -660,13 +660,13 @@ public class PlayTaskParsener {
         if (mpType.equals(AppInfo.VIEW_IMAGE)) {  //图片类型素材
             generatorView = new ViewImageGenertrator(context, null, leftPosition, topPosition, width, height, mixtureList, isTrue);
             MyLog.playTask("=====parperToShowAreaView===加载控件类型====image===" + leftPosition + " / " + topPosition + " / " + width + " / " + height);
-            addViewToList(generatorView, AppInfo.VIEW_IMAGE, true);
+            addViewToList(generatorView, AppInfo.VIEW_IMAGE, true, null);
             view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
             generatorView.updateView(null, true);
         } else if (mpType.equals(AppInfo.VIEW_VIDEO)) {  //视频类型控件
             MyLog.playTask("======parperToShowAreaView==加载控件类型====video===" + leftPosition + " / " + topPosition + " / " + width + " / " + height);
             generatorView = TaskDealUtil.getVideoPlayView(context, null, leftPosition, topPosition, width, height, mixtureList, AppInfo.PROGRAM_POSITION_MAIN, isTrue);
-            addViewToList(generatorView, AppInfo.VIEW_VIDEO, true);
+            addViewToList(generatorView, AppInfo.VIEW_VIDEO, true, null);
             view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
             generatorView.updateView(null, true);
         } else if (mpType.equals(AppInfo.VIEW_DOC)) { //文档
@@ -676,7 +676,7 @@ public class PlayTaskParsener {
             MyLog.playTask("文档得切换时间 ： " + deaution);
             int fileType = FileMatch.fileMatch(fileUrl);
             generatorView = TaskDealUtil.getPdfShowView(context, fileType, null, leftPosition, topPosition, width, height, mediAddEntity, mixtureList);
-            addViewToList(generatorView, AppInfo.VIEW_DOC, true);
+            addViewToList(generatorView, AppInfo.VIEW_DOC, true, null);
             view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
             generatorView.updateView(mediAddEntity, true);
 
@@ -748,7 +748,7 @@ public class PlayTaskParsener {
                     SceneEntity areaScentity = getCurrentSencenEntity();
                     Log.e("liujk", "leftPosition : " + leftPosition + " topPosition: " + topPosition + " width: " + width + " height:" + height);
                     generatorView = new ViewImgVideoNetGenerate(context, null, areaScentity, leftPosition, topPosition, width, height, areaList, true, 0, AppInfo.PROGRAM_POSITION_MAIN, true);
-                    addViewToList(generatorView, coType, false);
+                    addViewToList(generatorView, coType, false, null);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     break;
                 case AppInfo.VIEW_IMAGE:  //图片格式
@@ -762,7 +762,7 @@ public class PlayTaskParsener {
                     //图片需要添加点击事件，所以addViewToList放在前面，切记，updateView用来刷新界面得，需要放在后边
                     generatorView = TaskDealUtil.getImageGenertorViewParsener(context, cpEntity, leftPosition, topPosition, width, height, imageList, false);
 //                    generatorView = new ViewImageGenertrator(context, cpEntity, leftPosition, topPosition, width, height, imageList, false);
-                    addViewToList(generatorView, coType, false);
+                    addViewToList(generatorView, coType, false, null);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     generatorView.updateView(null, true);
                     break;
@@ -775,7 +775,7 @@ public class PlayTaskParsener {
                     }
                     generatorView = TaskDealUtil.getVideoPlayView(context, cpEntity, leftPosition, topPosition, width, height, videoList, AppInfo.PROGRAM_POSITION_MAIN, false);
                     MyLog.playTask("====视频的坐标的坐标==4k support=" + " / videoList=" + videoList.get(0).getUrl());
-                    addViewToList(generatorView, coType, false);
+                    addViewToList(generatorView, coType, false, null);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     generatorView.updateView(null, true);
                     break;
@@ -787,7 +787,7 @@ public class PlayTaskParsener {
                     SceneEntity currentScentity = getCurrentSencenEntity();
                     MyLog.playTask("混播===列表数量===" + mixtureList.size());
                     generatorView = new ViewImgVideoNetGenerate(context, cpEntity, currentScentity, leftPosition, topPosition, width, height, mixtureList, true, 0, AppInfo.PROGRAM_POSITION_MAIN, false);
-                    addViewToList(generatorView, coType, false);
+                    addViewToList(generatorView, coType, false, null);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     break;
                 case AppInfo.VIEW_AUDIO:                         //音频
@@ -797,7 +797,7 @@ public class PlayTaskParsener {
                     }
                     generatorView = new ViewAudioGenertrator(context, 0, 0, 1, 1, audioList);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
-                    addViewToList(generatorView, coType, false);
+                    addViewToList(generatorView, coType, false, null);
                     break;
                 case AppInfo.VIEW_WEB_PAGE:     //  网页
                     if (txtList == null || txtList.size() < 1) {
@@ -820,7 +820,7 @@ public class PlayTaskParsener {
                     }
                     generatorView = TaskDealUtil.getWebViewBySpeedString(context, moveWeb, leftPosition, topPosition, width, height, txtContentWeb);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
-                    addViewToList(generatorView, coType, false);
+                    addViewToList(generatorView, coType, false, null);
                     //网页不用这个方法，这个是刷新功能
                     generatorView.updateView(textInfo, isShowBtn);
                     break;
@@ -838,7 +838,7 @@ public class PlayTaskParsener {
                     if (generatorView != null) {
                         view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                         generatorView.updateView(mediAddEntity, true);
-                        addViewToList(generatorView, coType, false);
+                        addViewToList(generatorView, coType, false, null);
                     }
                     break;
                 case AppInfo.VIEW_STREAM_VIDEO:  //流媒体
@@ -852,7 +852,7 @@ public class PlayTaskParsener {
                     String moveStream = textInfoStream.getTaMove();
                     generatorView = TaskDealUtil.getStreamGenViewBySpeed(context, moveStream, cpEntity, leftPosition, topPosition,
                             width, height, streamUrl, coType);
-                    addViewToList(generatorView, coType, false);
+                    addViewToList(generatorView, coType, false, null);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     generatorView.updateView(null, true);
                     break;
@@ -869,13 +869,13 @@ public class PlayTaskParsener {
                             "\n textInfoWeather=" + textInfoWeather.toString());
                     generatorView = TaskDealUtil.getWeatherGenWeatherView(context, leftPosition, topPosition, width, height, textInfoWeather);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
-                    addViewToList(generatorView, coType, false);
                     //刷新界面
                     String textColor = textInfoWeather.getTaColor();
                     String bggColor = textInfoWeather.getTaBgColor();
-                    weatherCache = new WeatherEntity(city, "多云", "15℃", "25℃", textColor, bggColor);
+                    WeatherEntity weatherCache = new WeatherEntity(city, "多云", "15℃", "25℃", textColor, bggColor);
+                    addViewToList(generatorView, coType, false, weatherCache);
                     generatorView.updateView(weatherCache, true);
-                    getWeatherFromWeb(generatorView);
+                    getWeatherFromWeb(generatorView, weatherCache);
                     break;
                 case AppInfo.VIEW_DATE:   //日期
                     MyLog.playTask("====时间的坐标==" + leftPosition + "/ " + topPosition + " /" + width + " / " + height);
@@ -888,7 +888,7 @@ public class PlayTaskParsener {
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     MyLog.playTask("==== textInfo ： " + txtList.get(0).toString());
                     generatorView.updateView(txtList.get(0), true);
-                    addViewToList(generatorView, coType, false);
+                    addViewToList(generatorView, coType, false, null);
                     break;
                 case AppInfo.VIEW_WEEK:   //星期
                     MyLog.playTask("====时间的坐标==" + leftPosition + "/ " + topPosition + " /" + width + " / " + height);
@@ -898,7 +898,7 @@ public class PlayTaskParsener {
                     generatorView = new ViewWeekGenerate(context, leftPosition, topPosition, width, height);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     generatorView.updateView(txtList.get(0), true);
-                    addViewToList(generatorView, coType, false);
+                    addViewToList(generatorView, coType, false, null);
                     break;
                 case AppInfo.VIEW_TIME:   //时间
                     MyLog.playTask("====时间的坐标==" + leftPosition + "/ " + topPosition + " /" + width + " / " + height);
@@ -908,7 +908,7 @@ public class PlayTaskParsener {
                     generatorView = new ViewTimeOnlyGenerate(context, leftPosition, topPosition, width, height, false);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     generatorView.updateView(txtList.get(0), true);
-                    addViewToList(generatorView, coType, false);
+                    addViewToList(generatorView, coType, false, null);
                     break;
                 case AppInfo.VIEW_SUBTITLE:   //字幕
                     if (txtList == null || txtList.size() < 1) {
@@ -941,7 +941,7 @@ public class PlayTaskParsener {
                             generatorView = new ViewMatQueentestGenerte(context, cpEntity, leftPosition, topPosition, width, height, builder.toString());
                         }
                     }
-                    addViewToList(generatorView, coType, false);
+                    addViewToList(generatorView, coType, false, null);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     generatorView.updateView(textInfo1, true);
                     break;
@@ -969,32 +969,16 @@ public class PlayTaskParsener {
                     TextInfo textShow = txtList.get(0);
                     String txtContent = textShow.getTaContent();
                     generatorView = new ViewButtonGenerate(context, cpEntity, leftPosition, topPosition, width, height, txtContent);
-                    addViewToList(generatorView, coType, false);
+                    addViewToList(generatorView, coType, false, null);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     generatorView.updateView(textShow, true);
-
-                    // 原始默认状态
-//                    StringBuilder builderButton = new StringBuilder();
-//                    for (int i = 0; i < txtList.size(); i++) {
-//                        String txtContent = txtList.get(i).getTaContent();
-//                        builderButton.append(txtContent + "");
-//                    }
-//                    MyLog.playTask("button的坐标==toString=" + builderButton.toString());
-//                    generatorView = new ViewButtonGenerate(context, cpEntity, leftPosition, topPosition, width, height, builderButton.toString());
-//                    addViewToList(generatorView, coType, false);
-//                    view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
-//                    if (txtList != null && txtList.size() > 0) {
-//                        generatorView.updateView(txtList.get(0), true);
-//                    } else {
-//                        generatorView.updateView(null, true);
-//                    }
                     break;
                 case AppInfo.VIEW_COUNT_DOWN://倒计时
                     if (txtList == null || txtList.size() < 1) {
                         return;
                     }
                     generatorView = new ViewTimeReduceGenerate(context, cpEntity, leftPosition, topPosition, width, height);
-                    addViewToList(generatorView, coType, false);
+                    addViewToList(generatorView, coType, false, null);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     generatorView.updateView(txtList.get(0), true);
                     break;
@@ -1012,7 +996,7 @@ public class PlayTaskParsener {
                             //下面是 MLOGIC 的业务逻辑
                             generatorView = new ViewHdmiMLogicGenerate(context, cpEntity, leftPosition, topPosition, width, height);
                             Log.e("TAG", "parperToShowView: " + width + "////" + height);
-                            addViewToList(generatorView, coType, false);
+                            addViewToList(generatorView, coType, false, null);
                             view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                             generatorView.updateView(null, true);
                             break;
@@ -1030,13 +1014,11 @@ public class PlayTaskParsener {
 
     // 上一次获取天气的时间
     private long lastUpdateWeatherTime = 0;
-    //缓存天气实体类
-    WeatherEntity weatherCache = null;
 
     /***
      * 获取天气
      */
-    private void getWeatherFromWeb(Generator generator) {
+    private void getWeatherFromWeb(Generator generator, WeatherEntity weatherCache) {
         if (weatherCache == null) {
             MyLog.cdl("=WeatherEntity===获取天气失败，城市==null");
             return;
@@ -1085,14 +1067,19 @@ public class PlayTaskParsener {
      * @param isRelation
      * 是否是关联控件
      */
-    public void addViewToList(Generator generatorView, String coType, boolean isRelation) {
+    public void addViewToList(Generator generatorView, String coType, boolean isRelation, WeatherEntity weatherEntity) {
         MyLog.playTask("======添加view到集合中，类型=" + coType + " /是否是关联==" + isRelation);
         if (generatorView == null) {
             return;
         }
         try {
             //控件播放完毕,回掉监听
-            genratorViewList.add(new CacheMemory(generatorView, coType, isRelation));
+
+            if (coType.equals(AppInfo.VIEW_WEATHER)) {
+                genratorViewList.add(new CacheMemory(generatorView, coType, isRelation, weatherEntity));
+            } else {
+                genratorViewList.add(new CacheMemory(generatorView, coType, isRelation));
+            }
             generatorView.setPlayStateChangeListener(new TaskPlayStateListener() {
 
                 @Override
@@ -2025,13 +2012,13 @@ public class PlayTaskParsener {
         }
         for (CacheMemory cacheMemory : genratorViewList) {
             String coType = cacheMemory.getCoType();
-            if (coType.equals(AppInfo.VIEW_WEATHER)) {
-                //刷新天气内容
-                getWeatherFromWeb(cacheMemory.getGenerator());
-                break;
+            if (!coType.equals(AppInfo.VIEW_WEATHER)) {
+                continue;
             }
+            WeatherEntity weatherEntity = cacheMemory.getWeatherEntity();
+            //刷新天气内容
+            getWeatherFromWeb(cacheMemory.getGenerator(), weatherEntity);
         }
-
     }
 
     /**
