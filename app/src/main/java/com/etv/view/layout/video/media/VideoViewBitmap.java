@@ -20,8 +20,10 @@ import android.widget.RelativeLayout;
 
 import com.etv.config.AppConfig;
 import com.etv.config.AppInfo;
+import com.etv.http.util.BitmapWriteLocalRunnable;
 import com.etv.listener.TaskPlayStateListener;
 import com.etv.listener.VideoPlayListener;
+import com.etv.listener.WriteBitmapToLocalListener;
 import com.etv.task.entity.CpListEntity;
 import com.etv.task.entity.MediAddEntity;
 import com.etv.task.util.TaskDealUtil;
@@ -49,7 +51,7 @@ public class VideoViewBitmap extends RelativeLayout implements
     private MediaPlayer mMediaPlayer;
     private Surface surface;
     private TextureView textureView;
-    private boolean isSetSurface;
+//    private boolean isSetSurface;
 
     VideoPlayListener listener;
     CpListEntity cpListEntity;
@@ -103,13 +105,11 @@ public class VideoViewBitmap extends RelativeLayout implements
         view = View.inflate(context, R.layout.view_video, null);
         initView(view);
         addView(view);
-
         getMediaPlayerInstance();
-
     }
 
-    private void getMediaPlayerInstance(){
-        if(mMediaPlayer == null){
+    private void getMediaPlayerInstance() {
+        if (mMediaPlayer == null) {
             mMediaPlayer = new MediaPlayer();
         }
     }
@@ -152,11 +152,9 @@ public class VideoViewBitmap extends RelativeLayout implements
         float volNumChangfe = (float) (volNum * 1.0 / 100);
         MyLog.video("==========开始播放 volNum==" + volNum + " / " + currentPlayIndex + " / " + playUrl + "   mMediaPlayer:" + mMediaPlayer);
         try {
-
             mMediaPlayer.reset();
             mMediaPlayer.setDataSource(playUrl);
 //            mMediaPlayer.setSurface(surface);      //1  隐藏-默认版本   2 显示
-
             MyLog.video("==========开始播放 volNum==" + volNum + "   mMediaPlayer:" + mMediaPlayer + "     " + this);
             mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mMediaPlayer.setVolume(volNumChangfe, volNumChangfe);
@@ -204,66 +202,49 @@ public class VideoViewBitmap extends RelativeLayout implements
 
         @Override
         public void onCompletion(MediaPlayer mp) {
-
-            onCompletionInfo();
+            String playUrl = playList.get(currentPlayIndex).getUrl();
+            MyLog.video("0000===========播放结束了======" + currentPlayIndex + " / " + playList.size() + " / " + playUrl);
+            try {
+                if (listener != null) {
+                    listener.playCompletionSplash(currentPlayIndex, playTimeCurrent);  //用来给Splach界面回调的
+                    MyLog.video("0000===========播放结束了,执行回调==playCompletionSplash======");
+                    if (currentPlayIndex == (playList.size() - 1) || currentPlayIndex > (playList.size() - 1)) {
+                        MyLog.d("over", "===over==播放结束了,执行回调==playCompletion======");
+                        listener.playCompletion("全部播放结束了，这里回调");
+                    }
+                }
+                currentFrameBitmap = textureView.getBitmap();
+                MyLog.video("==currentFrameBitmap==" + (currentFrameBitmap == null));
+                if (currentFrameBitmap != null) {
+                    MyLog.video("==currentFrameBitmap==" + currentFrameBitmap.getWidth() + " / " + currentFrameBitmap.getHeight());
+                    video_image.setVisibility(View.VISIBLE);
+                    video_image.setImageBitmap(currentFrameBitmap);
+//                    BitmapWriteLocalRunnable bitmapWriteLocalRunnable = new BitmapWriteLocalRunnable(currentFrameBitmap, "/sdcard/cache.jpg", new WriteBitmapToLocalListener() {
+//                        @Override
+//                        public void writeStatues(boolean isSuccess, String path) {
+//                            MyLog.video("==writeStatues==" + isSuccess);
+//                        }
+//                    });
+//                    Thread thread = new Thread(bitmapWriteLocalRunnable);
+//                    thread.start();
+                }
+            } catch (Exception e) {
+                MyLog.video("error==onCompletionInfo==" + e.toString(), true);
+                e.printStackTrace();
+            }
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    playNextVideo();
+                }
+            }, 50);
         }
     };
 
 
     int playTimeCurrent = 15;
     Bitmap currentFrameBitmap = null;
-    private static final int SHOW_IMAGE_YAG = 2345;
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            handler.removeMessages(msg.what);
-            switch (msg.what) {
-                case SHOW_IMAGE_YAG:
-                    try {
-                        if (currentFrameBitmap != null) {
-                            currentFrameBitmap.recycle();
-                            currentFrameBitmap = null;
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    video_image.setVisibility(View.GONE);
-                    break;
-            }
-        }
-    };
-
-
-    /***
-     * 播放结束回调====
-     */
-    public void onCompletionInfo() {
-        String playUrl = playList.get(currentPlayIndex).getUrl();
-        MyLog.video("0000===========播放结束了======" + currentPlayIndex + " / " + playList.size() + " / " + playUrl);
-        try {
-            if (listener != null) {
-                listener.playCompletionSplash(currentPlayIndex, playTimeCurrent);  //用来给Splach界面回调的
-                MyLog.video("0000===========播放结束了,执行回调==playCompletionSplash======");
-                if (currentPlayIndex == (playList.size() - 1) || currentPlayIndex > (playList.size() - 1)) {
-                    MyLog.d("over", "===over==播放结束了,执行回调==playCompletion======");
-                    listener.playCompletion("全部播放结束了，这里回调");
-                }
-            }
-
-            video_image.setVisibility(View.VISIBLE);
-            currentFrameBitmap = textureView.getBitmap();
-            if (currentFrameBitmap != null) {
-                video_image.setImageBitmap(currentFrameBitmap);
-                handler.sendEmptyMessageDelayed(SHOW_IMAGE_YAG, AppConfig.Seamless_Switching_Time);
-            }
-            playNextVideo();
-        } catch (Exception e) {
-            MyLog.video("error==onCompletionInfo==" + e.toString(), true);
-            e.printStackTrace();
-        }
-    }
 
     OnPreparedListener onPreparedListener = new OnPreparedListener() {
         @Override
@@ -280,12 +261,24 @@ public class VideoViewBitmap extends RelativeLayout implements
                 LinearLayout.LayoutParams params = TaskDealUtil.getLayoutSize(mediaPlayer, viewSizeWidth, viewSizeHeight);
                 textureView.setLayoutParams(params);
             }
-            if (!isSetSurface) {
-                isSetSurface = true;
-                mMediaPlayer.setSurface(surface);
-                System.out.println("==============mediaplayer onPrepared------ " + VideoViewBitmap.this.hashCode() + "  " + mMediaPlayer.hashCode());
-            }
+            mMediaPlayer.setSurface(surface);
             mediaPlayer.start();
+            MyLog.video("开始播放视频文件");
+            mHandler.removeCallbacks(runnableClearCache);
+            mHandler.postDelayed(runnableClearCache, 800);
+        }
+    };
+
+    private Handler mHandler = new Handler();
+    private Runnable runnableClearCache = new Runnable() {
+        @Override
+        public void run() {
+            video_image.setVisibility(GONE);
+            MyLog.video("开始销毁上一个bitmap");
+            if (currentFrameBitmap != null) {
+                currentFrameBitmap.recycle();
+                currentFrameBitmap = null;
+            }
         }
     };
 
@@ -311,16 +304,12 @@ public class VideoViewBitmap extends RelativeLayout implements
                 currentFrameBitmap.recycle();
                 currentFrameBitmap = null;
             }
-            if (handler != null) {
-                handler.removeMessages(SHOW_IMAGE_YAG);
-            }
             if (mMediaPlayer == null) {
                 return;
             }
             MyLog.video("==========mediaplay release clearMemory================== " + hashCode() + "  " + mMediaPlayer.hashCode());
             mMediaPlayer.stop();
             mMediaPlayer.release();
-            //20221223 去掉判断
             mMediaPlayer = null;
         } catch (Exception e) {
             MyLog.video("======执行销毁进程===mediapLayer==clearMemory==" + e);
@@ -330,10 +319,6 @@ public class VideoViewBitmap extends RelativeLayout implements
 
     //清理缓存得View
     public void removeCacheView() {
-        /*if (CpuModel.getMobileType().startsWith(CpuModel.CPU_MODEL_MTK_M11)) {
-            MyLog.video("======执行销毁进程==M11.不重复销毁操作");
-            return;
-        }*/
         MyLog.video("======执行销毁进程===mediapLayer==removeCacheView");
         try {
             if (mMediaPlayer != null) {
@@ -352,7 +337,6 @@ public class VideoViewBitmap extends RelativeLayout implements
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         try {
             if (mMediaPlayer != null) {
                 MyLog.video("==========mediaplay release=removeCacheView================= " + hashCode() + "   " + mMediaPlayer.hashCode());

@@ -353,16 +353,16 @@ public class GuardianUtil {
                     rawSourceEntity = new RawSourceEntity(R.raw.guardian_71, 3395008, "7.0通用版本", 77);
                     return rawSourceEntity;
                 }
-                if (sdkCode > Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                    // 5<Code<6.0  //需要系统签名
-                    rawSourceEntity = new RawSourceEntity(R.raw.guardian_51, 1624725, "5.1通用版本", 43);
-                    return rawSourceEntity;
-                }
-                if (sdkCode > Build.VERSION_CODES.JELLY_BEAN && sdkCode < Build.VERSION_CODES.LOLLIPOP) {
-                    //4.0~5.0
-                    rawSourceEntity = new RawSourceEntity(R.raw.guardian_44, 3359565, "4.4通用版本", 55);
-                    return rawSourceEntity;
-                }
+//                if (sdkCode > Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                    // 5<Code<6.0  //需要系统签名
+//                    rawSourceEntity = new RawSourceEntity(R.raw.guardian_51, 1624725, "5.1通用版本", 43);
+//                    return rawSourceEntity;
+//                }
+//                if (sdkCode > Build.VERSION_CODES.JELLY_BEAN && sdkCode < Build.VERSION_CODES.LOLLIPOP) {
+//                    //4.0~5.0
+//                    rawSourceEntity = new RawSourceEntity(R.raw.guardian_44, 3359565, "4.4通用版本", 55);
+//                    return rawSourceEntity;
+//                }
             }
         } catch (Exception e) {
             MyLog.guardian("=====获取守护进程Raw id error==" + e.toString());

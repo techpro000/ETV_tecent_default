@@ -63,7 +63,7 @@ public class ViewVideoGenertrator extends Generator {
         super(context, x, y, width, height);
         this.width = width;
         this.height = height;
-        MyLog.cdl("=====视频区域得坐标====111" + x + " / " + y + " / " + width + " /" + height);
+        MyLog.cdl("=====视频区域得坐标====ViewVideoGenertrator=" + x + " / " + y + " / " + width + " /" + height);
         this.videoLists = videoLists;
         this.ifViewZero = ifViewZero;
         this.cpListEntity = cpListEntity;

@@ -1592,7 +1592,6 @@ public class TaskDealUtil {
             MyLog.video("======screen=====其他转=主板===textUreView");
             generatorView = new ViewVideoGenertrator(context, cpEntity, leftPosition, topPosition, width, height, videoList, AppInfo.PROGRAM_POSITION_MAIN, false);
         }
-        MyLog.video("======screen=====" + (generatorView == null));
         return generatorView;
     }
 
