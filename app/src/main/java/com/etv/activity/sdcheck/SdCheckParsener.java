@@ -29,7 +29,6 @@ import com.etv.util.MyLog;
 import com.etv.util.NetWorkUtils;
 import com.etv.util.SharedPerManager;
 import com.etv.util.SharedPerUtil;
-import com.etv.util.down.SaveDataRunnable;
 import com.etv.util.down.SaveDataRxJave;
 import com.etv.util.down.SaveDateToDbListener;
 import com.etv.util.image.CompressImageUtil;

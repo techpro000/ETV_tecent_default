@@ -23,11 +23,9 @@ import io.reactivex.schedulers.Schedulers;
 public class SaveDataRxJave {
 
     private SaveDateToDbListener listener;
-    private List<TaskWorkEntity> listTask;
 
     public void startSyncInfoToDb(List<TaskWorkEntity> listTask, SaveDateToDbListener saveDateToDbListener) {
         this.listener = saveDateToDbListener;
-        this.listTask = listTask;
         if (listTask == null || listTask.size() < 1) {
             listener.saveDataToDbOk(false);
             MyLog.db("listTask == null");
@@ -53,7 +51,7 @@ public class SaveDataRxJave {
                 });
     }
 
-    private Boolean saveDateToDbTask(List<TaskWorkEntity> taskWorkEntities) {
+    private Boolean saveDateToDbTask(List<TaskWorkEntity> listTask) {
         //耗时操作。需要等清理结束之后再进行接下来操作
         DBTaskUtil.clearAllDbInfo("下载完数据到本地， 清理数据库数据");
         for (int i = 0; i < listTask.size(); i++) {

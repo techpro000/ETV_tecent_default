@@ -51,7 +51,7 @@ import com.etv.util.SimpleDateUtil;
 import com.etv.util.down.DownFileEntity;
 import com.etv.util.down.DownRunnable;
 import com.etv.util.down.DownStateListener;
-import com.etv.util.down.SaveDataRunnable;
+import com.etv.util.down.SaveDataRxJave;
 import com.etv.util.down.SaveDateToDbListener;
 import com.etv.util.guardian.GuardianUtil;
 import com.etv.util.rxjava.AppStatuesListener;
@@ -483,7 +483,7 @@ public class TaskWorkService extends Service implements TaskView {
         MyLog.task("===去判断有没有需要下载得资源====" + printTag);
         if (taskEntityList == null || taskEntityList.size() < 1) {
             MyLog.task("判断是否有需要下载的文件==0");
-            SynchronizeDatabaseFromList();
+            startPlayTaskActivity("======不需要下载，直接去播放===");
             return;
         }
         MyLog.task("判断是否有需要下载的文件==" + taskEntityList.size());
@@ -501,23 +501,6 @@ public class TaskWorkService extends Service implements TaskView {
         //检查下载进度
         isHasDownLimit = false;
         handler.sendEmptyMessage(CHECK_LIMIT_DOWN_NUM);      //开始检测下载资格
-    }
-
-    private void SynchronizeDatabaseFromList() {
-        setCurrentTaskType(TASK_TYPE_DEFAULT, "数据库操作完成");
-        if (listTaskSaveDbCache == null || listTaskSaveDbCache.size() < 1) {
-            startPlayTaskActivity("======没有数据需要同步，直接去播放");
-            return;
-        }
-        //下载完毕
-        SaveDataRunnable saveDataRunnable = new SaveDataRunnable(listTaskSaveDbCache, new SaveDateToDbListener() {
-            @Override
-            public void saveDataToDbOk(Boolean isSaveOk) {
-                MyLog.task("保存数据成功： " + isSaveOk);
-                startPlayTaskActivity("数据库同步保存成功，准备播放");
-            }
-        });
-        EtvService.getInstance().executor(saveDataRunnable);
     }
 
     boolean isHasDownLimit = false;  //检查是否有下载资格
@@ -682,8 +665,6 @@ public class TaskWorkService extends Service implements TaskView {
             }
         }
         String savePath = entity.getSavePath();
-//        String fileNameCache = downPath.substring(downPath.lastIndexOf("/") + 1);
-//        savePath = savePath + "/" + fileNameCache;
         long needDownfileLength = entity.getFileLength();
         MyLog.down("===parserJsonOver==剩余个数==" + downFileList.size()
                 + "\n下载地址：" + downPath
@@ -721,8 +702,8 @@ public class TaskWorkService extends Service implements TaskView {
     private void startDownNextOneFile() {
         MyLog.task("开始下载下一个文件===000");
         if (downFileList == null || downFileList.size() < 1) {
-            MyLog.task("开始下载下一个文件==下载完成,准备同步数据");
-            SynchronizeDatabaseFromList();
+            setCurrentTaskType(TASK_TYPE_DEFAULT, "数据库操作完成");
+            startPlayTaskActivity("数据保存成功，准备播放");
             return;
         }
         downFileList.remove(0);
@@ -741,6 +722,16 @@ public class TaskWorkService extends Service implements TaskView {
      */
     private void startPlayTaskActivity(String tag) {
         MyLog.task("===startPlayTaskActivity===" + tag);
+        SaveDataRxJave saveDataRxJave = new SaveDataRxJave();
+        saveDataRxJave.startSyncInfoToDb(listTaskSaveDbCache, new SaveDateToDbListener() {
+            @Override
+            public void saveDataToDbOk(Boolean isSaveOk) {
+                checkTaskgetPlayTaskListFormDb(tag);
+            }
+        });
+    }
+
+    private void checkTaskgetPlayTaskListFormDb(String tag) {
         //提交上传进度到服务器
         List<TaskWorkEntity> taskWorkEntityList = DBTaskUtil.getTaskInfoList();
         if (taskWorkEntityList != null && taskWorkEntityList.size() > 0) {
@@ -774,6 +765,7 @@ public class TaskWorkService extends Service implements TaskView {
 
             }
         }, "=去播放界面前检查一次=", TaskModelUtil.DEL_LASTDATE_AND_AFTER_NOW);
+
     }
 
     private void startToPlayActivityView(String tag) {
