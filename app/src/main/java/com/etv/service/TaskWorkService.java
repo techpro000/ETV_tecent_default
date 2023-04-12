@@ -821,23 +821,17 @@ public class TaskWorkService extends Service implements TaskView {
                 if (taskDownEntity.getTaskId().contains(taskId)) {
                     String downFilePath = taskDownEntity.getSavePath();
                     String downFileLength = taskDownEntity.getFileLength().trim();
-                    String downUrl = taskDownEntity.getDownUrl();
-                    downUrl = downUrl.substring(downUrl.lastIndexOf("/") + 1);
-                    logDownProgress("TTT 要下载的文件路径： " + downFilePath + " 文件 index :" + i + " 文件大小： " + downFileLength);
                     //防止服务器下发得背景文件大小是null
                     if (downFileLength == null || downFileLength.length() < 1) {
                         downFileLength = "1024";
                     }
                     long fileLength = Long.parseLong(downFileLength);
                     taskFileAllLength = taskFileAllLength + fileLength;
-                    logDownProgress("TTT 下载文件总内存变化 taskFileAllLength ：" + taskFileAllLength);
-                    String fileName = downFilePath + downUrl;
-                    File file = new File(fileName);
+                    File file = new File(downFilePath);
                     logDownProgress("TTT下载 文件路径： " + downFilePath);
                     if (file.exists()) {
                         long saveFileLength = file.length();
                         hasdownFileLength += saveFileLength;
-                        logDownProgress("TTT下载 文件大小累加, 用来计算下载总进度 每次累加 saveFileLength : " + saveFileLength + " 下载到本地的文件路径： " + fileName + " 已经下载的容量: " + hasdownFileLength);
                     }
                 }
             }
