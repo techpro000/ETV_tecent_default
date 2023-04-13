@@ -28,6 +28,7 @@ import com.etv.task.util.TaskDealUtil;
 import com.etv.task.view.PlayTaskView;
 import com.etv.util.Biantai;
 import com.etv.util.SharedPerUtil;
+import com.etv.util.system.CpuModel;
 import com.etv.view.layout.video.surface.ViewVideoSurfaceGenertrator;
 import com.ys.bannerlib.util.GlideCacheUtil;
 import com.ys.bannerlib.util.GlideImageUtil;
@@ -217,9 +218,7 @@ public class PlayTaskTriggerParsener {
                     MyLog.playTask("====图标的布局的坐标点==>>" + leftPosition + " / " + topPosition + " / " + width + " / " + height);
                     MyLog.playTask("====准备展示图片==" + imageList.size());
                     //图片需要添加点击事件，所以addViewToList放在前面，切记，updateView用来刷新界面得，需要放在后边
-
                     generatorView = TaskDealUtil.getImageGenertorViewParsener(context, cpEntity, leftPosition, topPosition, width, height, imageList, false);
-                    // generatorView = new ViewImageGenertrator(context, cpEntity, leftPosition, topPosition, width, height, imageList, false);
                     addViewToList(generatorView, coType, false);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     generatorView.updateView(null, true);
@@ -230,12 +229,7 @@ public class PlayTaskTriggerParsener {
                         return;
                     }
                     MyLog.playTask("====视频的坐标的坐标==" + leftPosition + "/ " + topPosition + " /" + width + " / " + height + " / videoList=" + videoList.size());
-//                    generatorView = new ViewVideoGenertrator(context, cpEntity, leftPosition, topPosition, width, height, videoList, AppInfo.PROGRAM_POSITION_MAIN);
-                    if (SharedPerManager.getVideoMoreSize()) {
-                        generatorView = new ViewVideoSurfaceGenertrator(context, cpEntity, leftPosition, topPosition, width, height, videoList, AppInfo.PROGRAM_POSITION_MAIN, false);
-                    } else {
-                        generatorView = new ViewVideoGenertrator(context, cpEntity, leftPosition, topPosition, width, height, videoList, AppInfo.PROGRAM_POSITION_MAIN, false);
-                    }
+                    generatorView = TaskDealUtil.getVideoPlayView(context, cpEntity, leftPosition, topPosition, width, height, videoList, AppInfo.PROGRAM_POSITION_MAIN, false);
                     addViewToList(generatorView, coType, false);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     generatorView.updateView(null, true);

@@ -113,7 +113,6 @@ public class APKUtil {
             context.startActivity(parama96);
             return;
         }
-
         if (CpuModel.getMobileType().equals(CpuModel.CPU_MODEL_T982)) {
             openRkDefaultFileManager(context);
             return;
