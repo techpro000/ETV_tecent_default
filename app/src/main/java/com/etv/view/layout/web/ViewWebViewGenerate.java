@@ -116,10 +116,13 @@ public class ViewWebViewGenerate extends Generator {
         mysettings.setAllowFileAccess(true);
         mysettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         mysettings.setUseWideViewPort(true);
-//      mysettings.setSupportMultipleWindows(true);  //会拦截 点击跳转
+        //支持windows=============================================
+        MyLog.cdl("==========setSupportMultipleWindows======");
+//        mysettings.setSupportMultipleWindows(true);  //会拦截 点击跳转
+//        mysettings.setUserAgentString("Windows");
+        //支持windows=============================================
         mysettings.setAppCacheEnabled(true);
         mysettings.setDomStorageEnabled(true);
-//      mysettings.setUserAgentString("Windows");
         mysettings.setGeolocationEnabled(true);
         mysettings.setAppCacheMaxSize(Long.MAX_VALUE);
         mysettings.setPluginState(WebSettings.PluginState.ON_DEMAND);

@@ -165,10 +165,10 @@ public class EtvApplication extends Application {
         if (workModel == AppInfo.WORK_MODEL_SINGLE) {
             return;
         }
-        boolean isDevSpeed = SharedPerManager.getDevSpeedStatues();
-        if (!isDevSpeed) {
-            return;
-        }
+//        boolean isDevSpeed = SharedPerManager.getDevSpeedStatues();
+//        if (!isDevSpeed) {
+//            return;
+//        }
         try {
             QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
                 @Override

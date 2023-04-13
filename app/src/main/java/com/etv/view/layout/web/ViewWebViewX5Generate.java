@@ -154,10 +154,6 @@ public class ViewWebViewX5Generate extends Generator {
         settings.setBlockNetworkImage(false);//解决图片不显示
         settings.setSupportMultipleWindows(false);//这里一定得是false,不然打开的网页中，不能在点击打开了
         settings.setLoadsImagesAutomatically(true); //支持自动加载图片
-        if (AppConfig.APP_TYPE ==APP_TYPE_TD_SERVICE_CENTER ){
-            settings.setUserAgentString("Windows");
-
-        }
         settings.setUserAgentString("Windows");
         settings.setDefaultTextEncodingName("utf-8");//设置编码格式
         settings.setDomStorageEnabled(true);   //加载不出资源问题
@@ -172,14 +168,12 @@ public class ViewWebViewX5Generate extends Generator {
             settings.setAppCacheEnabled(true);
             settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         }
-
         boolean isInitStatues = EtvApplication.getInstance().isInitWebX5Statues;
         MyLog.playTask("========浏览器初始化状态==isInitStatues==" + isInitStatues);
-        String cpuModel = CpuModel.getMobileType();
-        if (!isInitStatues && cpuModel.startsWith(CpuModel.CPU_MODEL_RK_3288)) {
+        if (!isInitStatues && isNeedUseX5Web()) {
             strPath = "http://debugtbs.qq.com/";
         }
-         mWb.loadUrl(strPath);
+        mWb.loadUrl(strPath);
         //该界面打开更多链接
         mWb.setWebViewClient(new WebViewClient() {
 
@@ -201,6 +195,18 @@ public class ViewWebViewX5Generate extends Generator {
         });
         mWb.setWebChromeClient(new MyWebChromeClient());
     }
+
+    public boolean isNeedUseX5Web() {
+        String cpuModel = CpuModel.getMobileType();
+        if (cpuModel.startsWith(CpuModel.CPU_MODEL_RK_3288)) {
+            return true;
+        }
+        if (cpuModel.startsWith(CpuModel.CPU_MODEL_RK_3128)) {
+            return true;
+        }
+        return false;
+    }
+
 
     private class MyWebChromeClient extends WebChromeClient {
         private View mCustomView;

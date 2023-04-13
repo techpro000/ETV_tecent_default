@@ -4,20 +4,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.etv.config.ApiInfo;
-import com.etv.entity.RegisterEntity;
-import com.etv.util.CodeUtil;
-import com.etv.util.MyLog;
-import com.etv.util.aes.AESTool;
-import com.etv.util.net.ImUtils;
 import com.etv.util.system.SystemManagerInstance;
 import com.ys.etv.R;
-import com.ys.rkapi.MyManager;
 
 public class TestActivity extends AppCompatActivity {
 
@@ -35,7 +26,7 @@ public class TestActivity extends AppCompatActivity {
 
     private Handler handler = new Handler();
 
-//    MyManager myManager ;
+    //    MyManager myManager ;
     void initView() {
 //        myManager = MyManager.getInstance(TestActivity.this);
 //        myManager.bindAIDLService(TestActivity.this);

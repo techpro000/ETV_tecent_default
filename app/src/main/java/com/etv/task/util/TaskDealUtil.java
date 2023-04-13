@@ -1308,7 +1308,8 @@ public class TaskDealUtil {
      */
     public static boolean compairMpListFileExict(List<MpListEntity> mpListEntities) {
         if (mpListEntities == null || mpListEntities.size() < 1) {
-            return false;
+            //没有文件，直接校验通过
+            return true;
         }
         boolean isBack = true;
         for (MpListEntity mpListEntity : mpListEntities) {
