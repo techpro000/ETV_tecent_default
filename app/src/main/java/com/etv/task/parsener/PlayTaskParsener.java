@@ -600,8 +600,6 @@ public class PlayTaskParsener {
                 width = width * 2;
                 height = height * 2;
             }
-
-
             String cpId = cpListEntityShow.getCpidId();
             MyLog.playTask("======parperToShowAreaView===区域跳转====" + cpId + " / " + parentCoId + " /leftPosition = "
                     + leftPosition + "/" + topPosition + " / " + width + " / " + height);

@@ -419,7 +419,7 @@ public class ParsenerJsonRunnable implements Runnable {
                 }
                 CpListEntity cpListEntity = new CpListEntity(cpid, sencenId, coType, coLeftPosition, coRightPosition, coWidth, coHeight,
                         coActionType, coLinkAction, coScreenProtectTime, pmResolutionType, pmFixedScreen, coLinkId);
-
+                List<MpListEntity> mpListEntityListAll = new ArrayList<MpListEntity>();
                 MyLog.task("====当前保存的控件的类型==" + coType);
                 if (coType.equals(AppInfo.VIEW_SUBTITLE)
                         || coType.equals(AppInfo.VIEW_DATE)
@@ -440,11 +440,10 @@ public class ParsenerJsonRunnable implements Runnable {
                         String childCompentLst = jsonCplist.getString("childCompentLst");
                         List<TextInfo> textInfoList = parsenerChildCompentInfoForTextInfo(taskid, pmType, cpid, childCompentLst);
                         List<MpListEntity> mpListEntityList = parsenerChildCompentInfoForMpListEntity(taskid, pmType, cpid, childCompentLst);
-
                         cpListEntity.setTxList(textInfoList);
-                        cpListEntity.setMpList(mpListEntityList);
-
-
+                        if (mpListEntityList != null && mpListEntityList.size() > 0) {
+                            mpListEntityListAll.addAll(mpListEntityList);
+                        }
                     }
                     List<TextInfo> textInfoList = parsenerTextList(taskid, txList, pmType);
                     cpListEntity.setTxList(textInfoList);
@@ -462,16 +461,18 @@ public class ParsenerJsonRunnable implements Runnable {
                         MyLog.task("====获取的控件是关联素材==" + childCompentLst);
                         List<TextInfo> textInfoList = parsenerChildCompentInfoForTextInfo(taskid, pmType, cpid, childCompentLst);
                         List<MpListEntity> mpListEntityList = parsenerChildCompentInfoForMpListEntity(taskid, pmType, cpid, childCompentLst);
-
                         cpListEntity.setTxList(textInfoList);
-                        cpListEntity.setMpList(mpListEntityList);
+                        if (mpListEntityList != null && mpListEntityList.size() > 0) {
+                            mpListEntityListAll.addAll(mpListEntityList);
+                        }
                     }
                     List<MpListEntity> mpListEntityList = parsenerMpList(taskid, pmType, cpid, mpList);
-                    cpListEntity.setMpList(mpListEntityList);
+                    if (mpListEntityList != null && mpListEntityList.size() > 0) {
+                        mpListEntityListAll.addAll(mpListEntityList);
+                    }
+                    cpListEntity.setMpList(mpListEntityListAll);
                 }
-
                 cpListEntityList.add(cpListEntity);
-
             }
         } catch (Exception e) {
             MyLog.ExceptionPrint("解析任务error: " + e.toString());
