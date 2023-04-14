@@ -32,6 +32,7 @@ public class SaveDataRxJave {
             return;
         }
 
+
         Observable.just(listTask).map(new Function<List<TaskWorkEntity>, Boolean>() {
                     @Override
                     public Boolean apply(List<TaskWorkEntity> taskWorkEntities) throws Exception {

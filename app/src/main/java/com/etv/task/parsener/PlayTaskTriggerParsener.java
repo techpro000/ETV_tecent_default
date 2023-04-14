@@ -451,7 +451,8 @@ public class PlayTaskTriggerParsener {
                 public void playComplete(int playTag) {
                     MyLog.playTask("播放结束回调==" + playTag + " / " + EtvService.GPIO_STATUES_CURRENT);
                     //触发节目不需要切换节目
-                    changeProjectView(playTag);
+//                    changeProjectView(playTag);
+                    playTaskView.playCompanyBack();
                 }
 
                 /**

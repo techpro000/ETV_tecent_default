@@ -106,6 +106,7 @@ public class DBTaskUtil {
         if (entity == null) {
             return false;
         }
+        String mid = entity.getMid();
         boolean isSave = false;
         try {
             isSave = entity.save();
