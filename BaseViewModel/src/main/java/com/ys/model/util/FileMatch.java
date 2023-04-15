@@ -37,6 +37,7 @@ public class FileMatch {
                 || name.endsWith("mpg")
                 || name.endsWith("wmv")
                 || name.endsWith("flv")
+                || name.endsWith("mpeg")
                 || name.endsWith("avi")
                 || name.endsWith("ts")
                 || name.endsWith("rmvb")

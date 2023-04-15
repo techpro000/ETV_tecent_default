@@ -451,8 +451,7 @@ public class PlayTaskTriggerParsener {
                 public void playComplete(int playTag) {
                     MyLog.playTask("播放结束回调==" + playTag + " / " + EtvService.GPIO_STATUES_CURRENT);
                     //触发节目不需要切换节目
-//                    changeProjectView(playTag);
-                    playTaskView.playCompanyBack();
+                    changeProjectView(playTag);
                 }
 
                 /**
@@ -512,11 +511,11 @@ public class PlayTaskTriggerParsener {
                     return;
                 }
                 MyLog.playTask("=====播放完成回调==准备切换下一个状态==");
-                if (EtvService.GPIO_STATUES_CURRENT == EtvService.GPIO_STATUES_COME) {
-                    //人还在前台，继续轮询播放
-                    MyLog.playTask("=====播放完成回调==人还没有走，继续播放一轮==");
-                    return;
-                }
+//                if (EtvService.GPIO_STATUES_CURRENT == EtvService.GPIO_STATUES_COME) {
+//                    //人还在前台，继续轮询播放
+//                    MyLog.playTask("=====播放完成回调==人还没有走，继续播放一轮==");
+//                    return;
+//                }
                 MyLog.playTask("=====播放完成回调==停止播放触发节目==");
                 playTaskView.playCompanyBack();
             }
