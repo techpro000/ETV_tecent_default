@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.ys.model.R;
+import com.ys.model.config.DialogConfig;
 import com.ys.model.listener.EditTextDialogListener;
 import com.ys.model.util.KeyBoardUtil;
 
@@ -33,7 +34,7 @@ public class EditTextDoubleDialog {
         dialog = new Dialog(context, R.style.MyDialog_Base);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         View dialog_view = View.inflate(context, R.layout.dialog_edit_commit, null);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(700, 700);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DialogConfig.screenWidth, DialogConfig.screenHeight);
         dialog.setContentView(dialog_view, params);
         initView(dialog_view);
     }

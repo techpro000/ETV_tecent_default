@@ -22,6 +22,7 @@ import com.etv.util.system.CpuModel;
 import com.etv.util.system.LeaderBarUtil;
 import com.etv.util.system.SystemManagerInstance;
 import com.etv.util.system.VoiceManager;
+import com.ys.model.config.DialogConfig;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -192,6 +193,8 @@ public class SplashBaseActivity extends GuardianBaseActivity {
         SharedPerManager.setDensityDpi(densityDpi);
         SharedPerManager.setScreenWidth(width);
         SharedPerManager.setScreenHeight(height);
+        DialogConfig.screenWidth = width;
+        DialogConfig.screenHeight = height;
     }
 }
 

@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TimePicker;
 
 import com.ys.model.R;
+import com.ys.model.config.DialogConfig;
 
 public class TimerChooiceDialog implements OnClickListener {
     Button btn_cacel;
@@ -25,7 +26,7 @@ public class TimerChooiceDialog implements OnClickListener {
         dialog = new Dialog(context, R.style.MyDialog_Base);
         dialog.requestWindowFeature(1);
         View view = View.inflate(context, R.layout.dialog_timer_chooice, null);
-        LayoutParams localLayoutParams = new LayoutParams(800, 800);
+        LayoutParams localLayoutParams = new LayoutParams(DialogConfig.screenWidth, DialogConfig.screenHeight);
         dialog.setContentView(view, localLayoutParams);
         dialog.setCancelable(false);
         btn_ok = ((Button) view.findViewById(R.id.btn_ok));

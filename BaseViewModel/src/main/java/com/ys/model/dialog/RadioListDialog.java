@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.ys.model.R;
 import com.ys.model.adapter.RadioItemAdapter;
+import com.ys.model.config.DialogConfig;
 import com.ys.model.entity.RedioEntity;
 import com.ys.model.listener.AdapterItemClickListener;
 import com.ys.model.listener.RadioChooiceListener;
@@ -35,7 +36,7 @@ public class RadioListDialog implements AdapterItemClickListener {
         dialog = new Dialog(context, R.style.MyDialog_Base);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         View dialog_view = View.inflate(context, R.layout.radio_list_dialog, null);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DialogConfig.screenWidth, DialogConfig.screenHeight);
         dialog.setContentView(dialog_view, params);
         dialog.setCancelable(true); // true点击屏幕以外关闭dialog
         btn_sure = (Button) dialog_view.findViewById(R.id.btn_dialog_yes);

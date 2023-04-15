@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.ys.model.R;
+import com.ys.model.config.DialogConfig;
 import com.ys.model.listener.SeekBarBackListener;
 
 /***
@@ -29,7 +30,7 @@ public class SeekBarDialog {
         dialog = new android.app.Dialog(context, R.style.MyDialog_Base);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         android.view.View dialog_view = android.view.View.inflate(context, R.layout.seekbar_dialog, null);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(700, 700);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DialogConfig.screenWidth, DialogConfig.screenHeight);
         dialog.setContentView(dialog_view, params);
         dialog.setCancelable(true); // true点击屏幕以外关闭dialog
 

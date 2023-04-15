@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ys.model.R;
+import com.ys.model.config.DialogConfig;
 import com.ys.model.listener.WriteFileListener;
 
 public class WriteFilesDialog {
@@ -26,7 +27,7 @@ public class WriteFilesDialog {
         dialog = new Dialog(context, R.style.MyDialog_Base);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         View dialog_view = View.inflate(context, R.layout.dialog_write_foler, null);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(700, 700);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DialogConfig.screenWidth, DialogConfig.screenHeight);
         dialog.setContentView(dialog_view, params);
         dialog.setCancelable(true); // true点击屏幕以外关闭dialog
 
