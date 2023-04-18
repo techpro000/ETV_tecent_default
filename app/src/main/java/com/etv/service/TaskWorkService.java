@@ -959,7 +959,7 @@ public class TaskWorkService extends Service implements TaskView {
             }
         });
         //不要删除下载文件,用于断点续传
-        runnableUpdateApk.setIsDelFile(false);
+        runnableUpdateApk.setIsDelFile(true);
         runnableUpdateApk.setLimitDownSpeed(1500);
         EtvService.getInstance().executor(runnableUpdateApk);
     }

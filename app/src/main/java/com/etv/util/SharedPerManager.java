@@ -1502,7 +1502,7 @@ public class SharedPerManager {
         if (socketLineEnable != -1) {
             return socketLineEnable == 0;
         }
-        boolean enable = (boolean) EtvApplication.getInstance().getData("SocketLineEnable", false);
+        boolean enable = (boolean) EtvApplication.getInstance().getData("SocketLineEnable", true);
         socketLineEnable = enable ? 0 : 1;
         return socketLineEnable == 0;
     }
