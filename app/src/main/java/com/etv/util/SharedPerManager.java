@@ -117,8 +117,8 @@ public class SharedPerManager {
      */
     public static int getSocketType() {
         if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_JIANGJUN_YUNCHENG
-                || AppConfig.APP_TYPE == AppConfig.APP_TYPE_SCHOOL_STUDY
-                || AppConfig.APP_TYPE == AppConfig.APP_TYPE_DEFAULT_ADDRESS_USERNAME) {
+            || AppConfig.APP_TYPE == AppConfig.APP_TYPE_SCHOOL_STUDY
+            || AppConfig.APP_TYPE == AppConfig.APP_TYPE_DEFAULT_ADDRESS_USERNAME) {
             return AppConfig.SOCKEY_TYPE_WEBSOCKET;
         }
         int defaultSockeType = AppConfig.SOCKEY_TYPE_SOCKET;
@@ -521,6 +521,9 @@ public class SharedPerManager {
      * @return
      */
     public static int getDoubleScreenMath() {
+        if (CpuModel.getMobileType().startsWith(CpuModel.CPU_MODEL_PX30)) {
+            return AppInfo.DOUBLE_SCREEN_SHOW_PX30;
+        }
         int defaultMath = AppInfo.DOUBLE_SCREEN_SHOW_DEFAULT;
         int doubleScreenMath = ((int) EtvApplication.getInstance().getData("doubleScreenMath", defaultMath));
         return doubleScreenMath;

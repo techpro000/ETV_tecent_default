@@ -28,7 +28,6 @@ public class RootCmd {
     public static final String PROOERTY_OTHER_INFO_PX30_MAIN = "persist.sys.displayrot";   //rk px30 主屏幕的旋转方向
     public static final String PROOERTY_OTHER_INFO_PX30_DOUBLE = "persist.orientation.ex";    //rk px30 副屏幕的旋转方向
 
-
     public static final String CPU_MODEL_TYPE = "persist.ys.factroy.code";   //cpu厂商识别码
     public static final String CAMERA_FONR_MIRROR = "persist.hal.fcam.mirror";   //前摄像头显示镜像  true=镜像  false=非镜像
     public static final String CAMERA_BACK_MIRROR = "persist.hal.bcam.mirror";   //后摄像头显示镜像  true=镜像  false=非镜像

@@ -86,8 +86,9 @@ public class DoubleScreenManager {
         int widthCache = display.getWidth();
         int heightCache = display.getHeight();
         //7.0的使用方法
-//      int width = display.getMode().getPhysicalWidth();
-//      int height = display.getMode().getPhysicalHeight();
+//        int width = display.getMode().getPhysicalWidth();
+//        int height = display.getMode().getPhysicalHeight();
+//        MyLog.screen("=====7.0的使用方法======" + width + " / " + height);
         mathScreenSizeToLocalSave(widthCache, heightCache, screenEntityList, display);
     }
 
@@ -103,16 +104,16 @@ public class DoubleScreenManager {
         } else {
             //RK  获取副屏得旋转角度
             String cpuModel = CpuModel.getMobileType();
-            if (cpuModel.contains("rk3399")) {
+            if (cpuModel.contains(CpuModel.CPU_MODEL_RK_3399)) {
                 screenRoate = SystemManagerUtil.getScreenRoate(RootCmd.PROOERTY_OTHER_INFO_3399, widthCache, heightCache);
-            } else if (cpuModel.contains("px30")) {
+            } else if (cpuModel.contains(CpuModel.CPU_MODEL_PX30)) {
                 screenRoate = SystemManagerUtil.getScreenRoate(RootCmd.PROOERTY_OTHER_INFO_PX30_DOUBLE, widthCache, heightCache);
             } else {
                 screenRoate = SystemManagerUtil.getScreenRoate(RootCmd.PROOERTY_OTHER_INFO, widthCache, heightCache);
             }
         }
-        MyLog.screen("====屏幕得旋转角度====" + screenRoate);
         int mainScreenRoate = SystemManagerUtil.getMainScreenRoate();
+        MyLog.screen("====屏幕得旋转角度=主屏=" + mainScreenRoate + " / " + screenRoate);
         //去判断屏幕类型
         if (mainScreenRoate == screenRoate) {
             SharedPerManager.setScreen_type(SharedPerManager.SCREEN_TYPE_DEFAULT);
@@ -136,6 +137,19 @@ public class DoubleScreenManager {
                 width = widthCache;
                 height = heightCache;
             }
+        } else if (screenType == SharedPerManager.SCREEN_TYPE_DEFAULT) {
+            //两个屏幕是一个方向
+            boolean isHroOrVerScreen = SystemManagerUtil.isScreenHorOrVer(context, AppInfo.PROGRAM_POSITION_MAIN);
+            //判断主屏方向
+            if (isHroOrVerScreen) {
+                //横屏
+                width = Math.max(widthCache, heightCache);
+                height = Math.min(widthCache, heightCache);
+            } else {
+                //竖屏
+                width = Math.min(widthCache, heightCache);
+                height = Math.max(widthCache, heightCache);
+            }
         }
         if (isCpuGt) {
 //            高通主板单独处理
@@ -151,7 +165,7 @@ public class DoubleScreenManager {
             }
         }
         MyLog.screen("========设置副屏分尺寸==11=" + screenRoate + " / " + width + "/ " + height);
-        if (AppConfig.APP_TYPE != AppConfig.APP_TYPE_JIANGJUN_YUNCHENG){
+        if (AppConfig.APP_TYPE != AppConfig.APP_TYPE_JIANGJUN_YUNCHENG) {
             screenEntityList.add(new ScreenEntity(AppInfo.PROGRAM_POSITION_SECOND, width, height, display));
         }
         EtvApplication.getInstance().setListScreen(screenEntityList);

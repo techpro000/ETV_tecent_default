@@ -67,7 +67,7 @@ public class SingleSettingActivity extends SettingBaseActivity implements Adapte
         showModifyDialog(tagId);
     }
 
-    private void showModifyDialog(final int tagId) {
+    private void showModifyDialog(int tagId) {
         OridinryDialog oridinAryDialog = new OridinryDialog(SingleSettingActivity.this);
         oridinAryDialog.setOnDialogClickListener(new OridinryDialogClick() {
             @Override

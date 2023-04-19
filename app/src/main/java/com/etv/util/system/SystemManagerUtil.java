@@ -124,19 +124,23 @@ public class SystemManagerUtil {
     public static boolean getSecondScreenHrorVer() {
         List<ScreenEntity> listScreen = EtvApplication.getInstance().getListScreen();
         if (listScreen == null || listScreen.size() < 2) {
+            MyLog.screen("==获取屏幕方向，只检测一个屏幕");
             return true;
         }
         ScreenEntity screenEntity = listScreen.get(1);
         if (screenEntity == null) {
+            MyLog.screen("==获取屏幕方向。副屏信息==null");
             return true;
         }
         int screenWidth = screenEntity.getScreenWidth();
         int screenHeight = screenEntity.getScreenHeight();
+        MyLog.screen("==获取屏幕方向。副屏信息=" + screenWidth + " / " + screenHeight);
         boolean isHorVer = false;
         if (screenWidth - screenHeight > 0) {
+            //宽 大于高
             isHorVer = true;
         }
-        MyLog.cdl("=======获取副屏得屏幕状态信息===" + isHorVer + " / 屏幕信息==" + screenEntity.toString());
+        MyLog.screen("=======获取副屏得屏幕状态信息===" + isHorVer + " / 屏幕信息==" + screenEntity.toString());
         return isHorVer;
     }
 
@@ -236,7 +240,7 @@ public class SystemManagerUtil {
         //这里需要权限android.permission.WRITE_SETTINGS
         //设置为手动调节模式
         Settings.System.putInt(resolver, Settings.System.SCREEN_BRIGHTNESS_MODE,
-                Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+            Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
         //保存到系统中
         Uri uri = android.provider.Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS);
         android.provider.Settings.System.putInt(resolver, Settings.System.SCREEN_BRIGHTNESS, brightness);
@@ -269,7 +273,7 @@ public class SystemManagerUtil {
     public static int getScreenRoate(Context context) {
         try {
             int angle = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).
-                    getDefaultDisplay().getRotation();
+                getDefaultDisplay().getRotation();
             switch (angle) {
                 case Surface.ROTATION_0:
                     return 0;

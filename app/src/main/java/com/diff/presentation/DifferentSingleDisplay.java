@@ -56,7 +56,8 @@ public class DifferentSingleDisplay extends Presentation {
         DiffShowEntity diffShowEntity = DiffSizeUtil.getDiffScreenSizeShow(screenWidth, screenHeight);
         widthChSize = diffShowEntity.getWidthChSize();
         heightChSize = diffShowEntity.getHeightChSize();
-        MyLog.diff("===副屏的比例尺寸==" + widthChSize + " / " + heightChSize);
+//        副屏的比例尺寸 == 1280 / 800 / haha == 0.41666666 / 1.1851852
+        MyLog.diff("===副屏的比例尺寸==" + width + " / " + height + "/haha==" + widthChSize + " / " + heightChSize);
     }
 
     List<MediAddEntity> list_image_cache = new ArrayList<MediAddEntity>();
@@ -109,10 +110,10 @@ public class DifferentSingleDisplay extends Presentation {
         for (int i = 0; i < viewList.size(); i++) {
             ViewPosition viewPosition = viewList.get(i);
             addShowView(viewPosition.getViewType(),
-                    viewPosition.getLeftPosition(),
-                    viewPosition.getTopPosition(),
-                    viewPosition.getWidth(),
-                    viewPosition.getHeight(), viewPosition.getShowPosition());
+                viewPosition.getLeftPosition(),
+                viewPosition.getTopPosition(),
+                viewPosition.getWidth(),
+                viewPosition.getHeight(), viewPosition.getShowPosition());
         }
         checkMusicFileView();
     }

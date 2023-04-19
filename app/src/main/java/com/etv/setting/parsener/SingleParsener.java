@@ -40,6 +40,7 @@ public class SingleParsener {
     public static List<BeanEntity> getLayoutList(Context context, String screenInfo) {
         //获取屏幕方向
         boolean isHorVer = SystemManagerUtil.isScreenHorOrVer(context, screenInfo);
+        MyLog.screen("获取屏幕方向=true-横屏=" + isHorVer + "  /screenInfo=" + screenInfo);
         //根据屏幕方向来适配界面
         return addScreenInfiListBack(isHorVer);
     }

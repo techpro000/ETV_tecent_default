@@ -262,7 +262,7 @@ public class TaskWorkService extends Service implements TaskView {
                                 if (timeAddNum > apkBackTime) { //返回得时间到了，这里需要返回到ETV APK
                                     isStartApk = false;
                                     MyLog.apk("====" +
-                                            "===返回APK");
+                                        "===返回APK");
                                     MainActivity.IS_ORDER_REQUEST_TASK = true;
                                     //再回到界面之后,恢复守护进程
                                     boolean isGuardian = SharedPerManager.getGuardianStatues();
@@ -667,8 +667,8 @@ public class TaskWorkService extends Service implements TaskView {
         String savePath = entity.getSavePath();
         long needDownfileLength = entity.getFileLength();
         MyLog.down("===parserJsonOver==剩余个数==" + downFileList.size()
-                + "\n下载地址：" + downPath
-                + "\n保存地址：" + savePath, true);
+            + "\n下载地址：" + downPath
+            + "\n保存地址：" + savePath, true);
         downTaskrunnable = new DownRunnable();
         downTaskrunnable.setFileMd5(entity.getFileMd5());
         downTaskrunnable.setDownInfo(needDownfileLength, downPath, savePath, new DownStateListener() {
