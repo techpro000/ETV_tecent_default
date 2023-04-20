@@ -80,28 +80,19 @@ public class DiffSizeUtil {
         }
         float widthChSize = 1.0f;    //屏幕压缩比例
         float heightChSize = 1.0f;   //屏幕压缩比例
-        //以下算法是根据皇尊年华 主屏横屏，副屏竖屏硬件环境下调整，后期可能还要修改
-        if (viewWidth > viewHeight) {
-            MyLog.diff("当前模式=主屏横屏=");
-            //主屏横屏
-            if (screenWidth > screenHeight) {
-                //副屏横屏
-                //1920-1080    1280-800
-                MyLog.diff("当前模式=主屏横屏=副屏横屏");
-                widthChSize = (float) ((screenHeight * 1.0) / (viewWidth * 1.0));
-                heightChSize = (float) ((screenWidth * 1.0) / (viewHeight * 1.0));
-            } else {
-                //副屏竖屏
-                //  1920-1080   800-1280
-                MyLog.diff("当前模式=主屏横屏=副屏竖屏=" + viewHeight + " / " + screenHeight);
-                widthChSize = (float) (screenWidth * 1.0 / viewWidth * 1.0);
-                heightChSize = (float) ((screenHeight * 1.0) / (viewHeight * 1.0));
-            }
-            MyLog.diff("当前模式==" + widthChSize + " / " + heightChSize);
-            return new DiffShowEntity(widthChSize, heightChSize);
+        if (screenWidth > screenHeight) {
+            //副屏横屏
+            //1920-1080    1280-800
+            MyLog.diff("当前模式=副屏横屏");
+            widthChSize = (float) ((screenHeight * 1.0) / (viewWidth * 1.0));
+            heightChSize = (float) ((screenWidth * 1.0) / (viewHeight * 1.0));
+        } else {
+            //副屏竖屏
+            //  1920-1080   800-1280
+            MyLog.diff("当前模式=副屏竖屏=" + viewHeight + " / " + screenHeight);
+            widthChSize = (float) (screenWidth * 1.0 / viewWidth * 1.0);
+            heightChSize = (float) ((screenHeight * 1.0) / (viewHeight * 1.0));
         }
-        MyLog.diff("当前模式=主屏竖屏=");
-        MyLog.diff("当前模式==" + widthChSize + " / " + heightChSize);
         return new DiffShowEntity(widthChSize, heightChSize);
     }
 
@@ -117,28 +108,38 @@ public class DiffSizeUtil {
     private static DiffShowEntity getPx30BoardDiffShowSingleEntity(int screenWidth, int screenHeight, int viewWidth, int viewHeight) {
         float widthChSize = 1.0f;    //屏幕压缩比例
         float heightChSize = 1.0f;   //屏幕压缩比例
-        if (viewWidth > viewHeight) {
-            MyLog.diff("当前模式=主屏横屏=");
-            //主屏横屏
-            if (screenWidth > screenHeight) {
-                //副屏横屏
-                //1920-1080    1280-800
-                MyLog.diff("当前模式=主屏横屏=副屏横屏");
-                widthChSize = (float) ((screenHeight * 1.0) / (screenWidth * 1.0));
-                heightChSize = (float) ((screenWidth * 1.0) / (screenHeight * 1.0));
-            } else {
-                //副屏竖屏
-                //  1920-1080   800-1280
-                MyLog.diff("当前模式=主屏横屏=副屏竖屏=" + viewHeight + " / " + screenHeight);
-                widthChSize = 1.0f;
-                heightChSize = 1.0f;
-            }
-            MyLog.diff("当前模式==" + widthChSize + " / " + heightChSize);
-            return new DiffShowEntity(widthChSize, heightChSize);
+        if (screenWidth > screenHeight) {
+            //副屏横屏
+            widthChSize = (float) ((screenHeight * 1.0) / (screenWidth * 1.0));
+            heightChSize = (float) ((screenWidth * 1.0) / (screenHeight * 1.0));
+        } else {
+            //副屏竖屏
+            widthChSize = 1.0f;
+            heightChSize = 1.0f;
         }
-        MyLog.diff("当前模式=主屏竖屏=");
-        MyLog.diff("当前模式==" + widthChSize + " / " + heightChSize);
+        MyLog.diff("当前模式==单机模式==" + widthChSize + " / " + heightChSize);
         return new DiffShowEntity(widthChSize, heightChSize);
+
+//        if (viewWidth > viewHeight) {
+//            MyLog.diff("当前模式=单机模式==主屏横屏=");
+//            //主屏横屏
+//            if (screenWidth > screenHeight) {
+//                //副屏横屏
+//                //1920-1080    1280-800
+//                MyLog.diff("当前模式=单机模式==主屏横屏=副屏横屏");
+//                widthChSize = (float) ((screenHeight * 1.0) / (screenWidth * 1.0));
+//                heightChSize = (float) ((screenWidth * 1.0) / (screenHeight * 1.0));
+//            } else {
+//                //副屏竖屏
+//                //  1920-1080   800-1280
+//                MyLog.diff("当前模式=单机模式==主屏横屏=副屏竖屏=" + viewHeight + " / " + screenHeight);
+//                widthChSize = 1.0f;
+//                heightChSize = 1.0f;
+//            }
+//            MyLog.diff("当前模式=单机模式===" + widthChSize + " / " + heightChSize);
+//            return new DiffShowEntity(widthChSize, heightChSize);
+//        }
+
     }
 
 }

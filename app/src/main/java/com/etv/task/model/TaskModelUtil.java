@@ -42,6 +42,13 @@ public class TaskModelUtil {
             return null;
         }
         List<TaskWorkEntity> backList = new ArrayList<TaskWorkEntity>();
+        if (taskWorkCacheList.size() == 1) {
+            //只有一个，就不用判断了，直接返回去
+            TaskWorkEntity taskWorkBack = taskWorkCacheList.get(0);
+            backList.add(taskWorkBack);
+            return backList;
+        }
+
         //删除过期的任务
         for (int i = 0; i < taskWorkCacheList.size(); i++) {
             MyLog.del("===删除过期任务==" + taskWorkCacheList.get(i).toString() + " /" + tag);
@@ -81,7 +88,7 @@ public class TaskModelUtil {
                 if (startTime < endTime) {
                     if (startTime > currentHoMin || endTime < currentHoMin) {
                         MyLog.del("====0000==del===当前日期何今天一致，开始时间还没到这里先移除111" + " /" + tag
-                                + "\n" + startTime + "/ " + currentHoMin + " / " + endTime);
+                            + "\n" + startTime + "/ " + currentHoMin + " / " + endTime);
                         isBreak = true;
                     }
                 } else if (startTime > endTime) { //跨天操作
