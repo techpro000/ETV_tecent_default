@@ -136,13 +136,15 @@ public class ViewImgVideoNetGenerate extends Generator {
         listsImageVideo.add(mediAddEntity);
         switch (fileType) {
             case FileEntity.STYLE_FILE_IMAGE:
+                MyLog.cdl("======加载ImageView==" + (cpListEntity == null));
                 generatorView = new ViewImageSingleGenertrator(context, cpListEntity, 0, 0, screenWidth, screenHeight, mediAddEntity, viewZero);
                 addViewListener(generatorView);
                 ab_view.addView(generatorView.getView(), generatorView.getLayoutParams());
                 generatorView.updateView(null, true);
                 break;
             case FileEntity.STYLE_FILE_VIDEO:
-                generatorView = TaskDealUtil.getVideoPlayView(context, null, 0, 0, screenWidth, screenHeight, listsImageVideo, screenPosition, viewZero);
+                MyLog.cdl("======加载videoView==" + (cpListEntity == null));
+                generatorView = TaskDealUtil.getVideoPlayView(context, cpListEntity, 0, 0, screenWidth, screenHeight, listsImageVideo, screenPosition, viewZero);
                 addViewListener(generatorView);
                 ab_view.addView(generatorView.getView(), generatorView.getLayoutParams());
                 generatorView.updateView(null, true);
@@ -183,7 +185,7 @@ public class ViewImgVideoNetGenerate extends Generator {
 
             @Override
             public void clickTaskView(CpListEntity cpListEntity, List<String> list, int position) {
-                MyLog.playMix("===混播监听到点击事件===clickTaskView");
+                MyLog.playMix("===混播监听到点击事件===clickTaskView=" + (listener == null));
                 if (listener != null) {
                     listener.clickTaskView(cpListEntity, list, position);
                 }

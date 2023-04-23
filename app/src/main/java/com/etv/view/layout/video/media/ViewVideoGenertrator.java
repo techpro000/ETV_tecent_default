@@ -63,10 +63,10 @@ public class ViewVideoGenertrator extends Generator {
         super(context, x, y, width, height);
         this.width = width;
         this.height = height;
-        MyLog.cdl("=====视频区域得坐标====ViewVideoGenertrator=" + x + " / " + y + " / " + width + " /" + height);
         this.videoLists = videoLists;
         this.ifViewZero = ifViewZero;
         this.cpListEntity = cpListEntity;
+        MyLog.playTask("=控件选择=" + (cpListEntity == null));
         this.screenPosition = screenPosition;
         view = View.inflate(context, R.layout.view_video_play_new, null);
     }
@@ -78,7 +78,7 @@ public class ViewVideoGenertrator extends Generator {
 
     @Override
     public void updateView(Object object, boolean isShowBtn) {
-        MyLog.playTask("=========控件选择=====================使用的是全屏拉伸=========");
+        MyLog.playTask("==使用的是全屏拉伸=========");
         initView(view);
     }
 

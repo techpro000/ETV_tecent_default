@@ -25,7 +25,6 @@ import com.etv.util.system.CpuModel;
 import com.etv.util.system.SystemManagerUtil;
 import com.etv.view.layout.Generator;
 import com.etv.view.layout.image.ViewImageGenertrator;
-import com.etv.view.layout.mixedswing.ViewImgVideoGenerate;
 import com.etv.view.layout.mixedswing.ViewImgVideoNetGenerate;
 import com.etv.view.layout.music.ViewAudioGenertrator;
 import com.etv.view.layout.video.media.ViewVideoGenertrator;

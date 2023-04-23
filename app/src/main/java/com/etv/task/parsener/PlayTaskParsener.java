@@ -427,7 +427,7 @@ public class PlayTaskParsener {
             MyLog.bgg("=======节目加载的路径==333=" + positionEntity.toString() + " / " + allPath);
             clearLogoView();
             Generator generatorView = new ViewLogoImageGenertrator(context, positionEntity.getLeftPosition(),
-                    positionEntity.getTopPosition(), positionEntity.getWidth(), positionEntity.getHeight(), allPath);
+                positionEntity.getTopPosition(), positionEntity.getWidth(), positionEntity.getHeight(), allPath);
             addViewToList(generatorView, AppInfo.VIEW_LOGO, false, null);
             generatorView.getView().setTag(generatorView);
             view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
@@ -602,7 +602,7 @@ public class PlayTaskParsener {
             }
             String cpId = cpListEntityShow.getCpidId();
             MyLog.playTask("======parperToShowAreaView===区域跳转====" + cpId + " / " + parentCoId + " /leftPosition = "
-                    + leftPosition + "/" + topPosition + " / " + width + " / " + height);
+                + leftPosition + "/" + topPosition + " / " + width + " / " + height);
             if (parentCoId == DBTaskUtil.MP_DEFAULT) {
                 //加载第一张图得默认效果
                 loadMixImgVideoView(cpId, parentCoId, leftPosition, topPosition, width, height, true);
@@ -849,7 +849,7 @@ public class PlayTaskParsener {
                     MyLog.playTask("====加载流媒体控件==streamUrl==" + streamUrl);
                     String moveStream = textInfoStream.getTaMove();
                     generatorView = TaskDealUtil.getStreamGenViewBySpeed(context, moveStream, cpEntity, leftPosition, topPosition,
-                            width, height, streamUrl, coType);
+                        width, height, streamUrl, coType);
                     addViewToList(generatorView, coType, false, null);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     generatorView.updateView(null, true);
@@ -864,7 +864,7 @@ public class PlayTaskParsener {
                     }
                     String city = textInfoWeather.getTaAddress();
                     MyLog.playTask("====天气布局的坐标点==>>" + leftPosition + " / " + topPosition + " / " + width + " / " + height +
-                            "\n textInfoWeather=" + textInfoWeather.toString());
+                        "\n textInfoWeather=" + textInfoWeather.toString());
                     generatorView = TaskDealUtil.getWeatherGenWeatherView(context, leftPosition, topPosition, width, height, textInfoWeather);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     //刷新界面
@@ -1108,6 +1108,7 @@ public class PlayTaskParsener {
                 @Override
                 public void clickTaskView(CpListEntity cpListEntity, List<String> list, int clickPosition) {
                     if (cpListEntity == null) {
+                        MyLog.playTask("=====点击了view==cpListEntity==null=");
                         return;
                     }
                     MyLog.playTask("=====点击了view===" + cpListEntity.toString());
@@ -1272,10 +1273,10 @@ public class PlayTaskParsener {
             String backTime = cpListEntity.getCoScreenProtectTime();    //屏保时间
             String nextSceneEntity = cpListEntity.getCoLinkId();        //跳转场景的 场景ID
             MyLog.touch("=====用户触摸类型=" + coActionType
-                    + " /coLinkAction= "
-                    + coLinkAction + " / "
-                    + backTime + " / "
-                    + nextSceneEntity);
+                + " /coLinkAction= "
+                + coLinkAction + " / "
+                + backTime + " / "
+                + nextSceneEntity);
 
             switch (coActionType) {
                 case AppInfo.TOUCH_TYPE_NONE:  //没有触摸行为

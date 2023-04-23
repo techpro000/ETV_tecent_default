@@ -45,7 +45,7 @@ import java.util.Map;
  * 视频播放控件
  */
 public class VideoViewBitmap extends RelativeLayout implements
-        TextureView.SurfaceTextureListener {
+    TextureView.SurfaceTextureListener {
 
     View view;
     private MediaPlayer mMediaPlayer;
@@ -86,6 +86,7 @@ public class VideoViewBitmap extends RelativeLayout implements
     }
 
     public void setVideoPlayListener(VideoPlayListener listener, CpListEntity cpListEntity) {
+        MyLog.video("====setVideoPlayListener==" + (cpListEntity == null));
         this.listener = listener;
         this.cpListEntity = cpListEntity;
     }
@@ -219,14 +220,6 @@ public class VideoViewBitmap extends RelativeLayout implements
                     MyLog.video("==currentFrameBitmap==" + currentFrameBitmap.getWidth() + " / " + currentFrameBitmap.getHeight());
                     video_image.setVisibility(View.VISIBLE);
                     video_image.setImageBitmap(currentFrameBitmap);
-//                    BitmapWriteLocalRunnable bitmapWriteLocalRunnable = new BitmapWriteLocalRunnable(currentFrameBitmap, "/sdcard/cache.jpg", new WriteBitmapToLocalListener() {
-//                        @Override
-//                        public void writeStatues(boolean isSuccess, String path) {
-//                            MyLog.video("==writeStatues==" + isSuccess);
-//                        }
-//                    });
-//                    Thread thread = new Thread(bitmapWriteLocalRunnable);
-//                    thread.start();
                 }
             } catch (Exception e) {
                 MyLog.video("error==onCompletionInfo==" + e.toString(), true);
