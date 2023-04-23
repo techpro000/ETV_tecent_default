@@ -154,6 +154,12 @@ public class ScreenSettingActivity extends SettingBaseActivity implements View.O
             lightProgress = SystemManagerInstance.getInstance(getApplication()).getScreenBrightness();
             MyLog.cdl("===获取得屏幕亮度===" + lightProgress);
         }
+        if (lightProgress > 99) {
+            lightProgress = 100;
+        }
+        if (lightProgress < 1) {
+            lightProgress = 1;
+        }
         mBingding.seekLight.setProgressNum(lightProgress);
     }
 

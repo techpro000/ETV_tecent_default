@@ -22,6 +22,7 @@ import com.etv.task.entity.CpListEntity;
 import com.etv.task.entity.TextInfo;
 import com.etv.task.util.TaskDealUtil;
 import com.etv.util.MyLog;
+import com.etv.util.system.CpuModel;
 
 public class AutoScrollTextView extends SurfaceView implements SurfaceHolder.Callback {
     private int mDefaultWidth = 0; // TextView默认宽度
@@ -138,7 +139,7 @@ public class AutoScrollTextView extends SurfaceView implements SurfaceHolder.Cal
 
     public void setTextSizeColor(int textSize, String taColor, int speed, String tvMov, String taFont) {
         this.mTextFontSize = (float) (textSize);
-        Log.e(TAG, "setTextSizeColor: "+mTextFontSize );
+        Log.e(TAG, "setTextSizeColor: " + mTextFontSize);
         this.textColor = TaskDealUtil.getColorFromInToSystem(taColor);
         this.mSpeed = speed;
         if (tvMov.contains("0")) {  //0：左进右出

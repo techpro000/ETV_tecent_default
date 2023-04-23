@@ -12,6 +12,7 @@ import com.etv.task.entity.SceneEntity;
 import com.etv.task.entity.TextInfo;
 import com.etv.task.util.TaskDealUtil;
 import com.etv.util.MyLog;
+import com.etv.util.system.CpuModel;
 import com.etv.view.AutoScrollTextView;
 import com.etv.view.layout.Generator;
 import com.ys.etv.R;
@@ -19,6 +20,7 @@ import com.ys.etv.R;
 import java.util.List;
 
 /**
+ * 左右方向跑马灯
  * 跑马灯位置
  */
 public class ViewMatQueentestGenerte extends Generator {
@@ -102,10 +104,11 @@ public class ViewMatQueentestGenerte extends Generator {
                 } else {
                     taFontSize = 25;
                 }
-            }            MyLog.playTask("==========字幕的属性222===" + speend + " / " + taFontSize + " / " + taMove);
+            }
+            MyLog.playTask("==========字幕的属性222===" + speend + " / " + taFontSize + " / " + taMove);
             autoScrollTextView.setTextVules(content);
             taFontSize = TaskDealUtil.px2sp(context, taFontSize);
-            MyLog.playTask("==========字幕的属性222===" +  taFontSize );
+            MyLog.playTask("==========字幕的属性222===" + taFontSize);
             autoScrollTextView.setTextSizeColor(taFontSize, textColor, speend, taMove, taFont);
             //添加点击事件
             autoScrollTextView.setClickCpEntity(listener, cpListEntity);

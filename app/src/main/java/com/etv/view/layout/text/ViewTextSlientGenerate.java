@@ -14,6 +14,7 @@ import com.etv.task.entity.SceneEntity;
 import com.etv.task.entity.TextInfo;
 import com.etv.task.util.TaskDealUtil;
 import com.etv.util.MyLog;
+import com.etv.util.system.CpuModel;
 import com.etv.view.layout.Generator;
 import com.ys.etv.R;
 
