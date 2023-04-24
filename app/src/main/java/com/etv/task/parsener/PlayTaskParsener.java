@@ -173,7 +173,7 @@ public class PlayTaskParsener {
      */
     private void parsenerTaskFromDb(List<TaskWorkEntity> taskWorkEntityList) {
         List<MpListEntity> mpListEntities = DBTaskUtil.getMpListInfoAll();
-        MyLog.playTask("校验素材信息==000=" + mpListEntities);
+        MyLog.playTask("校验素材信息==000=");
         boolean isFileExict = TaskDealUtil.compairMpListFileExict(mpListEntities);
         MyLog.playTask("校验素材信息==111=" + isFileExict);
         if (!isFileExict) {

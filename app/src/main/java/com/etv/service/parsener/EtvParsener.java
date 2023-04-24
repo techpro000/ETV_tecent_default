@@ -1,16 +1,10 @@
 package com.etv.service.parsener;
 
-import static com.etv.config.AppConfig.APP_TYPE_AD_JH;
-import static com.etv.config.AppConfig.APP_TYPE_BEIJING_MG;
-import static com.etv.config.AppConfig.APP_TYPE_LK_QRCODE;
 import static com.etv.util.FileUtil.TAG;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 import com.etv.config.ApiInfo;
@@ -20,11 +14,9 @@ import com.etv.db.DbStatiscs;
 import com.etv.entity.StatisticsEntity;
 import com.etv.police.activity.PoliceCacheActivity;
 import com.etv.service.EtvService;
-import com.etv.service.TaskWorkService;
 import com.etv.service.util.EtvServerModule;
 import com.etv.service.util.EtvServerModuleImpl;
 import com.etv.task.activity.PlayTaskTriggerActivity;
-import com.etv.task.activity.PlayerTaskActivity;
 import com.etv.util.MyLog;
 import com.etv.util.NetWorkUtils;
 import com.etv.util.SharedPerManager;
@@ -39,8 +31,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.TimeUnit;
-
-import javax.security.auth.login.LoginException;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -75,9 +65,6 @@ public class EtvParsener {
             case AppConfig.APP_TYPE_POLICE_ALERT:
                 //一键报警版本
                 callNetPolice();
-                break;
-            case AppConfig.APP_TYPE_CW_GPIO:  //触沃 语音提示
-                startToPlayWelcomeAudio();
                 break;
             default:
                 startToPlayTriggleActivity(0);

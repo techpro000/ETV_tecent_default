@@ -128,9 +128,6 @@ public class SharedPerManager {
             case AppConfig.APP_TYPE_LK_QRCODE:
                 defaultSockeType = AppConfig.SOCKEY_TYPE_WEBSOCKET;
                 break;
-            case AppConfig.APP_TYPE_YOUSE_AUTHOR:
-                defaultSockeType = AppConfig.SOCKEY_TYPE_WEBSOCKET;
-                break;
             case AppConfig.APP_TYPE_DEFAULT_ADDRESS_USERNAME:
                 defaultSockeType = AppConfig.SOCKEY_TYPE_WEBSOCKET;
                 break;
@@ -328,7 +325,6 @@ public class SharedPerManager {
     public static boolean getGpioAction() {
         boolean defaultAction = false;
         switch (AppConfig.APP_TYPE) {
-            case AppConfig.APP_TYPE_CW_GPIO:
             case AppConfig.APP_TYPE_XINABICN:
                 defaultAction = true;
                 break;
@@ -739,9 +735,6 @@ public class SharedPerManager {
     public static String getUserName() {
         String defaultName = "Null";
         switch (AppConfig.APP_TYPE) {
-            case AppConfig.APP_TYPE_YOUSE_AUTHOR:
-                defaultName = "admin";
-                break;
             case AppConfig.APP_TYPE_DEFAULT_ADDRESS_USERNAME:
                 defaultName = "tailg";
                 break;
@@ -836,17 +829,9 @@ public class SharedPerManager {
 
 
         switch (AppConfig.APP_TYPE) {
-            case AppConfig.APP_TYPE_YOUSE_AUTHOR:
-                //优色
-                ipAddressDefault = "etv.hea-cn.com";
-                break;
             case AppConfig.APP_TYPE_CHUNYN:
                 ipAddressDefault = "8.209.119.199";
                 break;
-            case AppConfig.APP_TYPE_AD_JH:  //深远通--景华广告--汕头
-                ipAddressDefault = "183.237.107.34";
-                break;
-
             case AppConfig.APP_TYPE_THREE_TAI:
                 ipAddressDefault = "222.85.141.109";
                 break;

@@ -182,7 +182,6 @@
 //                lin_wechat_code.setVisibility(View.VISIBLE);
 //                iv_qr_code_chat.setBackgroundResource(R.mipmap.icon_qr_hznh);
 //                break;
-//            case AppConfig.APP_TYPE_NO_ERCODE:
 //            case AppConfig.APP_TYPE_HUANGZUNNIANHUA_YUN_OLD_PERSON:
 //                lin_all_qrcode.setVisibility(View.GONE);
 ////                lin_bind_ercode.setVisibility(View.GONE);

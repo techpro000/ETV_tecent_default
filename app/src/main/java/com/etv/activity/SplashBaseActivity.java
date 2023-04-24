@@ -1,6 +1,5 @@
 package com.etv.activity;
 
-import static com.etv.config.AppConfig.APP_TYPE_TURN_ON_BLUETOOTH;
 
 import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
@@ -50,23 +49,19 @@ public class SplashBaseActivity extends GuardianBaseActivity {
      * 解决设备WIFI信号差的问题
      */
     private void closeBluth() {
-        if (SharedPerManager.getBluetooth()) {
-            MyLog.cdl("======打开蓝牙===========");
-            return;
-        }
-        MyLog.cdl("======关闭蓝牙===========");
-
-        if(AppConfig.APP_TYPE==APP_TYPE_TURN_ON_BLUETOOTH){
-            return;
-        }
-        try {
-            BluetoothAdapter mBluetooth = BluetoothAdapter.getDefaultAdapter();
-            if (mBluetooth != null && mBluetooth.isEnabled()) {
-                mBluetooth.disable();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        if (SharedPerManager.getBluetooth()) {
+//            MyLog.cdl("======打开蓝牙===========");
+//            return;
+//        }
+//        MyLog.cdl("======关闭蓝牙===========");
+//        try {
+//            BluetoothAdapter mBluetooth = BluetoothAdapter.getDefaultAdapter();
+//            if (mBluetooth != null && mBluetooth.isEnabled()) {
+//                mBluetooth.disable();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void initApp() {
@@ -164,15 +159,9 @@ public class SplashBaseActivity extends GuardianBaseActivity {
             case AppConfig.APP_TYPE_KING_LAM:
                 GuardianUtil.setGuardianProjectTime(SplashBaseActivity.this, "360");
                 break;
-            case AppConfig.APP_TYPE_RUIGUAN:
-                GuardianUtil.modifyGuardianStatues(SplashBaseActivity.this, true);
-                break;
             case AppConfig.APP_TYPE_JIANGJUN_YUNCHENG:
                 GuardianUtil.modifyGuardianStatues(SplashBaseActivity.this, true);
                 GuardianUtil.setGuardianProjectTime(SplashBaseActivity.this, "31");
-                break;
-            case AppConfig.APP_TYPE_CW_GPIO:
-                GuardianUtil.setIoTriggleAllInfo(SplashBaseActivity.this, true, 3, false, 1, true);
                 break;
 //            case AppConfig.APP_TYPE_LK_QRCODE:
 //            case AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL:

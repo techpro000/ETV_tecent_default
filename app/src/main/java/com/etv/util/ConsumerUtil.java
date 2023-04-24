@@ -13,10 +13,6 @@ public class ConsumerUtil {
     public static boolean DelAllTaskDbByConsumer() {
         boolean isDelDbTask = true;
         switch (AppConfig.APP_TYPE) {
-
-            case AppConfig.APP_TYPE_AD_JH:
-                isDelDbTask = false;
-                break;
             default:
                 isDelDbTask = true;
                 break;
