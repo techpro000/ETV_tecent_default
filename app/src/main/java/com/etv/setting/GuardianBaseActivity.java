@@ -192,13 +192,6 @@ public abstract class GuardianBaseActivity extends SettingBaseActivity {
         GuardianUtil.setGuardianProjectTime(GuardianBaseActivity.this, time + "");
     }
 
-    private void showToastGuardian(String s) {
-        if (CpuModel.getMobileType().startsWith(CpuModel.CPU_MODEL_MTK_M11)) {
-            return;
-        }
-        MyToastView.getInstance().Toast(GuardianBaseActivity.this, s);
-    }
-
     OridinryDialog oridinryDialog;
 
     public void unInstallGuardianApk() {

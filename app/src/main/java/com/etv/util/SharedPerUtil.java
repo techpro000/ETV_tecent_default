@@ -23,18 +23,6 @@ public class SharedPerUtil {
         return SCREEN_HEIGHT;
     }
 
-    public static String SOCKET_DOWN_FILE_PATH = "";
-
-    //获取socket 资源下载路径
-    public static String getSocketDownPath() {
-        if (SOCKET_DOWN_FILE_PATH.length() > 3) {
-            return SOCKET_DOWN_FILE_PATH;
-        }
-        SOCKET_DOWN_FILE_PATH = SharedPerManager.getResourDownPath();
-        return SOCKET_DOWN_FILE_PATH;
-    }
-
-
     public static String WEBHOST_PORT = "";
 
     //获取网络请求得IPaddress

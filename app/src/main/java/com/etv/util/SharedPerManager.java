@@ -1437,14 +1437,21 @@ public class SharedPerManager {
      * @param resourceServer
      */
     public static void setResourDownPath(String resourceServer) {
+        SOCKET_DOWN_FILE_PATH = resourceServer;
         MyLog.cdl("====setResourDownPath========" + resourceServer);
         EtvApplication.getInstance().saveData("resourceServer", resourceServer);
     }
 
+
+    public static String SOCKET_DOWN_FILE_PATH = "";
+
     public static String getResourDownPath() {
-        String resourceServer = (String) EtvApplication.getInstance().getData("resourceServer", ApiInfo.WEB_BASE_URL());
-        MyLog.cdl("====getResourDownPath========" + resourceServer);
-        return resourceServer;
+        if (TextUtils.isEmpty(SOCKET_DOWN_FILE_PATH)){
+            return SOCKET_DOWN_FILE_PATH;
+        }
+        SOCKET_DOWN_FILE_PATH = (String) EtvApplication.getInstance().getData("resourceServer", ApiInfo.WEB_BASE_URL());
+        MyLog.cdl("====getResourDownPath========" + SOCKET_DOWN_FILE_PATH);
+        return SOCKET_DOWN_FILE_PATH;
     }
 
     public static void setDensityDpi(int densityDpi) {

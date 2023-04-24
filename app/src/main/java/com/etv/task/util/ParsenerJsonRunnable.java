@@ -151,8 +151,8 @@ public class ParsenerJsonRunnable implements Runnable {
                     if (endTimeTask < currentHoMin) {
                         MyLog.task("=====当前任务的结束时间在当前时候之前，删除任务");
                         delTaskByIdOrParsenError("000当前任务的结束时间在当前时候之前，删除任务", taskid);
+                        continue;
                     }
-                    continue;
                 }
                 //保存成功并且是普通任务
                 String pmList = jsonData.getString("pmList");
@@ -364,7 +364,7 @@ public class ParsenerJsonRunnable implements Runnable {
                 }
                 long currentTime = System.currentTimeMillis();
                 SceneEntity sceneEntity = new SceneEntity(SenceId, proid, taskid, scBackImg, scBackimgSize, pmType, displayPos,
-                        etLevel, scTime, etIsLinkScreeen, currentTime);
+                    etLevel, scTime, etIsLinkScreeen, currentTime);
                 MyLog.task("=====保存场景属性===" + sceneEntity.toString());
                 if (sceneList.contains("componentsList")) {
                     String componentsList = jsonSenceList.getString("componentsList");
@@ -418,20 +418,20 @@ public class ParsenerJsonRunnable implements Runnable {
                     coLinkId = "";
                 }
                 CpListEntity cpListEntity = new CpListEntity(cpid, sencenId, coType, coLeftPosition, coRightPosition, coWidth, coHeight,
-                        coActionType, coLinkAction, coScreenProtectTime, pmResolutionType, pmFixedScreen, coLinkId);
+                    coActionType, coLinkAction, coScreenProtectTime, pmResolutionType, pmFixedScreen, coLinkId);
                 List<MpListEntity> mpListEntityListAll = new ArrayList<MpListEntity>();
                 MyLog.task("====当前保存的控件的类型==" + coType);
                 if (coType.equals(AppInfo.VIEW_SUBTITLE)
-                        || coType.equals(AppInfo.VIEW_DATE)
-                        || coType.equals(AppInfo.VIEW_COUNT_DOWN)
-                        || coType.equals(AppInfo.VIEW_WEEK)
-                        || coType.equals(AppInfo.VIEW_TIME)
-                        || coType.equals(AppInfo.VIEW_BUTTON)
-                        || coType.equals(AppInfo.VIEW_WEB_PAGE)
-                        || coType.equals(AppInfo.VIEW_STREAM_VIDEO)
-                        || coType.equals(AppInfo.VIEW_WEATHER)
-                        || coType.equals(AppInfo.VIEW_HDMI)
-                        || coType.equals(AppInfo.VIEW_EVEV_SCREEN)) {
+                    || coType.equals(AppInfo.VIEW_DATE)
+                    || coType.equals(AppInfo.VIEW_COUNT_DOWN)
+                    || coType.equals(AppInfo.VIEW_WEEK)
+                    || coType.equals(AppInfo.VIEW_TIME)
+                    || coType.equals(AppInfo.VIEW_BUTTON)
+                    || coType.equals(AppInfo.VIEW_WEB_PAGE)
+                    || coType.equals(AppInfo.VIEW_STREAM_VIDEO)
+                    || coType.equals(AppInfo.VIEW_WEATHER)
+                    || coType.equals(AppInfo.VIEW_HDMI)
+                    || coType.equals(AppInfo.VIEW_EVEV_SCREEN)) {
                     //文档，日期，星期，时间，网页，天气
                     String txList = jsonCplist.getString("txList");          //文本属性
                     MyLog.task("====获取的控件是文本属性的==" + cpListEntity.toString());
@@ -448,11 +448,11 @@ public class ParsenerJsonRunnable implements Runnable {
                     List<TextInfo> textInfoList = parsenerTextList(taskid, txList, pmType);
                     cpListEntity.setTxList(textInfoList);
                 } else if (coType.contains(AppInfo.VIEW_DOC)
-                        || coType.contains(AppInfo.VIEW_IMAGE)
-                        || coType.contains(AppInfo.VIEW_AUDIO)
-                        || coType.contains(AppInfo.VIEW_VIDEO)
-                        || coType.contains(AppInfo.VIEW_IMAGE_VIDEO)
-                        || coType.contains(AppInfo.VIEW_AREA)) {
+                    || coType.contains(AppInfo.VIEW_IMAGE)
+                    || coType.contains(AppInfo.VIEW_AUDIO)
+                    || coType.contains(AppInfo.VIEW_VIDEO)
+                    || coType.contains(AppInfo.VIEW_IMAGE_VIDEO)
+                    || coType.contains(AppInfo.VIEW_AREA)) {
                     MyLog.task("====获取的控件是资源类型的==" + cpListEntity.toString());
                     //文档，图片，音频，视频
                     String mpList = jsonCplist.getString("mpList");          //资源文件
@@ -638,7 +638,7 @@ public class ParsenerJsonRunnable implements Runnable {
                     }
                 }
                 TextInfo textInfo = new TextInfo(taskid, txtId, taCoId, taContent, taColor, taNo, taFontSize, taMove, taAddress, taBgColor,
-                        taMoveSpeed, taAlignment, taCountDown, taFonType, DBTaskUtil.MP_DEFAULT, taBgImage, pmType, taBgimageSize);
+                    taMoveSpeed, taAlignment, taCountDown, taFonType, DBTaskUtil.MP_DEFAULT, taBgImage, pmType, taBgimageSize);
 
                 textInfoList.add(textInfo);
             }

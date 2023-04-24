@@ -135,11 +135,11 @@ public class HiddleSetActivity extends SettingBaseActivity implements View.OnCli
             }
         });
         String nickName = SharedPerManager.getDevNickName();
-        String sourceDoanPath = SharedPerUtil.getSocketDownPath();
+        String sourceDoanPath = SharedPerManager.getResourDownPath();
         String serCode = CodeUtil.getSerialNumberDefault();
         String devInfo = "NickName: " + nickName + "\n" +
-                "serCode: " + serCode + "\n" +
-                "SoucePath: " + sourceDoanPath;
+            "serCode: " + serCode + "\n" +
+            "SoucePath: " + sourceDoanPath;
         oridinryDialog.show(getString(R.string.dev_info), devInfo);
     }
 

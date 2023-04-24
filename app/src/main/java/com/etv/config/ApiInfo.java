@@ -3,6 +3,7 @@ package com.etv.config;
 import com.etv.entity.RegisterEntity;
 import com.etv.util.CodeUtil;
 import com.etv.util.MyLog;
+import com.etv.util.SharedPerManager;
 import com.etv.util.SharedPerUtil;
 
 public class ApiInfo {
@@ -74,7 +75,7 @@ public class ApiInfo {
      */
     public static String getFileDownUrl() {
         if (SharedPerUtil.SOCKEY_TYPE() == AppConfig.SOCKEY_TYPE_SOCKET) {
-            return SharedPerUtil.getSocketDownPath();
+            return SharedPerManager.getResourDownPath();
         }
         String ipaddress = getWebIpHost();
         String port = getWebPort();
