@@ -125,7 +125,6 @@ public class SharedPerManager {
         switch (AppConfig.APP_TYPE) {
             case AppConfig.APP_TYPE_CHUNYN:
             case AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL:
-            case AppConfig.APP_TYPE_LK_QRCODE:
                 defaultSockeType = AppConfig.SOCKEY_TYPE_WEBSOCKET;
                 break;
             case AppConfig.APP_TYPE_DEFAULT_ADDRESS_USERNAME:
@@ -613,24 +612,24 @@ public class SharedPerManager {
 
     /**
      * 获取开机启动开关
+     * 守护进程
      *
      * @return
      */
     public static boolean getOpenPower() {
-        boolean defaultOpenStatues = true;
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE || AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL) {
-            defaultOpenStatues = false;
-        }
-        boolean openPower = ((boolean) EtvApplication.getInstance().getData("openPower", defaultOpenStatues));
+        boolean openPower = ((boolean) EtvApplication.getInstance().getData("openPower", true));
+        MyLog.cdl("openPower=get=" + openPower);
         return openPower;
     }
 
     /**
      * 设置开机启动开关
+     * 守护进程
      *
      * @param openPower
      */
-    public static void setOpenPower(boolean openPower) {
+    public static void setOpenPower(boolean openPower, String printTag) {
+        MyLog.cdl("openPower=set=" + openPower + " / " + printTag);
         EtvApplication.getInstance().saveData("openPower", openPower);
     }
 
@@ -836,7 +835,6 @@ public class SharedPerManager {
                 ipAddressDefault = "222.85.141.109";
                 break;
             case AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL:
-            case AppConfig.APP_TYPE_LK_QRCODE:
                 ipAddressDefault = "114.132.42.167";
                 break;
             case AppConfig.APP_TYPE_DEFAULT_ADDRESS_USERNAME:
@@ -857,9 +855,6 @@ public class SharedPerManager {
             case APP_TYPE_HUANGZUNNIANHUA:
                 ipAddressDefault = "www.won-giant.com";
                 break;
-//            case AppConfig.APP_TYPE_ETV_ESONCLOUD_IP:
-//                ipAddressDefault = "139.159.152.78";
-//                break;
         }
         String ipAddress = ((String) EtvApplication.getInstance().getData("webHost", ipAddressDefault));
         return ipAddress;
@@ -1197,10 +1192,9 @@ public class SharedPerManager {
      * @return
      */
     public static boolean getGuardianStatues() {
-        boolean defaultStatues = false;
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE || AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL) {
+        boolean defaultStatues = true;
+        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL) {
             defaultStatues = false;
-            Log.e("TAG", "getGuardianStatues: " + defaultStatues);
         }
         return ((boolean) EtvApplication.getInstance().getData("guardianStatues", defaultStatues));
     }

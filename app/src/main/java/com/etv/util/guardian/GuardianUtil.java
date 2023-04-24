@@ -122,17 +122,6 @@ public class GuardianUtil {
         context.sendBroadcast(intent);
     }
 
-    /**
-     * 修改守护进程得状态
-     *
-     * @param context
-     * @param enable
-     */
-    public static void modifyGuardianStatues(Context context, boolean enable) {
-        Intent intent = new Intent(AppInfo.CHANGE_GUARDIAN_STATUES);
-        intent.putExtra(AppInfo.CHANGE_GUARDIAN_STATUES, enable);
-        context.sendBroadcast(intent);
-    }
 
     /***
      * 修改守护进程的包名
@@ -174,14 +163,14 @@ public class GuardianUtil {
         }
     }
 
-    public static boolean getFisrt() {
-        boolean aa = (boolean) EtvApplication.getInstance().getData("firstChoice", true);
-        return aa;
-    }
-
-    public static void setFirst(boolean firstChoice) {
-        EtvApplication.getInstance().saveData("firstChoice", firstChoice);
-    }
+//    public static boolean getFisrt() {
+//        boolean aa = (boolean) EtvApplication.getInstance().getData("firstChoice", true);
+//        return aa;
+//    }
+//
+//    public static void setFirst(boolean firstChoice) {
+//        EtvApplication.getInstance().saveData("firstChoice", firstChoice);
+//    }
 
     /**
      * 修改守护进程的状态
@@ -191,19 +180,9 @@ public class GuardianUtil {
      * @param b
      */
     public static void setGuardianStaues(Context context, boolean b) {
-        boolean aa = getFisrt();
-        if (aa) {
-            /// 执行关闭守护
-            Intent intent = new Intent(AppInfo.CHANGE_GUARDIAN_STATUES);
-            intent.putExtra(AppInfo.CHANGE_GUARDIAN_STATUES, false);
-            context.sendBroadcast(intent);
-            setFirst(false);
-            return;
-        }
         Intent intent = new Intent(AppInfo.CHANGE_GUARDIAN_STATUES);
         intent.putExtra(AppInfo.CHANGE_GUARDIAN_STATUES, b);
         context.sendBroadcast(intent);
-
     }
 
     /***

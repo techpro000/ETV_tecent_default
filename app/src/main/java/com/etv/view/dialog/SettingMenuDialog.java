@@ -80,7 +80,6 @@ public class SettingMenuDialog implements OnClickListener {
                 iv_qr_code_chat.setBackgroundResource(R.mipmap.icon_etv_new_code);
                 break;
             case AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL:
-            case AppConfig.APP_TYPE_LK_QRCODE:
                 lin_all_qrcode.setVisibility(View.GONE);
                 iv_qr_code_chat.setVisibility(View.GONE);
             case AppConfig.APP_TYPE_THREE_VIEW_STAND:
@@ -153,7 +152,7 @@ public class SettingMenuDialog implements OnClickListener {
         try {
             handler.removeMessages(DISSMISS_DIALOG_AUTO);
             if (iv_qr_code_scan != null) {
-                GlideImageUtil.clearViewCache(context,iv_qr_code_scan);
+                GlideImageUtil.clearViewCache(context, iv_qr_code_scan);
             }
             if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
@@ -166,35 +165,6 @@ public class SettingMenuDialog implements OnClickListener {
     String imagePath = AppInfo.ER_CODE_PATH();
 
     private void createErCode() {
-//        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE) {
-//            GlideImageUtil.loadImageById(context, R.mipmap.lk_qrcode, iv_qr_code_chat);
-//            tv_scan_view.setText(context.getString(R.string.scan_dev_code));
-//            String devCode = CodeUtil.getUniquePsuedoID();
-//            String ipConnect = SharedPerUtil.getWebHostIpAddress();
-//            String isLine = "-1";
-//            if (AppConfig.isOnline) {
-//                isLine = "1";
-//            } else {
-//                isLine = "-1";
-//            }
-//            String nickName = SharedPerManager.getDevNickName();
-//            String guardianCode = "{\"type\":\"bind\",\"code\":\"" + devCode + "\",\"ip\":\"" + ipConnect + "\",\"isLine\":\"" + isLine + "\",\"nickName\":\"" + nickName + "\"}";
-//            MyLog.cdl("====生成二维码===start===" + System.currentTimeMillis() + " / " + guardianCode);
-//            QRCodeUtil qrCodeUtil = new QRCodeUtil(context, new QRCodeUtil.ErCodeBackListener() {
-//
-//                @Override
-//                public void createErCodeState(String errorDes, boolean isCreate, Bitmap path) {
-//                    MyLog.cdl("====生成二维码===" + System.currentTimeMillis() + " / " + errorDes + " / " + isCreate + " / " + path);
-//                    if (isCreate) {
-//                        GlideImageUtil.loadImageNoCache(context, imagePath, iv_qr_code_scan);
-//                    } else {
-//                        MyToastView.getInstance().Toast(context, "创建二维码失败");
-//                    }
-//                }
-//            });
-//            qrCodeUtil.createErCode(guardianCode, imagePath);
-//            return;
-//        }
         String devCode = CodeUtil.getUniquePsuedoID();
         String ipConnect = SharedPerUtil.getWebHostIpAddress();
         String isLine = "-1";

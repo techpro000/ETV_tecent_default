@@ -265,14 +265,7 @@ public class TaskWorkService extends Service implements TaskView {
                                         "===返回APK");
                                     MainActivity.IS_ORDER_REQUEST_TASK = true;
                                     //再回到界面之后,恢复守护进程
-                                    boolean isGuardian = SharedPerManager.getGuardianStatues();
-                                    if (isGuardian) {
-                                        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE || AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL) {
-                                            GuardianUtil.setGuardianStaues(getBaseContext(), false);
-                                        } else {
-                                            GuardianUtil.setGuardianStaues(getBaseContext(), true);
-                                        }
-                                    }
+                                    GuardianUtil.setGuardianStaues(getBaseContext(), true);
                                     //回到主界面
                                     Intent intent = new Intent(TaskWorkService.this, MainActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

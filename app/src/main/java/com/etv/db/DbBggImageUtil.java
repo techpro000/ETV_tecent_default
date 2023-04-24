@@ -57,7 +57,7 @@ public class DbBggImageUtil {
         int imageIBack = R.mipmap.play_bgg;
         if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_THREE_VIEW_STAND) {   //三视立
             imageIBack = R.mipmap.three_view;
-        } else if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE || AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL) {
+        } else if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL) {
             imageIBack = R.mipmap.lk_bgg;
         } else {
             imageIBack = R.mipmap.play_bgg;

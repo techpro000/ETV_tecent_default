@@ -31,10 +31,10 @@ public class SplashBaseActivity extends GuardianBaseActivity {
 
     @Override
     public void updateGuardianView() {
-        //守护进程打开状态
-        //这里主要是用户用户手动点击的APK，判断缓存的状态
-        boolean isOpenStatues = getGuardianOpenStatues();
-        SharedPerManager.setGuardianStatues(isOpenStatues);
+//        //守护进程打开状态
+//        //这里主要是用户用户手动点击的APK，判断缓存的状态
+//        boolean isOpenStatues = getGuardianOpenStatues();
+//        SharedPerManager.setGuardianStatues(isOpenStatues);
     }
 
 
@@ -152,23 +152,21 @@ public class SplashBaseActivity extends GuardianBaseActivity {
         GuardianUtil installUtil = new GuardianUtil(SplashBaseActivity.this);
         installUtil.startInstallGuardian();
         boolean isOpenPower = SharedPerManager.getOpenPower();
+        MyLog.guardian("开机设置开机启动==" + isOpenPower);
         GuardianUtil.setGuardianPowerOnStart(SplashBaseActivity.this, isOpenPower);
         //修改守护进程的包名
+        boolean isGuardian = SharedPerManager.getGuardianStatues();
+        GuardianUtil.setGuardianStaues(SplashBaseActivity.this, isGuardian);
+
         installUtil.setGuardianPackageName();
         switch (AppConfig.APP_TYPE) {
             case AppConfig.APP_TYPE_KING_LAM:
                 GuardianUtil.setGuardianProjectTime(SplashBaseActivity.this, "360");
                 break;
             case AppConfig.APP_TYPE_JIANGJUN_YUNCHENG:
-                GuardianUtil.modifyGuardianStatues(SplashBaseActivity.this, true);
+                GuardianUtil.setGuardianStaues(SplashBaseActivity.this, true);
                 GuardianUtil.setGuardianProjectTime(SplashBaseActivity.this, "31");
                 break;
-//            case AppConfig.APP_TYPE_LK_QRCODE:
-//            case AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL:
-//                GuardianUtil.modifyGuardianStatues(SplashBaseActivity.this, false);
-//            case AppConfig.APP_TYPE_XINABICN:
-//                GuardianUtil.setIoTriggleAllInfo(SplashBaseActivity.this, true, 0, false, 1, true);
-//                break;
         }
     }
 

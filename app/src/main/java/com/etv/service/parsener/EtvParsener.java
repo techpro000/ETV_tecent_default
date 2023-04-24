@@ -61,15 +61,7 @@ public class EtvParsener {
             return;
         }
         MyLog.phone("IO广播==人来了开始处理业务逻辑==");
-        switch (AppConfig.APP_TYPE) {
-            case AppConfig.APP_TYPE_POLICE_ALERT:
-                //一键报警版本
-                callNetPolice();
-                break;
-            default:
-                startToPlayTriggleActivity(0);
-                break;
-        }
+        startToPlayTriggleActivity(0);
     }
 
     private void startToPlayTriggleActivity(int playPosition) {
@@ -295,49 +287,49 @@ public class EtvParsener {
 
         String url = ApiInfo.UPDATE_TIME_FROM_WEB();
         OkHttpUtils
-                .get()
-                .url(url)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, String s, int i) {
-                        //请求失败
+            .get()
+            .url(url)
+            .build()
+            .execute(new StringCallback() {
+                @Override
+                public void onError(Call call, String s, int i) {
+                    //请求失败
 
+                }
+
+                @Override
+                public void onResponse(String s, int i) {
+                    try {
+
+
+                        JSONObject jsonObject = new JSONObject(s);
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        String currentTime = data.getString("currentTime");
+
+
+                        int year = Integer.parseInt(currentTime.substring(0, 4));
+                        int month = Integer.parseInt(currentTime.substring(4, 6));
+                        int day = Integer.parseInt(currentTime.substring(6, 8));
+                        int hour = Integer.parseInt(currentTime.substring(8, 10));
+                        int minute = Integer.parseInt(currentTime.substring(10, 12));
+                        int second = Integer.parseInt(currentTime.substring(12, 14));
+                        Log.e("liujk", "onResponse: " + year + "--" + month + "--" + day + "--" + hour + "--" + minute + "--" + second);
+
+                        String time = year + "-" + month + "-" + day + " " + hour + "-" + minute;
+                        //通知Activity 更新 UI
+                        //设置平板的时间
+                        MyManager manager = MyManager.getInstance(context);
+                        manager.setTime(year, month, day, hour, minute, second);
+
+                        sendSystemTimeChangeBroadCast(time);
+
+                        isDealTime = true;
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-
-                    @Override
-                    public void onResponse(String s, int i) {
-                        try {
-
-
-                            JSONObject jsonObject = new JSONObject(s);
-                            JSONObject data = jsonObject.getJSONObject("data");
-                            String currentTime = data.getString("currentTime");
-
-
-                            int year = Integer.parseInt(currentTime.substring(0, 4));
-                            int month = Integer.parseInt(currentTime.substring(4, 6));
-                            int day = Integer.parseInt(currentTime.substring(6, 8));
-                            int hour = Integer.parseInt(currentTime.substring(8, 10));
-                            int minute = Integer.parseInt(currentTime.substring(10, 12));
-                            int second = Integer.parseInt(currentTime.substring(12, 14));
-                            Log.e("liujk", "onResponse: " + year + "--" + month + "--" + day + "--" + hour + "--" + minute + "--" + second);
-
-                            String time = year + "-" + month + "-" + day + " " + hour + "-" + minute;
-                            //通知Activity 更新 UI
-                            //设置平板的时间
-                            MyManager manager = MyManager.getInstance(context);
-                            manager.setTime(year, month, day, hour, minute, second);
-
-                            sendSystemTimeChangeBroadCast(time);
-
-                            isDealTime = true;
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                }
+            });
 
     }
 

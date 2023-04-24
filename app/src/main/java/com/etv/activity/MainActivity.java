@@ -1,8 +1,6 @@
 package com.etv.activity;
 
 import static com.etv.config.AppConfig.APP_TYPE_JIANGJUN_YUNCHENG;
-import static com.etv.config.AppConfig.APP_TYPE_LK_QRCODE;
-import static com.etv.config.AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -66,7 +64,7 @@ import java.util.List;
  * log标签 ：cdl
  */
 public class MainActivity extends TaskActivity implements
-        View.OnClickListener, MainView {
+    View.OnClickListener, MainView {
 
     MainParsener mainParsener;
     public static boolean IS_ORDER_REQUEST_TASK = false; //根据这个参数去请求任务
@@ -154,12 +152,6 @@ public class MainActivity extends TaskActivity implements
         });
         updateBggImageView("程序启动，加载一次");
         initEventBus();
-        if (AppConfig.APP_TYPE == APP_TYPE_LK_QRCODE || AppConfig.APP_TYPE == APP_TYPE_LK_QRCODE_SHOW_DHL) {
-            if (!GuardianUtil.getFisrt()) {
-                return;
-            }
-            GuardianUtil.setGuardianStaues(MainActivity.this, false);
-        }
     }
 
 
@@ -193,17 +185,13 @@ public class MainActivity extends TaskActivity implements
             case AppConfig.APP_TYPE_QINGFENG_NOT_QR:
                 loadQfLogoView(imagePath);
                 break;
-            case APP_TYPE_LK_QRCODE:
-            case APP_TYPE_LK_QRCODE_SHOW_DHL:
-                if (imagePath != null) {
-                    GlideImageUtil.loadImageDefaultId(MainActivity.this, imagePath, iv_main_bgg, defaultImage);
-                    return;
-                }
-                if (SharedPerManager.getScreenWidth() > SharedPerManager.getScreenHeight()) {
-                    iv_main_bgg.setImageResource(R.mipmap.heng);
-                } else {
-                    iv_main_bgg.setImageResource(R.mipmap.shu);
-                }
+            case AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL:
+//                if (imagePath != null) {
+//                    GlideImageUtil.loadImageDefaultId(MainActivity.this, imagePath, iv_main_bgg, defaultImage);
+//                    return;
+//                }
+//                iv_main_bgg.setImageResource(R.mipmap.linken);
+                iv_main_bgg.setImageResource(defaultImage);
                 break;
         }
         MyLog.cdl("===================加载背景图==========" + imagePath);

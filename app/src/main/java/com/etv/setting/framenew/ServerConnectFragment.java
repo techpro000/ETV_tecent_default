@@ -201,8 +201,8 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
             }
         });
         oridinDialog.show(getActivity().getString(R.string.line_auto_tips),
-                getActivity().getString(R.string.connect),
-                getActivity().getString(R.string.cancel));
+            getActivity().getString(R.string.connect),
+            getActivity().getString(R.string.cancel));
     }
 
     private static final int MESSAGE_UPDATE_VIEW = 456;
@@ -415,9 +415,8 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
             showToast(getString(R.string.input_valid_username));
             return;
         }
-        if (AppConfig.APP_TYPE != AppConfig.APP_TYPE_LK_QRCODE || AppConfig.APP_TYPE != AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL) {
+        if (AppConfig.APP_TYPE != AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL) {
             if (checkIfNeedRebootDev()) {
-                // 即将切换成
                 // 即将切换成云服务器模式
                 showRebootDialog(getRebootContent());
                 return;
@@ -473,8 +472,8 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
             }
         });
         editTextDialog.show(getActivity().getString(R.string.username),
-                SharedPerManager.getUserName(),
-                getActivity().getString(R.string.submit));
+            SharedPerManager.getUserName(),
+            getActivity().getString(R.string.submit));
     }
 
     /**
@@ -503,8 +502,8 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
             }
         });
         editTextDialog.show(getActivity().getString(R.string.input_ip),
-                SharedPerUtil.getWebHostIpAddress(),
-                getActivity().getString(R.string.submit));
+            SharedPerUtil.getWebHostIpAddress(),
+            getActivity().getString(R.string.submit));
     }
 
     private void showLogInfoDialog() {

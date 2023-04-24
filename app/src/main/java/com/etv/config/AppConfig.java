@@ -3,15 +3,10 @@ package com.etv.config;
 import android.text.TextUtils;
 
 import com.etv.util.SharedPerManager;
-import com.etv.util.SharedPerUtil;
-import com.etv.util.net.ImUtils;
-import com.etv.util.sdcard.MySDCard;
 
 public class AppConfig {
 
-    //用来检测当前开机时间是否是正常得时间
-
-    public static long TIME_CHECK_POWER_REDUCE = 20220210101010L;
+    public static long TIME_CHECK_POWER_REDUCE = 20230410101010L;
 
     public static final int APP_TYPE_DEFAULT = 0;               //default
     public static final int APP_TYPE_MIKE = 2;                  //米可
@@ -24,7 +19,6 @@ public class AppConfig {
     public static final int APP_TYPE_THREE_VIEW_STAND = 27;      //三视立---修改背景默认图片
     public static final int APP_TYPE_THREE_TAI = 28;             //三泰 --设置固定IP
     public static final int APP_TYPE_KING_LAM = 29;              //金朗曼-不用我们得定时开关机
-    public static final int APP_TYPE_LK_QRCODE = 35;             //广州林肯更换二维码
     public static final int APP_TYPE_LK_QRCODE_SHOW_DHL = 47;    //广州林肯更换二维码,显示导航栏
     public static final int APP_TYPE_SENHAN = 39;                 // 珠海涤生涵科技有限公司-去掉中间的二维码功能
     public static final int APP_TYPE_CHUNYN = 40;                 //传音-固定服务器IP
@@ -33,7 +27,6 @@ public class AppConfig {
 
     public static final int APP_TYPE_WISIJIE = 100;             //微世杰--HDMIN-NUM-默认2
     public static final int APP_TYPE_TEST = 101;                  //测试模式-不要轻易打包这个版本
-    public static final int APP_TYPE_POLICE_ALERT = 103;//一键报警版本
     public static final int APP_TYPE_DEFAULT_ADDRESS_USERNAME = 105;  //默认地址:139.9.126.178，用户名:tailg,连接方式:websocket
     public static final int APP_TYPE_TD_SERVICE_CENTER = 106;  //  解决拓达服务中心网显示错位问题
     public static final int APP_TYPE_TY_DEFAULT_ADDRESS = 107;  //广州图艺默认地址:118.31.56.116，连接方式:websocket
@@ -85,8 +78,6 @@ public class AppConfig {
         return 30;
     }
 
-    //终端发送一个一个空消息。保持服务器在线状态
-    public static final int MESSAGE_AUTO_SEND_SOCKET = 3 * 1000;
     //无缝切换的时间 默认 2000
     public static final int Seamless_Switching_Time = 800;
     //单机模式，混播的切换时间  默认 400

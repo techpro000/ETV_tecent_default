@@ -15,7 +15,6 @@ import com.etv.config.AppInfo;
 import com.etv.service.EtvService;
 import com.etv.service.TcpService;
 import com.etv.service.TcpSocketService;
-import com.etv.setting.GuardianActivity;
 import com.etv.setting.InterestActivity;
 import com.etv.util.CodeUtil;
 import com.etv.util.FileUtil;
@@ -27,8 +26,6 @@ import com.etv.util.ViewSizeChange;
 import com.etv.util.image.ImageUtil;
 import com.ys.etv.BuildConfig;
 import com.ys.etv.R;
-import com.ys.model.dialog.OridinryDialog;
-import com.ys.model.listener.OridinryDialogClick;
 
 /***
  * 程序启动界面
@@ -58,7 +55,6 @@ public class SplashLowActivity extends SplashBaseActivity {
     }
 
     private static final int CHECK_LOGIN_STATUS = 908;
-    private static final int CHEAK_GUARDIAN_TIME_COMPANY = 909;  // 守护进程开机启动关闭
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -66,9 +62,6 @@ public class SplashLowActivity extends SplashBaseActivity {
             handler.removeMessages(msg.what);
             switch (msg.what) {
                 case CHECK_LOGIN_STATUS:
-                    checkGuardianPowerOn();
-                    break;
-                case CHEAK_GUARDIAN_TIME_COMPANY:
                     startToMainView();
                     break;
             }
@@ -91,44 +84,6 @@ public class SplashLowActivity extends SplashBaseActivity {
         }
     }
 
-    private void checkGuardianPowerOn() {
-        boolean openPower = getOpenPower();
-        if (!openPower) {
-            MyLog.cdl("====守护进程开机启动未打开===");
-            if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE || AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL){
-                startToMainView();
-                return;
-            }
-            showGuardianPoserOnDialog();
-            return;
-        }
-        startToMainView();
-    }
-
-    /***
-     * 显示守护进程得dialog
-     */
-    private void showGuardianPoserOnDialog() {
-        handler.sendEmptyMessageDelayed(CHEAK_GUARDIAN_TIME_COMPANY, 30 * 1000);
-        OridinryDialog oridinryDialog = new OridinryDialog(SplashLowActivity.this);
-        oridinryDialog.setOnDialogClickListener(new OridinryDialogClick() {
-            @Override
-            public void sure() {
-                handler.removeMessages(CHEAK_GUARDIAN_TIME_COMPANY);
-                Intent intent = new Intent(SplashLowActivity.this, GuardianActivity.class);
-                intent.putExtra(GuardianActivity.COME_IN_TAG, -1);
-                startActivity(intent);
-                finish();
-            }
-
-            @Override
-            public void noSure() {
-                handler.removeMessages(CHEAK_GUARDIAN_TIME_COMPANY);
-                startToMainView();
-            }
-        });
-        oridinryDialog.show(getString(R.string.boot_up), getString(R.string.boot_dialog_content));
-    }
 
     /***
      * 开始进入界面

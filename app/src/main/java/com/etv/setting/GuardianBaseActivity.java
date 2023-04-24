@@ -73,7 +73,7 @@ public abstract class GuardianBaseActivity extends SettingBaseActivity {
      * @param powerOpen
      */
     public void setOpenPower(boolean powerOpen) {
-        SharedPerManager.setOpenPower(powerOpen);
+        SharedPerManager.setOpenPower(powerOpen, "setOpenPower");
         if (aidl == null) {
             return;
         }
@@ -93,14 +93,13 @@ public abstract class GuardianBaseActivity extends SettingBaseActivity {
     public boolean getOpenPower() {
         boolean isOpen = false;
         if (aidl == null) {
-            return SharedPerManager.getOpenPower();
+            return isOpen;
         }
         try {
             isOpen = aidl.getOpenPower();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        SharedPerManager.setOpenPower(isOpen);
         return isOpen;
     }
 
@@ -118,6 +117,7 @@ public abstract class GuardianBaseActivity extends SettingBaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        SharedPerManager.setGuardianStatues(b);
     }
 
 
