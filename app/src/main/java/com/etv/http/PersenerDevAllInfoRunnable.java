@@ -173,12 +173,13 @@ public class PersenerDevAllInfoRunnable implements Runnable {
      * @param clientLogoInfo
      */
     private void parsenerClientLogoInfo(String clientLogoInfo) {
+        DbBggImageUtil.clearLogoImageInfo();
         if (clientLogoInfo == null || clientLogoInfo.length() < 5) {
             logInfo("===解析设备===没有logo信息==");
             return;
         }
         logInfo("===解析设备===解析 logo 信息 ==");
-        DbBggImageUtil.clearLogoImageInfo();
+
         try {
             JSONObject jsonObject = new JSONObject(clientLogoInfo);
             String fileType = jsonObject.getString("type");

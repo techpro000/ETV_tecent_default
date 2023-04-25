@@ -1442,11 +1442,10 @@ public class SharedPerManager {
         EtvApplication.getInstance().saveData("resourceServer", resourceServer);
     }
 
-
     public static String SOCKET_DOWN_FILE_PATH = "";
 
     public static String getResourDownPath() {
-        if (TextUtils.isEmpty(SOCKET_DOWN_FILE_PATH)){
+        if (TextUtils.isEmpty(SOCKET_DOWN_FILE_PATH)) {
             return SOCKET_DOWN_FILE_PATH;
         }
         SOCKET_DOWN_FILE_PATH = (String) EtvApplication.getInstance().getData("resourceServer", ApiInfo.WEB_BASE_URL());
