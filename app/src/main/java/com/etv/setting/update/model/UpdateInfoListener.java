@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UpdateInfoListener {
 
-    void getUpdateInfoSuccess(List<UpdateInfo> listCache);
+    void getUpdateInfoSuccess(UpdateInfo listCache);
 
     void overApp(String desc);
 

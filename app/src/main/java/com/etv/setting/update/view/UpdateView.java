@@ -9,7 +9,7 @@ public interface UpdateView {
     /***
      * 获取请求数据success,b把数据返回界面显示
      */
-    void updateMainView(List<UpdateInfo> listCache);
+    void updateMainView(UpdateInfo updateInfo);
 
     /***
      * 操作完毕

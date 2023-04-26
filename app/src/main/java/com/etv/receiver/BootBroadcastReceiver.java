@@ -19,37 +19,8 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
         Log.i("BootBroadcastReceiver", "=ETV开机广播=============" + action);
         MyLog.cdl("开机广播====", true);
         if (action.equals(ACTION_BOOT)) {
-
             SharedPerManager.setLastDownTraff(0);
             SharedPerManager.setLastUploadTraff(0);
-            openApp(context);
-        }
-    }
-
-    /**
-     * 1：视威得版本是开开及广播起来得，因为他没有守护进程
-     * 2：其他得版本是通过守护进程拉起来得，两个不一样这里要区别对待
-     *
-     * @param context
-     */
-    private void openApp(Context context) {
-        boolean isOpenPower = SharedPerManager.getOpenPower();
-        if (!isOpenPower) {
-            return;
-        }
-        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_START_ON_POWER) {
-            startAppFromReceive(context);
-            return;
-        }
-    }
-
-    public void startAppFromReceive(Context context) {
-        try {
-            Intent intent1 = new Intent(context, StartActivity.class);
-            intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent1);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

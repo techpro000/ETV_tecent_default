@@ -215,8 +215,7 @@ public class VoiceSettingsActivity extends BaseActivity implements View.OnClickL
 
     private void installApkToLocal(String url) {
         Log.e("install", "===安装的路径==" + url);
-        APKUtil apkUtil = new APKUtil(VoiceSettingsActivity.this);
-        apkUtil.installApk(url);
+        APKUtil.installApk(VoiceSettingsActivity.this, url);
     }
 
     @Override
@@ -236,7 +235,7 @@ public class VoiceSettingsActivity extends BaseActivity implements View.OnClickL
             more_install_apk_statues.setTextTitle(getString(R.string.installted));
         } else {
             more_install_apk_statues.setTextTitle(getString(R.string.
-                    no_install));
+                no_install));
         }
         more_tts_message.setRigt(SharedPerManager.getTtsMessageDelay() + " S");
     }

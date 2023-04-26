@@ -44,6 +44,9 @@ public class FileWriteRunnable implements Runnable {
             if (fileSave.exists()) {
                 fileSave.delete();
             }
+            if (fileSave.exists()) {
+                fileSave.delete();
+            }
             fileSave.createNewFile();
             Log.i("write", "=========开始写入===================");
             InputStream inputStream = new FileInputStream(filePath);

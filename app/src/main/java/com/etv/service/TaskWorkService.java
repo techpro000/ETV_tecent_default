@@ -862,31 +862,13 @@ public class TaskWorkService extends Service implements TaskView {
     }
 
     UpdateParsener updateParsener;
-    MySDCard mySdcard;
 
     private void initUpdateApkImg() {
-        if (mySdcard == null) {
-            mySdcard = new MySDCard(TaskWorkService.this);
-        }
         updateParsener = new UpdateParsener(TaskWorkService.this, new UpdateView() {
             @Override
-            public void updateMainView(List<UpdateInfo> listCache) {
+            public void updateMainView(UpdateInfo updateInfo) {
                 MyLog.update("没有检测到升级任务===================");
-                if (listCache.size() < 1) {
-                    MyLog.update("没有检测到升级任务===准备提交数据", true);
-                    updateOver("操作完毕，关闭升级");
-                    return;
-                }
-                String basePath = AppInfo.BASE_PATH_INNER;
-                long lastPanSize = mySdcard.getAvailableExternalMemorySize(basePath, 1024 * 1024);
-                long fileSize = listCache.get(0).getUfSize();
-                fileSize = fileSize / (1024 * 1024);
-                MyLog.update("=====下载的地址===" + fileSize + " /磁盘空间== " + lastPanSize);
-                if (lastPanSize - fileSize < 100) { //内存小于100M
-                    MyLog.cdl("内存不足,停止下载", true);
-                    return;
-                }
-                downFileInfo(listCache.get(0));
+                downFileInfo(updateInfo);
             }
 
             @Override

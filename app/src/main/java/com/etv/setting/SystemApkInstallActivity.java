@@ -29,8 +29,7 @@ public class SystemApkInstallActivity extends BaseActivity {
             finishMyShelf();
             return;
         }
-        APKUtil apkUtil = new APKUtil(SystemApkInstallActivity.this);
-        apkUtil.installApk(filePath);
+        APKUtil.installApk(SystemApkInstallActivity.this, filePath);
         finishMyShelf();
     }
 

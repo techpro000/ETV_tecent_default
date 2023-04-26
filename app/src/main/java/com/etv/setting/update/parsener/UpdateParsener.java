@@ -39,14 +39,12 @@ public class UpdateParsener implements UpdateInfoListener {
     }
 
     @Override
-    public void getUpdateInfoSuccess(List<UpdateInfo> listCache) {
-        if (listCache != null || listCache.size() > 0) {
-            MyLog.update("=========获取信息success==需要升级的个数==" + listCache.size());
-        } else {
-            MyLog.update("=========获取信息success==需要升级的个数=0=");
+    public void getUpdateInfoSuccess(UpdateInfo updateInfo) {
+        if (updateInfo == null) {
+            MyLog.update("没有需要升级得APK 信息");
+            return;
         }
-        updateView.updateMainView(listCache);
-
+        updateView.updateMainView(updateInfo);
     }
 
     /***

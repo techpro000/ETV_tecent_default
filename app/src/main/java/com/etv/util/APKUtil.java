@@ -164,9 +164,9 @@ public class APKUtil {
     public static ArrayList<String> getAllProcess(Context context) {
         ArrayList<String> list = new ArrayList<String>();
         ActivityManager activityManager = (ActivityManager) context
-                .getSystemService(Context.ACTIVITY_SERVICE);
+            .getSystemService(Context.ACTIVITY_SERVICE);
         List<RunningAppProcessInfo> appProcesses = activityManager
-                .getRunningAppProcesses();
+            .getRunningAppProcesses();
         for (RunningAppProcessInfo runningApp : appProcesses) {
             list.add(runningApp.processName);
         }
@@ -180,41 +180,14 @@ public class APKUtil {
      */
     public static String appIsRunForset(Context context) {
         ActivityManager activityManager = (ActivityManager) context
-                .getSystemService(Context.ACTIVITY_SERVICE);
+            .getSystemService(Context.ACTIVITY_SERVICE);
         List<RunningAppProcessInfo> appProcesses = activityManager
-                .getRunningAppProcesses();
+            .getRunningAppProcesses();
         String packName = appProcesses.get(0).processName;
         return packName;
     }
 
-    /**
-     * 安装APK文件
-     * teaonly.rk.droidipcam
-     */
-//    public void installApk(String filePath) {
-//        try {
-//            String authorities = "com.ys.etv.fileprovider";
-//            Intent intent = new Intent();
-//            intent.setAction(Intent.ACTION_VIEW);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            File apkFile = new File(filePath);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//
-//                Uri contentUri = FileProvider.getUriForFile(context, authorities, apkFile);
-//       context.grantUriPermission(getPackageName(context), contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//      intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//                intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
-//            } else {
-//                intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
-//            }
-//            context.startActivity(intent);
-//            android.os.Process.killProcess(android.os.Process.myPid());
-//        } catch (Exception e) {
-//            MyLog.cdl("======安装异常==" + e.toString());
-//            e.printStackTrace();
-//        }
-//    }
-    public void installApk(String filePath) {
+    public static void installApk(Context context, String filePath) {
         try {
             String authorities = "com.ys.etv.fileprovider";
             Intent intent = new Intent();
@@ -273,7 +246,7 @@ public class APKUtil {
             Log.e("TAG", "ApkState: +++++++++" + packageManager.toString());
             Log.e("TAG", "ApkState: =========" + packageManager.getPackageInfo(packageName, 0));
             PackageInfo packageInfo = packageManager.getPackageInfo(
-                    packageName, 0);
+                packageName, 0);
             if (packageInfo != null) {
                 isInstall = true;
             } else {
@@ -330,7 +303,7 @@ public class APKUtil {
         try {
             PackageManager pm = context.getPackageManager();
             pi = pm.getPackageInfo(context.getPackageName(),
-                    PackageManager.GET_CONFIGURATIONS);
+                PackageManager.GET_CONFIGURATIONS);
             return pi;
         } catch (Exception e) {
             e.printStackTrace();
@@ -352,7 +325,7 @@ public class APKUtil {
         try {
             PackageManager packageManager = context.getPackageManager();
             PackageInfo packageInfo = packageManager.getPackageInfo(
-                    context.getPackageName(), 0);
+                context.getPackageName(), 0);
             return packageInfo.packageName;
         } catch (Exception e) {
             e.printStackTrace();

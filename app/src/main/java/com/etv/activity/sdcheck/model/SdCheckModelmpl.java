@@ -93,7 +93,7 @@ public class SdCheckModelmpl implements SdCheckModel {
     public void installApk(final Context context, String filePath) {
         try {
             FileUtil.creatPathNotExcit("安装APK");
-            final String savePath = AppInfo.BASE_PATH_INNER + "/etv.apk";
+            String savePath = AppInfo.APK_PATH() + "/etv.apk";
             File file = new File(savePath);
             file.createNewFile();
             FileWriteRunnable runnable = new FileWriteRunnable(context, filePath, savePath, new WriteSdListener() {
@@ -110,8 +110,7 @@ public class SdCheckModelmpl implements SdCheckModel {
                     if (!file.exists()) {
                         listener.setThreeClose(context.getString(R.string.no_apk));
                     }
-                    APKUtil apkUtil = new APKUtil(context);
-                    apkUtil.installApk(savePath);
+                    APKUtil.installApk(context, savePath);
                 }
 
                 @Override
