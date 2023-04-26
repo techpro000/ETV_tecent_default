@@ -2,6 +2,8 @@ package com.etv.util;
 
 import android.text.TextUtils;
 
+import com.etv.config.AppConfig;
+
 public class SharedPerUtil {
 
     public static int SCREEN_WIDTH = -1;
@@ -45,9 +47,6 @@ public class SharedPerUtil {
         return WEBHOST_IP_ADDRESS;
     }
 
-    public static int DEFAULT_SOCKET_PORT = -1;
-
-
     /***
      * 用来缓存当前状态值，
      * 不用重复从sharedPerfance 中取获取消耗内存
@@ -55,6 +54,9 @@ public class SharedPerUtil {
     public static int CURRENT_SOCKET_TYPE = -1;
 
     public static int SOCKEY_TYPE() {
+        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_HUANGZUNNIANHUA) {
+            return AppConfig.SOCKEY_TYPE_SOCKET;
+        }
         if (CURRENT_SOCKET_TYPE > -1) {
             return CURRENT_SOCKET_TYPE;
         }

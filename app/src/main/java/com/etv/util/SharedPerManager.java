@@ -1,7 +1,5 @@
 package com.etv.util;
 
-import static com.etv.config.AppConfig.APP_TYPE;
-import static com.etv.config.AppConfig.APP_TYPE_HUANGZUNNIANHUA;
 import static com.etv.config.AppConfig.APP_TYPE_RW_DEFAULT_ADDRESS;
 import static com.etv.config.AppConfig.APP_TYPE_ZB_DEFAULT_ADDRESS;
 
@@ -15,10 +13,8 @@ import com.etv.config.AppInfo;
 import com.etv.task.entity.ViewPosition;
 import com.etv.util.system.CpuModel;
 import com.etv.util.system.SystemManagerUtil;
-import com.etv.util.system.VoiceManager;
 import com.ys.bannerlib.BannerConfig;
 
-import java.util.Calendar;
 import java.util.Locale;
 
 public class SharedPerManager {
@@ -139,12 +135,6 @@ public class SharedPerManager {
             case APP_TYPE_RW_DEFAULT_ADDRESS:
                 defaultSockeType = AppConfig.SOCKEY_TYPE_WEBSOCKET;
                 break;
-            case AppConfig.APP_TYPE_HUANGZUNNIANHUA:
-                defaultSockeType = AppConfig.SOCKEY_TYPE_WEBSOCKET;
-                break;
-//            case AppConfig.APP_TYPE_ETV_ESONCLOUD_IP:
-//                defaultSockeType = AppConfig.SOCKEY_TYPE_SOCKET;
-//                break;
         }
         int socketType = (int) EtvApplication.getInstance().getData("socketType", defaultSockeType);
         return socketType;
@@ -746,9 +736,6 @@ public class SharedPerManager {
             case APP_TYPE_ZB_DEFAULT_ADDRESS:
                 defaultName = "admin";
                 break;
-            case APP_TYPE_HUANGZUNNIANHUA:
-                defaultName = "18863400888";
-                break;
         }
 
         String userNameBack = ((String) EtvApplication.getInstance().getData("devusername", defaultName));
@@ -820,13 +807,13 @@ public class SharedPerManager {
      * @return
      */
     public static String getWebHost() {
-//        String ipAddressDefault = ApiInfo.IP_DEFAULT_URL_WEBSOCKET;
+        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_HUANGZUNNIANHUA) {
+            return "yun.won-giant.com";
+        }
         String ipAddressDefault = ApiInfo.IP_DEFAULT_URL_SOCKET;
         if (SharedPerUtil.SOCKEY_TYPE() == AppConfig.SOCKEY_TYPE_WEBSOCKET) {
             ipAddressDefault = ApiInfo.IP_DEFAULT_URL_WEBSOCKET;
         }
-
-
         switch (AppConfig.APP_TYPE) {
             case AppConfig.APP_TYPE_CHUNYN:
                 ipAddressDefault = "8.209.119.199";
@@ -851,9 +838,6 @@ public class SharedPerManager {
                 break;
             case APP_TYPE_ZB_DEFAULT_ADDRESS:
                 ipAddressDefault = "www.zhongbaizhihui.com";
-                break;
-            case APP_TYPE_HUANGZUNNIANHUA:
-                ipAddressDefault = "www.won-giant.com";
                 break;
         }
         String ipAddress = ((String) EtvApplication.getInstance().getData("webHost", ipAddressDefault));

@@ -105,7 +105,6 @@ public class SettingMenuDialog implements OnClickListener {
             case AppConfig.APP_TYPE_HUANGZUNNIANHUA:
                 iv_qr_code_chat.setBackgroundResource(R.mipmap.icon_qr_hznh);
                 break;
-
             default:
                 lin_wechat_code.setVisibility(View.VISIBLE);
                 iv_qr_code_chat.setBackgroundResource(R.mipmap.icon_etv_new_code);

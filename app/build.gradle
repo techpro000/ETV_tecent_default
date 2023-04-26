@@ -10,7 +10,7 @@ android {
         targetSdkVersion 30
 
         versionCode 304
-        versionName "V5.3.3.31"
+        versionName "V5.3.3.32"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
