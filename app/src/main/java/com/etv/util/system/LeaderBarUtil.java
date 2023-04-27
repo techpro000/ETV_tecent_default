@@ -34,22 +34,22 @@ public class LeaderBarUtil {
                 return true;
             }
             ActivityManager activityManager = (ActivityManager) context
-                    .getSystemService(Context.ACTIVITY_SERVICE);
+                .getSystemService(Context.ACTIVITY_SERVICE);
             List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager
-                    .getRunningAppProcesses();
+                .getRunningAppProcesses();
             if (appProcesses == null || appProcesses.size() < 1) {
                 MyLog.guardian("==========获取是否在前台得列表==null==");
                 return false;
             }
             for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
-                if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_JIANGJUN_YUNCHENG){
-                    if (appProcess.processName.equals(SharedPerManager.getPackageNameByYuncheng())){
+                if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_JIANGJUN_YUNCHENG) {
+                    if (appProcess.processName.equals(SharedPerManager.getPackageNameByYuncheng())) {
                         return false;
-                    }else {
+                    } else {
                         return true;
                     }
                 }
-                if (appProcess.processName.equals(SharedPerManager.getPackageNameBySp()) ) {
+                if (appProcess.processName.equals(SharedPerManager.getPackageNameBySp())) {
                     if (appProcess.importance != ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
                         return true;
                     } else {
@@ -73,15 +73,10 @@ public class LeaderBarUtil {
                 return;
             }
             boolean isShowNavbar = getNavBarHideState(context);
-            Log.e(TAG, "hiddleLeaderBar=========== "+isShowNavbar);
-
+            Log.e(TAG, "hiddleLeaderBar=========== " + isShowNavbar);
             if (isShowNavbar) {
             } else {
-                if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL){
-                    hideNavBar(true, context);
-                }else {
-                    hideNavBar(false, context);
-                }
+                hideNavBar(false, context);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,11 +89,11 @@ public class LeaderBarUtil {
         }
         Intent intent = new Intent();
         if (hide) {
-            Log.e("TAG", "hideNavBar: "+565656 );
+            Log.e("TAG", "hideNavBar: " + 565656);
             intent.setAction("android.action.adtv.showNavigationBar");
             context.sendBroadcast(intent);
         } else {
-            Log.e("TAG", "hideNavBar: "+787878 );
+            Log.e("TAG", "hideNavBar: " + 787878);
             intent.setAction("android.action.adtv.hideNavigationBar");
             context.sendBroadcast(intent);
         }

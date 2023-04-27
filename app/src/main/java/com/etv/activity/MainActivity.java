@@ -186,11 +186,10 @@ public class MainActivity extends TaskActivity implements
                 loadQfLogoView(imagePath);
                 break;
             case AppConfig.APP_TYPE_LK_QRCODE_SHOW_DHL:
-//                if (imagePath != null) {
-//                    GlideImageUtil.loadImageDefaultId(MainActivity.this, imagePath, iv_main_bgg, defaultImage);
-//                    return;
-//                }
-//                iv_main_bgg.setImageResource(R.mipmap.linken);
+                if (imagePath != null) {
+                    GlideImageUtil.loadImageDefaultId(MainActivity.this, imagePath, iv_main_bgg, defaultImage);
+                    return;
+                }
                 iv_main_bgg.setImageResource(defaultImage);
                 break;
         }

@@ -34,7 +34,7 @@ public class AppConfig {
     public static final int APP_TYPE_RW_DEFAULT_ADDRESS = 109;  // 融威默认ip地址:10.80.45.10，连接方式,websocket,默认关闭互动按钮
     public static final int APP_TYPE_ZB_DEFAULT_ADDRESS = 110;  // 中百默认ip地址:www.zhongbaizhihui.com
 
-    public static final int APP_TYPE = APP_TYPE_DEFAULT;
+    public static final int APP_TYPE = APP_TYPE_LK_QRCODE_SHOW_DHL;
 
     /***0
      * Socket 连接方式
