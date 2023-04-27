@@ -45,6 +45,7 @@ public class UpdateMudelImpl implements UpdateMudel {
             return;
         }
         String requestUrl = ApiInfo.UPDATE_APP_SYSTEM();
+//        http://yun.won-giant.com/webservice/selectAllUpgradeFile?clNo=301F9A86A6F89434
         String clNo = CodeUtil.getUniquePsuedoID();
         OkHttpUtils
             .post()

@@ -158,8 +158,5 @@ public class DownRunnable implements Runnable {
         entity.setDownPath(downUrl);
         entity.setSavePath(saveUrl);
         listener.downStateInfo(entity);
-
     }
-
-
 }

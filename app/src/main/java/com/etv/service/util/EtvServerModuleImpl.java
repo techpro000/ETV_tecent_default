@@ -45,27 +45,27 @@ public class EtvServerModuleImpl implements EtvServerModule {
         String getmLongitude = SharedPerManager.getmLongitude();
         String getmLatitude = SharedPerManager.getmLatitude();
         OkHttpUtils
-                .post()
-                .url(requestUrl)
-                .addParams("mac", mac)
-                .addParams("address", address)
-                .addParams("version", clVersion)
-                .addParams("longitude", getmLongitude)
-                .addParams("latitude", getmLatitude)
-                .addParams("useApp", "ETV")
-                .build()
-                .execute(new StringCallback() {
+            .post()
+            .url(requestUrl)
+            .addParams("mac", mac)
+            .addParams("address", address)
+            .addParams("version", clVersion)
+            .addParams("longitude", getmLongitude)
+            .addParams("latitude", getmLatitude)
+            .addParams("useApp", "ETV")
+            .build()
+            .execute(new StringCallback() {
 
-                    @Override
-                    public void onError(Call call, String errorDesc, int id) {
-                        MyLog.http("提交设备信息Author failed=" + errorDesc);
-                    }
+                @Override
+                public void onError(Call call, String errorDesc, int id) {
+                    MyLog.http("提交设备信息Author failed=" + errorDesc);
+                }
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        MyLog.http("提交设备信息Author success=" + response);
-                    }
-                });
+                @Override
+                public void onResponse(String response, int id) {
+                    MyLog.http("提交设备信息Author success=" + response);
+                }
+            });
     }
 
     /**
@@ -84,96 +84,96 @@ public class EtvServerModuleImpl implements EtvServerModule {
         String devId = CodeUtil.getUniquePsuedoID();
         String requestUrl = ApiInfo.QUERY_DEV_INFO();
         OkHttpUtils
-                .post()
-                .url(requestUrl)
-                .addParams("clNo", devId)
-                .addParams("linkType", "3")
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, String errorDesc, int id) {
-                        taskServiceView.getDevInfoFromWeb(false, errorDesc);
-                        MyLog.cdl("获取的设备信息,错误信息===" + errorDesc);
-                    }
+            .post()
+            .url(requestUrl)
+            .addParams("clNo", devId)
+            .addParams("linkType", "3")
+            .build()
+            .execute(new StringCallback() {
+                @Override
+                public void onError(Call call, String errorDesc, int id) {
+                    taskServiceView.getDevInfoFromWeb(false, errorDesc);
+                    MyLog.cdl("获取的设备信息,错误信息===" + errorDesc);
+                }
 
-                    @Override
-                    public void onResponse(String json, int id) {
-                        MyLog.cdl("获取的设备信息===queryDeviceInfoFromWeb==" + json);
-                        try {
-                            JSONObject jsonObject = new JSONObject(json);
-                            int code = jsonObject.getInt("code");
-                            String msg = jsonObject.getString("msg");
-                            if (code != 0) {
-                                taskServiceView.getDevInfoFromWeb(false, msg);
-                                return;
-                            }
-                            String data = jsonObject.getString("data");
-                            JSONObject jsonObjectData = new JSONObject(data);
-                            String nickName = jsonObjectData.getString("clName");
-                            SharedPerManager.setDevNickName(nickName);
-                            boolean infoFrom = SharedPerManager.getInfoFrom();
-                            if (!infoFrom) {
-                                MyLog.cdl("获取的设备信息===用户设置得本地设置，这里中断操作");
-                                return;
-                            }
-
-                            if (data.contains("quitPwd")) {  //退出密码
-                                String exitPassword = jsonObjectData.getString("quitPwd");
-                                SharedPerManager.setExitpassword(exitPassword);
-                            }
-                            if (data.contains("daemonProcessTime")) {
-                                String daemonProcessTime = jsonObjectData.getString("daemonProcessTime");
-                                GuardianUtil.setGuardianProjectTime(context, daemonProcessTime);
-                            }
-                            String appId = SharedPerManager.getAuthorId();
-                            if (data.contains("appId")) {
-                                appId = jsonObjectData.getString("appId");
-                            }
-                            SharedPerManager.setAuthorId(appId);
-                            if (data.contains("warningPhones")) {
-                                String warningPhones = jsonObjectData.optString("warningPhones");
-                                MyLog.cdl("========warningPhones======" + warningPhones);
-                                PersenerJsonUtil.parsenerWarningPhones(warningPhones);
-                            }
-                            //单机模式忽略这个设定
-                            int workModel = SharedPerManager.getWorkModel();
-                            if (workModel != AppInfo.WORK_MODEL_SINGLE) {
-                                //修改显示类型得数据
-                                if (data.contains("videoDisplayType")) {
-                                    int videoDisplayType = jsonObjectData.getInt("videoDisplayType");
-                                    SharedPerManager.setVideoSingleShowTYpe(videoDisplayType);
-                                }
-                                if (data.contains("imageDisplayType")) {
-                                    int imageDisplayType = jsonObjectData.getInt("imageDisplayType");
-                                    SharedPerManager.setPicSingleShowTYpe(imageDisplayType);
-                                }
-                                //双屏异显加载得方式
-                                if (data.contains("dualScreenAdapt")) {
-                                    int dualScreenAdapt = jsonObjectData.getInt("dualScreenAdapt");
-                                    SharedPerManager.setDoubleScreenMath(dualScreenAdapt);
-                                }
-                                if (data.contains("pdfDisplayType")) {
-                                    //pdfDisplayType 0 原尺寸 1 等比例
-                                    int pdfDisplayType = jsonObjectData.getInt("pdfDisplayType");
-                                    SharedPerManager.setWPSSingleShowTYpe(pdfDisplayType, "EtvServrtImpl");
-                                }
-                                if (data.contains("spStatisticsPlay")) {
-                                    //播放统计  0关闭 1开启
-                                    int spStatisticsPlay = jsonObjectData.getInt("spStatisticsPlay");
-                                    SharedPerManager.setPlayTotalUpdate(spStatisticsPlay);
-                                }
-                                if (data.contains("spStatisticsFlow")) {
-                                    //统计流量  0关闭 1开启
-                                    int spStatisticsFlow = jsonObjectData.getInt("spStatisticsFlow");
-                                    SharedPerManager.setIfUpdateTraffToWeb(spStatisticsFlow);
-                                }
-                            }
-                            taskServiceView.getDevInfoFromWeb(true, "Request Success");
-                        } catch (Exception e) {
-                            MyLog.http("====queryDeviceInfoFromWeb==解析异常000：" + e.toString());
+                @Override
+                public void onResponse(String json, int id) {
+                    MyLog.cdl("获取的设备信息===queryDeviceInfoFromWeb==" + json);
+                    try {
+                        JSONObject jsonObject = new JSONObject(json);
+                        int code = jsonObject.getInt("code");
+                        String msg = jsonObject.getString("msg");
+                        if (code != 0) {
+                            taskServiceView.getDevInfoFromWeb(false, msg);
+                            return;
                         }
+                        String data = jsonObject.getString("data");
+                        JSONObject jsonObjectData = new JSONObject(data);
+                        String nickName = jsonObjectData.getString("clName");
+                        SharedPerManager.setDevNickName(nickName);
+                        boolean infoFrom = SharedPerManager.getInfoFrom();
+                        if (!infoFrom) {
+                            MyLog.cdl("获取的设备信息===用户设置得本地设置，这里中断操作");
+                            return;
+                        }
+
+                        if (data.contains("quitPwd")) {  //退出密码
+                            String exitPassword = jsonObjectData.getString("quitPwd");
+                            SharedPerManager.setExitpassword(exitPassword);
+                        }
+                        if (data.contains("daemonProcessTime")) {
+                            String daemonProcessTime = jsonObjectData.getString("daemonProcessTime");
+                            GuardianUtil.setGuardianProjectTime(context, daemonProcessTime);
+                        }
+                        String appId = SharedPerManager.getAuthorId();
+                        if (data.contains("appId")) {
+                            appId = jsonObjectData.getString("appId");
+                        }
+                        SharedPerManager.setAuthorId(appId);
+                        if (data.contains("warningPhones")) {
+                            String warningPhones = jsonObjectData.optString("warningPhones");
+                            MyLog.cdl("========warningPhones======" + warningPhones);
+                            PersenerJsonUtil.parsenerWarningPhones(warningPhones);
+                        }
+                        //单机模式忽略这个设定
+                        int workModel = SharedPerManager.getWorkModel();
+                        if (workModel != AppInfo.WORK_MODEL_SINGLE) {
+                            //修改显示类型得数据
+                            if (data.contains("videoDisplayType")) {
+                                int videoDisplayType = jsonObjectData.getInt("videoDisplayType");
+                                SharedPerManager.setVideoSingleShowTYpe(videoDisplayType);
+                            }
+                            if (data.contains("imageDisplayType")) {
+                                int imageDisplayType = jsonObjectData.getInt("imageDisplayType");
+                                SharedPerManager.setPicSingleShowTYpe(imageDisplayType);
+                            }
+                            //双屏异显加载得方式
+                            if (data.contains("dualScreenAdapt")) {
+                                int dualScreenAdapt = jsonObjectData.getInt("dualScreenAdapt");
+                                SharedPerManager.setDoubleScreenMath(dualScreenAdapt);
+                            }
+                            if (data.contains("pdfDisplayType")) {
+                                //pdfDisplayType 0 原尺寸 1 等比例
+                                int pdfDisplayType = jsonObjectData.getInt("pdfDisplayType");
+                                SharedPerManager.setWPSSingleShowTYpe(pdfDisplayType, "EtvServrtImpl");
+                            }
+                            if (data.contains("spStatisticsPlay")) {
+                                //播放统计  0关闭 1开启
+                                int spStatisticsPlay = jsonObjectData.getInt("spStatisticsPlay");
+                                SharedPerManager.setPlayTotalUpdate(spStatisticsPlay);
+                            }
+                            if (data.contains("spStatisticsFlow")) {
+                                //统计流量  0关闭 1开启
+                                int spStatisticsFlow = jsonObjectData.getInt("spStatisticsFlow");
+                                SharedPerManager.setIfUpdateTraffToWeb(spStatisticsFlow);
+                            }
+                        }
+                        taskServiceView.getDevInfoFromWeb(true, "Request Success");
+                    } catch (Exception e) {
+                        MyLog.http("====queryDeviceInfoFromWeb==解析异常000：" + e.toString());
                     }
-                });
+                }
+            });
     }
 
     @Override
@@ -206,32 +206,32 @@ public class EtvServerModuleImpl implements EtvServerModule {
             String address = SharedPerManager.getAllAddress();   //获取设备详细地址
             MyLog.http("提交设备sysCodeVersion信息=" + sysCodeVersion);
             OkHttpUtils
-                    .post()
-                    .url(url)
-                    .addParams("clNo", clNo)
-                    .addParams("clDisk", sizeLast + "M")
-                    .addParams("clMac", clMac)
-                    .addParams("clScreenNum", clScreenNum)
-                    .addParams("clResolution", clResolution)
-                    .addParams("clLatitude", clLatitude + "")
-                    .addParams("clLongitude", clLongitude + "")
-                    .addParams("clAddress", address)
-                    .addParams("clName", SharedPerManager.getDevNickName())
-                    .addParams("clIp", clIp)
-                    .addParams("clSystemVersion", sysCodeVersion + "")
-                    .build()
-                    .execute(new StringCallback() {
+                .post()
+                .url(url)
+                .addParams("clNo", clNo)
+                .addParams("clDisk", sizeLast + "M")
+                .addParams("clMac", clMac)
+                .addParams("clScreenNum", clScreenNum)
+                .addParams("clResolution", clResolution)
+                .addParams("clLatitude", clLatitude + "")
+                .addParams("clLongitude", clLongitude + "")
+                .addParams("clAddress", address)
+                .addParams("clName", SharedPerManager.getDevNickName())
+                .addParams("clIp", clIp)
+                .addParams("clSystemVersion", sysCodeVersion + "")
+                .build()
+                .execute(new StringCallback() {
 
-                        @Override
-                        public void onError(Call call, String errorDesc, int id) {
-                            MyLog.http("提交设备信息failed=" + errorDesc);
-                        }
+                    @Override
+                    public void onError(Call call, String errorDesc, int id) {
+                        MyLog.http("提交设备信息failed=" + errorDesc);
+                    }
 
-                        @Override
-                        public void onResponse(String response, int id) {
-                            MyLog.http("提交设备信息success=" + response);
-                        }
-                    });
+                    @Override
+                    public void onResponse(String response, int id) {
+                        MyLog.http("提交设备信息success=" + response);
+                    }
+                });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -242,50 +242,50 @@ public class EtvServerModuleImpl implements EtvServerModule {
         String requestUrl = ApiInfo.ADD_FILE_NUMBERS_TOTAL();
         String devCode = CodeUtil.getUniquePsuedoID();
         OkHttpUtils
-                .post()
-                .url(requestUrl)
-                .addParams("stMtId", midId + "")                         //素材ID
-                .addParams("stAtId", addType)                            //素材类型
-                .addParams("stClientNo", devCode)                        //设备编号
-                .addParams("stTimes", pmTime + "")                       //素材的时间
-                .addParams("stCount", count + "")                       //素材的时间
-                .addParams("stOwner", SharedPerManager.getDevOnwer())    //设备归属
-                .addParams("stPhone", SharedPerManager.getUserName())  //拥有者电话
-                .addParams("stProvince", SharedPerManager.getProvince())  //省份
-                .addParams("stCity", SharedPerManager.getLocalCiti())     //市区
-                .addParams("stArea", SharedPerManager.getArea())     //区域
-                .addParams("stMark", "官方备注，没有争议")
-                .addParams("dateStr", timeUpdate)
-                .addParams("isStats", "1")          //新参数没有实际意义，用来区分新旧版本
-                .build()
-                .execute(new StringCallback() {
+            .post()
+            .url(requestUrl)
+            .addParams("stMtId", midId + "")                         //素材ID
+            .addParams("stAtId", addType)                            //素材类型
+            .addParams("stClientNo", devCode)                        //设备编号
+            .addParams("stTimes", pmTime + "")                       //素材的时间
+            .addParams("stCount", count + "")                       //素材的时间
+            .addParams("stOwner", SharedPerManager.getDevOnwer())    //设备归属
+            .addParams("stPhone", SharedPerManager.getUserName())  //拥有者电话
+            .addParams("stProvince", SharedPerManager.getProvince())  //省份
+            .addParams("stCity", SharedPerManager.getLocalCiti())     //市区
+            .addParams("stArea", SharedPerManager.getArea())     //区域
+            .addParams("stMark", "官方备注，没有争议")
+            .addParams("dateStr", timeUpdate)
+            .addParams("isStats", "1")          //新参数没有实际意义，用来区分新旧版本
+            .build()
+            .execute(new StringCallback() {
 
-                    @Override
-                    public void onError(Call call, String errorDesc, int id) {
-                        MyLog.update("=====添加统计requestFailed=00=" + errorDesc);
-                    }
+                @Override
+                public void onError(Call call, String errorDesc, int id) {
+                    MyLog.update("=====添加统计requestFailed=00=" + errorDesc);
+                }
 
-                    @Override
-                    public void onResponse(String json, int id) {
-                        MyLog.update("=====添加统计onResponse=00=" + json);
-                        try {
-                            if (json == null || json.length() < 5) {
-                                return;
-                            }
-                            if (!json.contains("code")) {
-                                return;
-                            }
-                            JSONObject jsonObject = new JSONObject(json);
-                            int code = jsonObject.getInt("code");
-                            if (code == 0) {
-                                boolean isDel = DbStatiscs.delInfoById(midId);
-                                MyLog.update("=====删除已经统计得数量==" + isDel);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                @Override
+                public void onResponse(String json, int id) {
+                    MyLog.update("=====添加统计onResponse=00=" + json);
+                    try {
+                        if (json == null || json.length() < 5) {
+                            return;
                         }
+                        if (!json.contains("code")) {
+                            return;
+                        }
+                        JSONObject jsonObject = new JSONObject(json);
+                        int code = jsonObject.getInt("code");
+                        if (code == 0) {
+                            boolean isDel = DbStatiscs.delInfoById(midId);
+                            MyLog.update("=====删除已经统计得数量==" + isDel);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                });
+                }
+            });
     }
 
     @Override
@@ -401,24 +401,25 @@ public class EtvServerModuleImpl implements EtvServerModule {
         String devId = CodeUtil.getUniquePsuedoID();
         String requestUrl = ApiInfo.getUpdateApkProgress();
         OkHttpUtils
-                .post()
-                .url(requestUrl)
-                .addParams("clNo", devId)
-                .addParams("percent", percent + "")
-                .addParams("downKb", downKb + "")
-                .addParams("fileName", fileName)
-                .build()
-                .execute(new StringCallback() {
+            .post()
+            .url(requestUrl)
+            .addParams("clNo", devId)
+            .addParams("percent", percent + "")
+            .addParams("downKb", downKb + "")
+            .addParams("fileName", fileName)
+            .build()
+            .execute(new StringCallback() {
 
-                    @Override
-                    public void onError(Call call, String errorDesc, int id) {
+                @Override
+                public void onError(Call call, String errorDesc, int id) {
+                    MyLog.update("提交上传进度失败=" + errorDesc);
+                }
 
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                    }
-                });
+                @Override
+                public void onResponse(String response, int id) {
+                    MyLog.update("提交上传进度Success=" + response);
+                }
+            });
     }
 
     /***
@@ -457,30 +458,30 @@ public class EtvServerModuleImpl implements EtvServerModule {
             int randomNum = new Random().nextInt(10);
             downKb = downKb + randomNum;
             OkHttpUtils
-                    .post()
-                    .url(requestUrl)
-                    .addParams("clNo", devId + "")
-                    .addParams("etId", taskId + "")
-                    .addParams("percentProg", progress + "")
-                    .addParams("downKb", downKb + "")
-                    .addParams("state", state)
-                    .addParams("userName", SharedPerManager.getUserName())
-                    .addParams("finishFileNum", "0")
-                    .addParams("totalFileNum", titalDoanNum)
-                    .addParams("type", type)
-                    .build()
-                    .execute(new StringCallback() {
+                .post()
+                .url(requestUrl)
+                .addParams("clNo", devId + "")
+                .addParams("etId", taskId + "")
+                .addParams("percentProg", progress + "")
+                .addParams("downKb", downKb + "")
+                .addParams("state", state)
+                .addParams("userName", SharedPerManager.getUserName())
+                .addParams("finishFileNum", "0")
+                .addParams("totalFileNum", titalDoanNum)
+                .addParams("type", type)
+                .build()
+                .execute(new StringCallback() {
 
-                        @Override
-                        public void onError(Call call, String errorDesc, int id) {
-                            MyLog.update("========上传进度失败===" + errorDesc);
-                        }
+                    @Override
+                    public void onError(Call call, String errorDesc, int id) {
+                        MyLog.update("========上传进度失败===" + errorDesc);
+                    }
 
-                        @Override
-                        public void onResponse(String response, int id) {
-                            MyLog.update("========上传进度===" + response);
-                        }
-                    });
+                    @Override
+                    public void onResponse(String response, int id) {
+                        MyLog.update("========上传进度===" + response);
+                    }
+                });
         } catch (Exception e) {
             e.printStackTrace();
         }

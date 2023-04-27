@@ -1,9 +1,6 @@
 package com.etv.setting.framenew;
 
 import static com.etv.config.ApiInfo.IP_DEFAULT_URL_SOCKET;
-import static com.etv.config.ApiInfo.IP_DEFAULT_URL_WEBSOCKET;
-import static com.etv.config.AppConfig.APP_TYPE_ETV_ESONCLOUD_IP;
-import static com.youth.banner.util.LogUtils.TAG;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -15,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +24,9 @@ import com.etv.activity.model.RegisterDevListener;
 import com.etv.config.ApiInfo;
 import com.etv.config.AppConfig;
 import com.etv.config.AppInfo;
-import com.etv.service.EtvService;
 import com.etv.service.TcpService;
 import com.etv.service.TcpSocketService;
-
 import com.etv.util.AppLinkSer;
-import com.etv.util.CodeUtil;
 import com.etv.util.MyLog;
 import com.etv.util.NetWorkUtils;
 import com.etv.util.SharedPerManager;
@@ -49,7 +42,6 @@ import com.ys.model.listener.EditTextDialogListener;
 import com.ys.model.listener.MoreButtonToggleListener;
 import com.ys.model.listener.OridinryDialogClick;
 import com.ys.model.util.KeyBoardUtil;
-import com.ys.model.view.MyToggleButton;
 import com.ys.model.view.SettingSwitchView;
 
 public class ServerConnectFragment extends Fragment implements View.OnClickListener {
@@ -144,19 +136,6 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
         oridinryDialog.setCancelable(false);
         oridinryDialog.show(content, false, false);
         handler.postDelayed(() -> SystemManagerUtil.rebootApp(getActivity()), 2000);
-
-        /*oridinryDialog.setOnDialogClickListener(new OridinryDialogClick() {
-            @Override
-            public void sure() {
-                SystemManagerUtil.rebootApp(getActivity());
-                getActivity().finish();
-            }
-
-            @Override
-            public void noSure() {
-
-            }
-        });*/
     }
 
     @Override
@@ -175,34 +154,6 @@ public class ServerConnectFragment extends Fragment implements View.OnClickListe
                 lineWebHostWeb();
                 break;
         }
-    }
-
-
-    private void searchIpHostLocalNet() {
-        if (!NetWorkUtils.isNetworkConnected(getActivity())) {
-            showToast(getActivity().getString(R.string.net_error));
-            return;
-        }
-        OridinryDialog oridinDialog = new OridinryDialog(getActivity());
-        oridinDialog.setOnDialogClickListener(new OridinryDialogClick() {
-            @Override
-            public void sure() {
-                waitDialogUtil.show(getActivity().getString(R.string.querying), 3000);
-                String ipaddress = CodeUtil.getIpAddress(getActivity(), "");
-                String sendIp = ipaddress.substring(0, ipaddress.lastIndexOf(".") + 1) + 255;
-                String sendJson = "{\"type\":\"searchServer\",\"ipaddress\":\"" + ipaddress + "\"}";
-                Log.e(TAG, "sure: " + sendJson + "/////////" + sendIp);
-                EtvService.getInstance().sendUdpMessage(sendJson, sendIp);
-            }
-
-            @Override
-            public void noSure() {
-
-            }
-        });
-        oridinDialog.show(getActivity().getString(R.string.line_auto_tips),
-            getActivity().getString(R.string.connect),
-            getActivity().getString(R.string.cancel));
     }
 
     private static final int MESSAGE_UPDATE_VIEW = 456;

@@ -159,19 +159,16 @@ public class EtvService extends Service {
                     manager.createNotificationChannel(channel);
                 }
                 Notification notification = new NotificationCompat.Builder(this, channel.getId())
-                        .setSmallIcon(R.mipmap.radio_chooice)
-                        .setAutoCancel(true)
-                        .build();
+                    .setSmallIcon(R.mipmap.radio_chooice)
+                    .setAutoCancel(true)
+                    .build();
                 startForeground(1, notification);
             }
         }
-        initUdp();
         initParsener();
         initReceiver();
         initTimeClick();
-        Message msgm = new Message();
-        msgm.what = SET_SYSTEM_TIME;
-        handler.sendMessageDelayed(msgm, 2000);
+        handler.sendEmptyMessageDelayed(SET_SYSTEM_TIME, 2000);
     }
 
     private void initTimeClick() {
@@ -209,30 +206,6 @@ public class EtvService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         isServerStart = true;
         return super.onStartCommand(intent, flags, startId);
-    }
-
-    UdpParnsener udpParsener = null;
-
-    private void initUdp() {
-        if (udpParsener == null) {
-            udpParsener = new UdpParnsener(EtvService.this);
-            MyLog.udp("========parsenerJsonInfo== isTrue" + EtvService.this);
-            udpParsener.receiveUdpMessage();
-        }
-    }
-
-
-    /**
-     * 发送Udp消息
-     *
-     * @param message
-     * @param sendIp
-     */
-    public void sendUdpMessage(String message, String sendIp) {
-        if (udpParsener == null) {
-            initUdp();
-        }
-        udpParsener.sendUdpMessage(message, sendIp);
     }
 
     /***
@@ -302,9 +275,6 @@ public class EtvService extends Service {
         }
         TimerDealUtil.getInstance().onDestroyTimer();
         LightUtil.StopLightUtil();
-        if (udpParsener != null) {
-            udpParsener.stopReceiveMessage();
-        }
     }
 
     private void initReceiver() {
