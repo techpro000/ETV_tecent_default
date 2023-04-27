@@ -570,9 +570,7 @@ public class PlayTaskParsener {
             int topPosition = TaskDealUtil.StringToFloat(cpListEntityArea.getCoRightPosition());
             int width = TaskDealUtil.StringToFloat(cpListEntityArea.getCoWidth());
             int height = TaskDealUtil.StringToFloat(cpListEntityArea.getCoHeight());
-
-            Log.e("liujk", "获取区域控件： leftPosition :" + leftPosition + " topPosition: " + topPosition + " width：" + width + " height: " + height);
-
+            MyLog.playTask("获取区域控件： leftPosition :" + leftPosition + " topPosition: " + topPosition + " width：" + width + " height: " + height);
             int viewWidth = leftPosition + width;
             int viewHeight = topPosition + height;
             if (leftPosition < 8 && leftPosition > 0) {
@@ -590,7 +588,6 @@ public class PlayTaskParsener {
             if (distanceHeight < 8) {
                 height = screenHeight - topPosition;
             }
-
             /**
              * 针对4K 显示屏幕，多个控件设置区域，不会在指定区域显示
              */
@@ -1265,7 +1262,7 @@ public class PlayTaskParsener {
         try {
             if (cpListEntity == null) {
                 //点击wei=null,不操作
-                MyLog.d("TOUCH", "====/点击wei=null,不操作");
+                MyLog.touch("====/点击wei=null,不操作");
                 return;
             }
             String coActionType = cpListEntity.getCoActionType().trim(); //互动类型
@@ -1277,7 +1274,6 @@ public class PlayTaskParsener {
                 + coLinkAction + " / "
                 + backTime + " / "
                 + nextSceneEntity);
-
             switch (coActionType) {
                 case AppInfo.TOUCH_TYPE_NONE:  //没有触摸行为
                     //视威

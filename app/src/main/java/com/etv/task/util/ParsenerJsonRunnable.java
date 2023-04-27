@@ -419,7 +419,6 @@ public class ParsenerJsonRunnable implements Runnable {
                 }
                 CpListEntity cpListEntity = new CpListEntity(cpid, sencenId, coType, coLeftPosition, coRightPosition, coWidth, coHeight,
                     coActionType, coLinkAction, coScreenProtectTime, pmResolutionType, pmFixedScreen, coLinkId);
-                List<MpListEntity> mpListEntityListAll = new ArrayList<MpListEntity>();
                 MyLog.task("====当前保存的控件的类型==" + coType);
                 if (coType.equals(AppInfo.VIEW_SUBTITLE)
                     || coType.equals(AppInfo.VIEW_DATE)
@@ -432,21 +431,27 @@ public class ParsenerJsonRunnable implements Runnable {
                     || coType.equals(AppInfo.VIEW_WEATHER)
                     || coType.equals(AppInfo.VIEW_HDMI)
                     || coType.equals(AppInfo.VIEW_EVEV_SCREEN)) {
+                    List<TextInfo> textInfoListAll = new ArrayList<>();
                     //文档，日期，星期，时间，网页，天气
                     String txList = jsonCplist.getString("txList");          //文本属性
                     MyLog.task("====获取的控件是文本属性的==" + cpListEntity.toString());
                     if (jsonCplist.toString().contains("childCompentLst")) {
-                        MyLog.task("====获取的控件是关联文本信息==");
                         String childCompentLst = jsonCplist.getString("childCompentLst");
+                        MyLog.task("====获取的控件是关联素材=素材关联=" + childCompentLst);
                         List<TextInfo> textInfoList = parsenerChildCompentInfoForTextInfo(taskid, pmType, cpid, childCompentLst);
                         List<MpListEntity> mpListEntityList = parsenerChildCompentInfoForMpListEntity(taskid, pmType, cpid, childCompentLst);
-                        cpListEntity.setTxList(textInfoList);
+                        if (textInfoList != null && textInfoList.size() > 0) {
+                            textInfoListAll.addAll(textInfoList);
+                        }
                         if (mpListEntityList != null && mpListEntityList.size() > 0) {
-                            mpListEntityListAll.addAll(mpListEntityList);
+                            cpListEntity.setMpList(mpListEntityList);
                         }
                     }
                     List<TextInfo> textInfoList = parsenerTextList(taskid, txList, pmType);
-                    cpListEntity.setTxList(textInfoList);
+                    if (textInfoList != null && textInfoList.size() > 0) {
+                        textInfoListAll.addAll(textInfoList);
+                    }
+                    cpListEntity.setTxList(textInfoListAll);
                 } else if (coType.contains(AppInfo.VIEW_DOC)
                     || coType.contains(AppInfo.VIEW_IMAGE)
                     || coType.contains(AppInfo.VIEW_AUDIO)
@@ -454,14 +459,17 @@ public class ParsenerJsonRunnable implements Runnable {
                     || coType.contains(AppInfo.VIEW_IMAGE_VIDEO)
                     || coType.contains(AppInfo.VIEW_AREA)) {
                     MyLog.task("====获取的控件是资源类型的==" + cpListEntity.toString());
+                    List<MpListEntity> mpListEntityListAll = new ArrayList<MpListEntity>();
                     //文档，图片，音频，视频
                     String mpList = jsonCplist.getString("mpList");          //资源文件
                     if (jsonCplist.toString().contains("childCompentLst")) {
                         String childCompentLst = jsonCplist.getString("childCompentLst");
-                        MyLog.task("====获取的控件是关联素材==" + childCompentLst);
+                        MyLog.task("====获取的控件是关联素材=文本关联=" + childCompentLst);
                         List<TextInfo> textInfoList = parsenerChildCompentInfoForTextInfo(taskid, pmType, cpid, childCompentLst);
                         List<MpListEntity> mpListEntityList = parsenerChildCompentInfoForMpListEntity(taskid, pmType, cpid, childCompentLst);
-                        cpListEntity.setTxList(textInfoList);
+                        if (textInfoList != null && textInfoList.size() > 0) {
+                            cpListEntity.setTxList(textInfoList);
+                        }
                         if (mpListEntityList != null && mpListEntityList.size() > 0) {
                             mpListEntityListAll.addAll(mpListEntityList);
                         }
@@ -478,7 +486,6 @@ public class ParsenerJsonRunnable implements Runnable {
             MyLog.ExceptionPrint("解析任务error: " + e.toString());
             e.printStackTrace();
         }
-
         return cpListEntityList;
     }
 
@@ -529,13 +536,13 @@ public class ParsenerJsonRunnable implements Runnable {
         return textInfoList;
     }
 
-
     private List<MpListEntity> parsenerChildCompentInfoForMpListEntity(String taskId, String pmType, String cpid, String childCompentLst) {
         List<MpListEntity> mpListEntityList = new ArrayList<>();
         if (childCompentLst == null || childCompentLst.length() < 5) {
             MyLog.task("====parsenerChildCompentInfo==null。不操作");
             return mpListEntityList;
         }
+        MyLog.task("====parsenerChildCompentInfo==" + childCompentLst);
         try {
             JSONArray jsonArray = new JSONArray(childCompentLst);
             int lengthArray = jsonArray.length();
@@ -547,16 +554,20 @@ public class ParsenerJsonRunnable implements Runnable {
             MyLog.task("===parsenerChildCompentInfo==获取当前的资源数组个数===" + lengthArray);
             for (int i = 0; i < lengthArray; i++) {
                 JSONObject jsonMplist = jsonArray.getJSONObject(i);
-                String playParam = jsonMplist.getString("playParam");   //播放时长
-                String mid = jsonMplist.getString("mid");               //素材ID
-                String url = jsonMplist.getString("url");               //素材地址
-                String size = jsonMplist.getString("size");             //文件大小
+                String playParam = jsonMplist.optString("playParam");   //播放时长
+                String mid = jsonMplist.optString("mid");               //素材ID
+                String url = jsonMplist.optString("url");               //素材地址
+                String size = jsonMplist.optString("size");             //文件大小
                 String cartoon = "-1";                                        //动画特效
-                String volume = jsonMplist.getString("volume");          //音量
+                String volume = jsonMplist.optString("volume");          //音量
                 String parentCoId = DBTaskUtil.MP_RELATION + "";
-                String type = jsonMplist.getString("type");
+                String type = jsonMplist.optString("type");
                 String md5 = jsonMplist.optString("md5");
+                if (TextUtils.isEmpty(url)) {
+                    continue;
+                }
                 MpListEntity mpListEntity = new MpListEntity(taskId, mid, cpid, url, playParam, cartoon, size, volume, pmType, parentCoId, type, md5);
+                MyLog.ExceptionPrint("parsenerChildCompentInfo==添加数据到集合: " + mpListEntity);
                 mpListEntityList.add(mpListEntity);
             }
         } catch (Exception e) {
