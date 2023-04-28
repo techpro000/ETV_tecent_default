@@ -154,7 +154,7 @@ public class ViewWebViewX5Generate extends Generator {
         settings.setBlockNetworkImage(false);//解决图片不显示
         settings.setSupportMultipleWindows(false);//这里一定得是false,不然打开的网页中，不能在点击打开了
         settings.setLoadsImagesAutomatically(true); //支持自动加载图片
-        settings.setUserAgentString("Windows");
+//        settings.setUserAgentString("Windows");
         settings.setDefaultTextEncodingName("utf-8");//设置编码格式
         settings.setDomStorageEnabled(true);   //加载不出资源问题
 //        settings.setAppCacheEnabled(true);
