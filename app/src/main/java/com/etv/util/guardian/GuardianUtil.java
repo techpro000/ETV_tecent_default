@@ -9,6 +9,7 @@ import android.os.Build;
 import android.util.Log;
 
 import com.EtvApplication;
+import com.bin.david.form.data.form.IForm;
 import com.etv.config.ApiInfo;
 import com.etv.config.AppConfig;
 import com.etv.config.AppInfo;
@@ -284,6 +285,10 @@ public class GuardianUtil {
 
     private RawSourceEntity getResourceGuardianEntity() {
         String cpuModel = CpuModel.getMobileType();
+        if (CpuModel.getMobileType().equals(CpuModel.CPU_RK_3566)) {
+            RawSourceEntity rawSourceEntity = new RawSourceEntity(R.raw.guardian_3566, 3145986, "3566-RK-11", 81);
+            return rawSourceEntity;
+        }
         if (cpuModel.contains(CpuModel.CPU_MODEL_T982)) {
             //T-982 守护进程是内置到固件，所以要升级固件才能使用
 //                rawSourceEntity = new RawSourceEntity(R.raw.guardian_982, 3211268, "android-982", 79);

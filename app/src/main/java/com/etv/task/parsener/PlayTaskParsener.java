@@ -781,7 +781,8 @@ public class PlayTaskParsener {
                     }
                     SceneEntity currentScentity = getCurrentSencenEntity();
                     MyLog.playTask("混播===列表数量===" + mixtureList.size());
-                    generatorView = new ViewImgVideoNetGenerate(context, cpEntity, currentScentity, leftPosition, topPosition, width, height, mixtureList, true, 0, AppInfo.PROGRAM_POSITION_MAIN, false);
+                    generatorView = TaskDealUtil.getMixVideoImagePlayView(context, cpEntity, leftPosition, topPosition, width, height, mixtureList, currentScentity);
+//                  generatorView = new ViewImgVideoNetGenerate(context, cpEntity, currentScentity, leftPosition, topPosition, width, height, mixtureList, true, 0, AppInfo.PROGRAM_POSITION_MAIN, false);
                     addViewToList(generatorView, coType, false, null);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
                     break;

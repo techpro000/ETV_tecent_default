@@ -321,6 +321,19 @@ public class TaskWorkService extends Service implements TaskView {
         taskParsener.requestTaskUrl("正常流程请求并且播放");
     }
 
+    /***
+     * 这里主要用于异常情况不需要检测下载，直接去播放任务数据
+     */
+    private void getDbTaskListToStartPlayTask() {
+        List<TaskWorkEntity> taskWorkEntities = DBTaskUtil.getTaskInfoList();
+        if (taskWorkEntities == null || taskWorkEntities.size() < 1) {
+            //当前没有任务需要播放，这里直接拦截
+            sendBroadCastToView(AppInfo.TASK_GET_INFO_NULL);  //没有获取到任务，这里去通知界面
+            return;
+        }
+        startToPlayActivityView("当前没有网络，直接去播放界面");
+    }
+
     TaskMudel taskMudel;
 
     /**
@@ -441,7 +454,8 @@ public class TaskWorkService extends Service implements TaskView {
         if (lists == null || lists.size() < 1) {
             //没有需要下载的任务，直接关闭播放界面
             MyLog.task("========parserJsonOver=======没有获取到任务=====2");
-            sendBroadCastToView(AppInfo.RECEIVE_STOP_PLAY_TO_VIEW);
+//            sendBroadCastToView(AppInfo.RECEIVE_STOP_PLAY_TO_VIEW);
+            getDbTaskListToStartPlayTask();
             return;
         }
         MyLog.task("====parserJsonOver===backTaskList==" + lists.size());

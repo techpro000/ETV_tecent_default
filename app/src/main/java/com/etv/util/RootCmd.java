@@ -224,6 +224,14 @@ public class RootCmd {
      */
     public static void writeFileToSystemApp(String filePath, String sysFilePath) {
         String cpuModel = CpuModel.getMobileType();
+        if (cpuModel.equals(CpuModel.CPU_RK_3566)) {
+            exusecmd("mount -o remount -o rw /", "安装守护进程111");
+            exusecmd("mount -o rw,remount /system", "安装守护进程");
+            exusecmd("rm -rf /system/app/guardian.apk", "安装守护进程222");
+            exusecmd("cp " + filePath + " " + sysFilePath, "安装守护进程333==" + "cp  " + filePath + " " + sysFilePath);
+            exusecmd("chmod 777 /system/app/guardian.apk", "安装守护进程444");
+            return;
+        }
         if (cpuModel.equals(CpuModel.CPU_MODEL_T982)) {
             exusecmd("mount -o remount -o rw /", "CPU_MODEL_T982000");
             exusecmd("mount -o rw,remount /system", "CPU_MODEL_T982111");

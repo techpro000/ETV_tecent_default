@@ -36,6 +36,8 @@ import com.etv.util.system.CpuModel;
 import com.etv.view.layout.Generator;
 import com.etv.view.layout.image.ViewImageGenertrator;
 import com.etv.view.layout.image.ViewImageSingleGenertrator;
+import com.etv.view.layout.mixedswing.ViewImgVideoNetGenerate;
+import com.etv.view.layout.mixedswing.ViewImgVideoTextUreGenerate;
 import com.etv.view.layout.video.media.ViewVideoGenertrator;
 import com.etv.view.layout.video.renderview.ViewGlVideoGenertrator;
 import com.etv.view.layout.video.stream.ViewIJKStreamGenerate;
@@ -139,7 +141,7 @@ public class TaskDealUtil {
             logCpPosition("==pmResolutionType=positionEntity=" + positionEntity.toString(), false);
             return positionEntity;
         } else if (pmResolutionType == CpListEntity.SCREEN_TYPE_AUTO_SCREEN ||
-                pmResolutionType == CpListEntity.SCREEN_TYPE_4K_SHOW) {
+            pmResolutionType == CpListEntity.SCREEN_TYPE_4K_SHOW) {
             return adapterScreenAuto(cpEntity);
         } else {
             return adapterScreenAuto(cpEntity);
@@ -173,7 +175,7 @@ public class TaskDealUtil {
         float jujleWidthSize = (float) (pmWidth * 1.0 / devScreenWidth);
         float jujleWHeightSize = (float) (pmHeight * 1.0 / devScreenHeight);
         logCpPosition("==pmResolutionType=pmWidth=" + devScreenWidth + " / " + devScreenHeight
-                + " /jujleWidthSize=" + jujleWidthSize + " / " + jujleWHeightSize, true);
+            + " /jujleWidthSize=" + jujleWidthSize + " / " + jujleWHeightSize, true);
         int leftPosition = StringToFloat(cpEntity.getCoLeftPosition(), jujleWidthSize);
         int topPosition = StringToFloat(cpEntity.getCoRightPosition(), jujleWHeightSize);
 
@@ -199,7 +201,7 @@ public class TaskDealUtil {
      * 依据硬件加速
      */
     public static Generator getStreamGenViewBySpeed(Context context, String moveStream, CpListEntity cpEntity, int leftPosition, int
-            topPosition, int width, int height, String streamUrl, String coType) {
+        topPosition, int width, int height, String streamUrl, String coType) {
         Generator generatorView;
         boolean isStreamImp = TaskDealUtil.getDeviceSpeed(moveStream, coType);
         if (isStreamImp) {
@@ -314,11 +316,6 @@ public class TaskDealUtil {
      * @return
      */
     public static boolean getDeviceSpeed(String taMoveWeb, String type) {
-//        String cpuModel = CpuModel.getMobileType();
-//        if (cpuModel.contains("rk3399") && type.equals(AppInfo.VIEW_WEB_PAGE)) {
-//            MyLog.playTask("==========是否开启硬件加速==3399 硬件不加速");
-//            return false;
-//        }
         MyLog.playTask("==========是否开启硬件加速==" + taMoveWeb);
         if (taMoveWeb == null || taMoveWeb.length() < 1) {
             taMoveWeb = "1";
@@ -557,7 +554,7 @@ public class TaskDealUtil {
     public static boolean isHttpUrl(String urls) {
         boolean isurl = false;
         String regex = "(((https|http)?://)?([a-z0-9]+[.])|(www.))"
-                + "\\w+[.|\\/]([a-z0-9]{0,})?[[.]([a-z0-9]{0,})]+((/[\\S&&[^,;\u4E00-\u9FA5]]+)+)?([.][a-z0-9]{0,}+|/?)";//设置正则表达式
+            + "\\w+[.|\\/]([a-z0-9]{0,})?[[.]([a-z0-9]{0,})]+((/[\\S&&[^,;\u4E00-\u9FA5]]+)+)?([.][a-z0-9]{0,}+|/?)";//设置正则表达式
         Pattern pat = Pattern.compile(regex.trim());//比对
         Matcher mat = pat.matcher(urls.trim());
         isurl = mat.matches();//判断是否匹配
@@ -575,14 +572,14 @@ public class TaskDealUtil {
      */
     public static boolean isTxtType(String coType) {
         if (coType.equals(AppInfo.VIEW_SUBTITLE)
-                || coType.equals(AppInfo.VIEW_COUNT_DOWN)
-                || coType.equals(AppInfo.VIEW_DATE)
-                || coType.equals(AppInfo.VIEW_WEEK)
-                || coType.equals(AppInfo.VIEW_BUTTON)
-                || coType.equals(AppInfo.VIEW_TIME)
-                || coType.equals(AppInfo.VIEW_WEB_PAGE)
-                || coType.equals(AppInfo.VIEW_STREAM_VIDEO)
-                || coType.equals(AppInfo.VIEW_WEATHER)) {
+            || coType.equals(AppInfo.VIEW_COUNT_DOWN)
+            || coType.equals(AppInfo.VIEW_DATE)
+            || coType.equals(AppInfo.VIEW_WEEK)
+            || coType.equals(AppInfo.VIEW_BUTTON)
+            || coType.equals(AppInfo.VIEW_TIME)
+            || coType.equals(AppInfo.VIEW_WEB_PAGE)
+            || coType.equals(AppInfo.VIEW_STREAM_VIDEO)
+            || coType.equals(AppInfo.VIEW_WEATHER)) {
             return true;
         }
         return false;
@@ -595,11 +592,11 @@ public class TaskDealUtil {
      */
     public static boolean isResourceType(String coType) {
         if (coType.contains(AppInfo.VIEW_DOC)
-                || coType.contains(AppInfo.VIEW_IMAGE)
-                || coType.contains(AppInfo.VIEW_AUDIO)
-                || coType.contains(AppInfo.VIEW_VIDEO)
-                || coType.contains(AppInfo.VIEW_IMAGE_VIDEO)
-                || coType.contains(AppInfo.VIEW_AREA)) {
+            || coType.contains(AppInfo.VIEW_IMAGE)
+            || coType.contains(AppInfo.VIEW_AUDIO)
+            || coType.contains(AppInfo.VIEW_VIDEO)
+            || coType.contains(AppInfo.VIEW_IMAGE_VIDEO)
+            || coType.contains(AppInfo.VIEW_AREA)) {
             return true;
         }
         return false;
@@ -1139,7 +1136,7 @@ public class TaskDealUtil {
 
     private static String convertRGBToHex(int r, int g, int b) {
         String rFString, rSString, gFString, gSString,
-                bFString, bSString, result;
+            bFString, bSString, result;
         int red, green, blue;
         int rred, rgreen, rblue;
         red = r / 16;
@@ -1554,7 +1551,7 @@ public class TaskDealUtil {
         String ip = ApiInfo.getWebIpHost();
         String ipBack;
         if (ip.contains(ApiInfo.IP_DEFAULT_URL_WEBSOCKET) ||
-                ip.contains(ApiInfo.IP_DEFAULT_URL_SOCKET)) {
+            ip.contains(ApiInfo.IP_DEFAULT_URL_SOCKET)) {
             ipBack = "http://" + ApiInfo.getWebIpHost() + txtContentWeb;
         } else {
             ipBack = ApiInfo.getIpHostWebPort() + "/web/" + txtContentWeb;
@@ -1720,5 +1717,29 @@ public class TaskDealUtil {
         }
         builder.append(cpType + "> " + context.getString(R.string.save_current) + " ！");
         return builder.toString();
+    }
+
+
+    /***
+     * 获取混播控件
+     * @param context
+     * @param cpEntity
+     * @param leftPosition
+     * @param topPosition
+     * @param width
+     * @param height
+     * @param mixtureList
+     * @return
+     */
+    public static Generator getMixVideoImagePlayView(Activity context, CpListEntity cpEntity, int leftPosition, int topPosition, int width, int height,
+                                                     List<MediAddEntity> mixtureList, SceneEntity currentScentity) {
+        Generator generatorView = null;
+        if (CpuModel.getMobileType().startsWith(CpuModel.CPU_RK_3566)) {
+            generatorView = new ViewImgVideoTextUreGenerate(context, cpEntity, leftPosition, topPosition, width, height, mixtureList);
+            return generatorView;
+        }
+        generatorView = new ViewImgVideoNetGenerate(context, cpEntity, currentScentity, leftPosition, topPosition, width, height, mixtureList, true, 0, AppInfo.PROGRAM_POSITION_MAIN, false);
+        MyLog.video("======获取混播控件=====" + (generatorView == null));
+        return generatorView;
     }
 }
