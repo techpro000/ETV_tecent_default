@@ -64,7 +64,7 @@ public class ViewImgVideoTextUreGenerate extends Generator {
         this.height = height;
         this.x = x;
         this.y = y;
-        MyLog.video("==textureView===视频区域得坐标====" + x + " / " + y + " / " + width + " /" + height);
+        MyLog.video("==textureView===视频区域得坐标===000=" + x + " / " + y + " / " + width + " /" + height);
         this.videoLists = videoLists;
         this.cpListEntity = cpListEntity;
         view = View.inflate(context, R.layout.view_mix_media_textureview, null);
@@ -87,18 +87,19 @@ public class ViewImgVideoTextUreGenerate extends Generator {
 
     RelativeLayout rela_no_data;
     TextView tv_desc;
-    VideoTextUreImageVideoView video_view_surface;
+    VideoTextUreImageVideoView video_view_surface_text;
 
     private void initView(View view) {
         tv_desc = (TextView) view.findViewById(R.id.tv_desc);
         rela_no_data = (RelativeLayout) view.findViewById(R.id.rela_no_data);
-        video_view_surface = (VideoTextUreImageVideoView) view.findViewById(R.id.video_view_surface);
-        video_view_surface.setVideoClickListen(listener, cpListEntity);
-        video_view_surface.setVideoPlayListener(new VideoPlayListener() {
+        video_view_surface_text = (VideoTextUreImageVideoView) view.findViewById(R.id.video_view_surface_text);
+        video_view_surface_text.setVideoClickListen(listener, cpListEntity);
+        MyLog.video("====设置回调监听===");
+        video_view_surface_text.setVideoPlayListener(new VideoPlayListener() {
             @Override
             public void initOver() {
                 MyLog.video("====初始化完成===");
-                video_view_surface.setPlayList(videoLists);
+                video_view_surface_text.setPlayList(videoLists);
             }
 
             @Override
@@ -145,24 +146,24 @@ public class ViewImgVideoTextUreGenerate extends Generator {
 
     @Override
     public void clearMemory() {
-        if (video_view_surface != null) {
-            video_view_surface.clearMemory();
+        if (video_view_surface_text != null) {
+            video_view_surface_text.clearMemory();
         }
 
     }
 
     @Override
     public void removeCacheView(String tag) {
-        if (video_view_surface != null) {
-            video_view_surface.removeCacheView();
+        if (video_view_surface_text != null) {
+            video_view_surface_text.removeCacheView();
         }
     }
 
     @Override
     public void pauseDisplayView() {
         MyLog.playTask("=====pauseDisplayView===video=====");
-        if (video_view_surface != null) {
-            video_view_surface.pausePlayVideo();
+        if (video_view_surface_text != null) {
+            video_view_surface_text.pausePlayVideo();
         }
     }
 
@@ -174,8 +175,8 @@ public class ViewImgVideoTextUreGenerate extends Generator {
     @Override
     public void resumePlayView() {
         MyLog.playTask("=====resumePlayView===video=====");
-        if (video_view_surface != null) {
-            video_view_surface.resumePlayVideo();
+        if (video_view_surface_text != null) {
+            video_view_surface_text.resumePlayVideo();
         }
     }
 

@@ -56,13 +56,13 @@ public class FileUtil {
      * 文件保存路径
      * @param saveFilePath
      * 下载文件路径
-     * @param fileLength
+     * @param fileLengthString
      * @return
      */
-    public static boolean ifFileHasExict(String saveFilePath, String fileLength) {
-        fileLength = fileLength.trim();
-        if (fileLength == null || fileLength.length() < 1) {
-            fileLength = "1024";
+    public static boolean ifFileHasExict(String saveFilePath, String fileLengthString) {
+        fileLengthString = fileLengthString.trim();
+        if (fileLengthString == null || fileLengthString.length() < 1) {
+            fileLengthString = "1024";
         }
         File fileSave = new File(saveFilePath);
         if (!fileSave.exists()) {
@@ -70,18 +70,18 @@ public class FileUtil {
             return false;
         }
         //文件存在去比对文件大小
-        long fileDownLength = fileSave.length();
-        if (fileDownLength < 1024 * 2) {
-            MyLog.task("=======比对数据库文件是否存在==5555=本地=是文件太小了，直接默认fale==" + fileDownLength + " / " + saveFilePath);
+        long localFileLength = fileSave.length();
+        if (localFileLength < 1024 * 2) {
+            MyLog.task("=======比对数据库文件是否存在==5555=本地=是文件太小了，直接默认fale==" + localFileLength + " / " + saveFilePath);
             FileUtil.deleteDirOrFilePath(saveFilePath, "==比对文件，本地文件小于5 kb，删除文件重新下载====");
             return false;
         }
-        long downFileLengthLong = Long.parseLong(fileLength);
-        if (downFileLengthLong == fileDownLength) {
+        long downFileLength = Long.parseLong(fileLengthString);
+        if (localFileLength == downFileLength) {
             return true;
         }
-        if (downFileLengthLong > fileDownLength) {
-            FileUtil.deleteDirOrFilePath(saveFilePath, "==比对文件，本地文件比服务器得文件大,直接删除，重新下载");
+        if (localFileLength > downFileLength) {
+            FileUtil.deleteDirOrFilePath(saveFilePath, "==比对文件，本地文件比服务器得文件大,直接删除，重新下载本地==" + localFileLength + " / " + downFileLength);
             return false;
         }
         return false;
@@ -232,11 +232,11 @@ public class FileUtil {
         if (size < 1024) {
             size = size * 100;
             return String.valueOf((size / 100)) + "."
-                    + String.valueOf((size % 100)) + "MB";
+                + String.valueOf((size % 100)) + "MB";
         } else {
             size = size * 100 / 1024;
             return String.valueOf((size / 100)) + "."
-                    + String.valueOf((size % 100)) + "GB";
+                + String.valueOf((size % 100)) + "GB";
         }
     }
 

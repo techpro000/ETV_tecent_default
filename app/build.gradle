@@ -9,8 +9,8 @@ android {
         minSdkVersion 19
         targetSdkVersion 30
 
-        versionCode 307
-        versionName "V5.3.3.35"
+        versionCode 309
+        versionName "V5.3.3.37"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -57,9 +57,9 @@ android {
         variant ->
             variant.outputs.all {
                 if ('release' == variant.buildType.name) {
-                    outputFileName = "etv_HeiPer_" + versionName + ".apk"
+                    outputFileName = "etv_touch_" + versionName + ".apk"
                 } else {
-                    outputFileName = "etv_HeiPer_" + versionName + "_debug.apk"
+                    outputFileName = "etv_touch_" + versionName + "_debug.apk"
                 }
             }
     }

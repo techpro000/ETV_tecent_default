@@ -1,9 +1,6 @@
 package com.etv.task.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.AbsoluteLayout;

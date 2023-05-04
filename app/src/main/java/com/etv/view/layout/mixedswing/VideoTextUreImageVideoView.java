@@ -31,6 +31,7 @@ import com.ys.bannerlib.util.GlideImageUtil;
 import com.ys.etv.R;
 import com.ys.model.entity.FileEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /***
@@ -65,7 +66,6 @@ public class VideoTextUreImageVideoView extends RelativeLayout implements Textur
     long startUpTime = 0;
     private Surface surface;
 
-
     private void initView(View view) {
         mediaPlayer = new MediaPlayer();
         iv_view_image = (ImageView) view.findViewById(R.id.iv_view_image);
@@ -89,6 +89,14 @@ public class VideoTextUreImageVideoView extends RelativeLayout implements Textur
                             if (taskPlayStateListener != null) {
                                 taskPlayStateListener.longClickView(cpListEntity, null);
                             }
+                        } else {
+                            if (taskPlayStateListener != null) {
+                                List<String> listsShow = new ArrayList<String>();
+                                for (int i = 0; i < playList.size(); i++) {
+                                    listsShow.add(playList.get(i).getUrl());
+                                }
+                                taskPlayStateListener.clickTaskView(cpListEntity, listsShow, currentPlayIndex);
+                            }
                         }
                         startDownTime = 0;
                         startUpTime = 0;
@@ -102,10 +110,10 @@ public class VideoTextUreImageVideoView extends RelativeLayout implements Textur
         }
     }
 
-    private VideoPlayListener listener;
+    private VideoPlayListener videoPlayListener;
 
     public void setVideoPlayListener(VideoPlayListener listener) {
-        this.listener = listener;
+        this.videoPlayListener = listener;
     }
 
     List<MediAddEntity> playList;
@@ -121,8 +129,8 @@ public class VideoTextUreImageVideoView extends RelativeLayout implements Textur
         currentPlayIndex = 0;
         if (playList == null || playList.size() < 1) {
             MyLog.video("setPlayList==000");
-            if (listener != null) {
-                listener.playError("没有需要播放的信息");
+            if (videoPlayListener != null) {
+                videoPlayListener.playError("没有需要播放的信息");
             }
             return;
         }
@@ -200,8 +208,8 @@ public class VideoTextUreImageVideoView extends RelativeLayout implements Textur
 
     public void startToPlayVideo(MediAddEntity mediAddEntity) {
         if (mediAddEntity == null) {
-            if (listener != null) {
-                listener.playError("被播放的素材==NULL");
+            if (videoPlayListener != null) {
+                videoPlayListener.playError("被播放的素材==NULL");
             }
             return;
         }
@@ -261,8 +269,8 @@ public class VideoTextUreImageVideoView extends RelativeLayout implements Textur
         @Override
         public boolean onError(MediaPlayer mp, int what, int extra) {
             MyLog.video("视频播放异常:1 what= " + what + " /extra =" + extra);
-            if (listener != null) {
-                listener.playError("播放视频异常了:" + what + " / " + extra);
+            if (videoPlayListener != null) {
+                videoPlayListener.playError("播放视频异常了:" + what + " / " + extra);
             }
             return false;
         }
@@ -316,8 +324,8 @@ public class VideoTextUreImageVideoView extends RelativeLayout implements Textur
         MyLog.video("toPlayNextMediaInfo-==播放下一個====" + currentPlayIndex + " / " + (playList.size()));
         if (currentPlayIndex > playList.size() - 1) {
             MyLog.video("toPlayNextMediaInfo-==整體播放完成====" + printTag);
-            if (listener != null) {
-                listener.playCompletion("播放完毕了");
+            if (videoPlayListener != null) {
+                videoPlayListener.playCompletion("播放完毕了");
             }
             currentPlayIndex = 0;
         } else {
@@ -372,7 +380,6 @@ public class VideoTextUreImageVideoView extends RelativeLayout implements Textur
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
         }
-
     }
 
     TaskPlayStateListener taskPlayStateListener;
@@ -431,10 +438,10 @@ public class VideoTextUreImageVideoView extends RelativeLayout implements Textur
 
     @Override
     public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surfaceTexture, int width, int height) {
-        MyLog.video("=viewChange=onSurfaceTextureAvailable====");
+        MyLog.video("=viewChange=onSurfaceTextureAvailable=" + (videoPlayListener == null));
         surface = new Surface(surfaceTexture);
-        if (listener != null) {
-            listener.initOver();
+        if (videoPlayListener != null) {
+            videoPlayListener.initOver();
         }
     }
 
@@ -454,17 +461,4 @@ public class VideoTextUreImageVideoView extends RelativeLayout implements Textur
     public void onSurfaceTextureUpdated(@NonNull SurfaceTexture surface) {
         MyLog.video("=viewChange=onSurfaceTextureUpdated====");
     }
-
-//    2023-04-24 18:43:04.788 11693-11693/com.ys.etv E/videoPlay: ==textureView===视频区域得坐标====0 / 0 / 1280 /800
-//        2023-04-24 18:43:04.815 11693-11693/com.ys.etv E/videoPlay: setPlayList==111==2
-//        2023-04-24 18:43:04.815 11693-11693/com.ys.etv E/videoPlay: startToPlayMedia==mediaType=2
-//        2023-04-24 18:43:04.815 11693-11693/com.ys.etv E/videoPlay: startToPlayMedia==准备播放视屏
-//2023-04-24 18:43:04.815 11693-11693/com.ys.etv E/videoPlay: 开始播放volNum==70 / 0 / /storage/emulated/0/etv/task/1593067305618202624.mp4
-//2023-04-24 18:43:04.851 11693-11693/com.ys.etv E/videoPlay: =viewChange=onSurfaceTextureAvailable====
-//        2023-04-24 18:43:04.852 11693-11693/com.ys.etv E/videoPlay: ====初始化完成===
-//        2023-04-24 18:43:04.963 11693-11693/com.ys.etv E/videoPlay: onPrepared==准备播放节目==
-//        2023-04-24 18:43:04.965 11693-11693/com.ys.etv E/videoPlay: 视频播放时长=26123
-//        2023-04-24 18:43:04.966 11693-11693/com.ys.etv E/videoPlay: toUpdatePlayNum=2 / 10
-//        2023-04-24 18:43:05.165 11693-11693/com.ys.etv E/videoPlay: ==setVisibility==開始刷新視屏界面====GONE===
-
 }

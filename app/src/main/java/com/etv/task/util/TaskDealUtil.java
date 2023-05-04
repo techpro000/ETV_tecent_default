@@ -1719,7 +1719,6 @@ public class TaskDealUtil {
         return builder.toString();
     }
 
-
     /***
      * 获取混播控件
      * @param context
@@ -1734,6 +1733,11 @@ public class TaskDealUtil {
     public static Generator getMixVideoImagePlayView(Activity context, CpListEntity cpEntity, int leftPosition, int topPosition, int width, int height,
                                                      List<MediAddEntity> mixtureList, SceneEntity currentScentity) {
         Generator generatorView = null;
+        if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_TEST) {
+            generatorView = new ViewImgVideoTextUreGenerate(context, cpEntity, leftPosition, topPosition, width, height, mixtureList);
+            return generatorView;
+        }
+
         if (CpuModel.getMobileType().startsWith(CpuModel.CPU_RK_3566)) {
             generatorView = new ViewImgVideoTextUreGenerate(context, cpEntity, leftPosition, topPosition, width, height, mixtureList);
             return generatorView;

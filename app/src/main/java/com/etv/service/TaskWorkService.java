@@ -149,16 +149,10 @@ public class TaskWorkService extends Service implements TaskView {
                 if (!SharedPerManager.getSocketLineEnable()) {
                     // socket开关处于关闭状态
                     int currentTime = SimpleDateUtil.getHourMin();
-                    if (AppConfig.APP_TYPE == AppConfig.APP_TYPE_TEST) {
-                        if (currentTime % 3 == 0) {
-                            requestTaskInfo("定时获取任务信息");
-                        }
-                    } else {
-                        mTimerCount++;
-                        if (mTimerCount > 9) {
-                            mTimerCount = 0;
-                            requestTaskInfo("定时获取任务信息");
-                        }
+                    mTimerCount++;
+                    if (mTimerCount > 9) {
+                        mTimerCount = 0;
+                        requestTaskInfo("定时获取任务信息");
                     }
                 }
                 MyLog.timer("=====TaskService==时间变化,去检测任务");

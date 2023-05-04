@@ -135,7 +135,7 @@ public class DownRunnable implements Runnable {
             return;
         }
         backState("下载成功", DownFileEntity.DOWN_STATE_SUCCESS, 100, false, downUrl, saveUrl, 0, taskId);
-        MyLog.down("下载异常==文件小于服务器文件=", true);
+        MyLog.down("下载成功===", true);
     }
 
     public void stopDown() {

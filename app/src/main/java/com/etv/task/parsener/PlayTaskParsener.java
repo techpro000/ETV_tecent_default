@@ -785,6 +785,7 @@ public class PlayTaskParsener {
 //                  generatorView = new ViewImgVideoNetGenerate(context, cpEntity, currentScentity, leftPosition, topPosition, width, height, mixtureList, true, 0, AppInfo.PROGRAM_POSITION_MAIN, false);
                     addViewToList(generatorView, coType, false, null);
                     view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
+                    generatorView.updateView(null, false);
                     break;
                 case AppInfo.VIEW_AUDIO:                         //音频
                     List<MediAddEntity> audioList = TaskDealUtil.getResourceListPath(mpList);

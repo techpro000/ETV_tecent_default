@@ -185,7 +185,7 @@ public class ViewImgVideoNetGenerate extends Generator {
 
             @Override
             public void clickTaskView(CpListEntity cpListEntity, List<String> list, int position) {
-                MyLog.playMix("===混播监听到点击事件===clickTaskView=" + (listener == null));
+                MyLog.playMix("===混播监听到点击事件===clickTaskView=");
                 if (listener != null) {
                     listener.clickTaskView(cpListEntity, list, position);
                 }
