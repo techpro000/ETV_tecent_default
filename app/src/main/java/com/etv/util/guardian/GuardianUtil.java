@@ -285,15 +285,15 @@ public class GuardianUtil {
 
     private RawSourceEntity getResourceGuardianEntity() {
         String cpuModel = CpuModel.getMobileType();
-        if (CpuModel.getMobileType().equals(CpuModel.CPU_RK_3566)) {
-            RawSourceEntity rawSourceEntity = new RawSourceEntity(R.raw.guardian_3566, 3145986, "3566-RK-11", 81);
-            return rawSourceEntity;
-        }
         if (cpuModel.contains(CpuModel.CPU_MODEL_T982)) {
             //T-982 守护进程是内置到固件，所以要升级固件才能使用
-//                rawSourceEntity = new RawSourceEntity(R.raw.guardian_982, 3211268, "android-982", 79);
-//                return rawSourceEntity;
+//            guardian_982
             return null;
+        }
+        if (CpuModel.getMobileType().equals(CpuModel.CPU_RK_3566)
+            || cpuModel.contains(CpuModel.CPU_MODEL_3568_11)) {
+            RawSourceEntity rawSourceEntity = new RawSourceEntity(R.raw.guardian_356x, 3206512, "3566-RK-11", 82);
+            return rawSourceEntity;
         }
         RawSourceEntity rawSourceEntity = new RawSourceEntity(R.raw.guardian_71, 3395008, "7.0通用版本", 77);
         try {
@@ -301,12 +301,6 @@ public class GuardianUtil {
             if (cpuModel.contains(CpuModel.CPU_MODEL_MLOGIC)) {
                 //PX30主板
                 rawSourceEntity = new RawSourceEntity(R.raw.guardian_mlogic91, 3365824, "mlogic9.0", 47);
-                return rawSourceEntity;
-            }
-
-            if (cpuModel.contains(CpuModel.CPU_MODEL_3568_11)) {
-                //rk-3568 android 11
-                rawSourceEntity = new RawSourceEntity(R.raw.guardian_3568, 3394812, "3568-android-3568", 76);
                 return rawSourceEntity;
             }
             if (cpuModel.contains(CpuModel.CPU_MODEL_PX30)) {
