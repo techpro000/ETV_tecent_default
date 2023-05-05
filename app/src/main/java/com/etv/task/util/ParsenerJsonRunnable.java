@@ -14,6 +14,7 @@ import com.etv.task.entity.SceneEntity;
 import com.etv.task.entity.TaskWorkEntity;
 import com.etv.task.entity.TextInfo;
 import com.etv.task.model.TaskRequestListener;
+import com.etv.util.FileUtil;
 import com.etv.util.MyLog;
 import com.etv.util.SharedPerManager;
 import com.etv.util.SimpleDateUtil;
@@ -48,6 +49,10 @@ public class ParsenerJsonRunnable implements Runnable {
                 return;
             }
             List<TaskWorkEntity> taskWorkEntityList = parsenerTaskEntity(json);
+            if (taskWorkEntityList == null || taskWorkEntityList.size() < 1) {
+                //表示当前没有节目，直接删库，删除素材信息，停止播放
+                DBTaskUtil.clearAllDbInfo("请求得任务信息，没有任务,直接删库");
+            }
             taskRequestListener.parserJsonOver("解析数据完成", taskWorkEntityList);
             return;
         }
