@@ -180,14 +180,9 @@ public class TcpSocketService extends Service {
                     break;
                 case MONITOR_VIEW_TO_WEB:   //上传截图界面到VIEw
                     MyLog.cdl("=========开始截图-------------");
-//                    if (ScreenUtil.screenShot(getApplication(), AppInfo.CAPTURE_MAIN)) {
-//                        MyLog.cdl("=========截图成功-------------");
-//                        updateScreenshotToWeb();
-//                    }
                     //截图功能统一写到 守护进程里面，不要调用API 截图，API 覆盖主板不完全，切记
-                    ScreenUtil.getScreenImage(TcpSocketService.this, AppInfo.TAG_UPDATE);
-//                    initOther();
-//                    tcpServerModule.monitorUpdateImage(getApplicationContext(),AppInfo.CAPTURE_PATH);
+                     initOther();
+                     tcpParsener.startCaptureImage();
                     break;
                 case SHOW_TOAST_VIEW:          //弹窗提示
                     String toast = (String) msg.obj;
@@ -911,7 +906,7 @@ public class TcpSocketService extends Service {
             String tag = intent.getStringExtra("tag");
             MyLog.update("==截图回来了==准备上传==" + tag);
             initOther();
-            tcpParsener.updateImageToWeb(tag);
+            tcpParsener.updateImageToWeb(tag,AppInfo.CAPTURE_MAIN);
         } catch (Exception e) {
             MyLog.update("==截图回来了==上传异常==" + e.toString());
             e.printStackTrace();
@@ -1005,18 +1000,6 @@ public class TcpSocketService extends Service {
                 }
             }
         });
-    }
-
-    //上传截图到服务器
-    private void updateScreenshotToWeb() {
-        try {
-            MyLog.update("==截图回来了==准备上传==");
-            initOther();
-            tcpParsener.updateImageToWeb(AppInfo.TAG_UPDATE);
-        } catch (Exception e) {
-            MyLog.update("==截图回来了==上传异常==" + e.toString());
-            e.printStackTrace();
-        }
     }
 
     @Override

@@ -12,7 +12,6 @@ import com.etv.util.RootCmd;
 import com.etv.util.system.CpuModel;
 import com.etv.util.system.SystemManagerInstance;
 import com.etv.util.system.SystemManagerUtil;
-import com.github.barteksc.pdfviewer.PDFView;
 import com.ys.etv.R;
 import com.ys.etv.databinding.ActivityScreenSettingBinding;
 import com.ys.model.dialog.OridinryDialog;
@@ -20,7 +19,6 @@ import com.ys.model.dialog.RadioListDialog;
 import com.ys.model.entity.RedioEntity;
 import com.ys.model.listener.MoreButtonListener;
 import com.ys.model.listener.MoreButtonSeekBarListener;
-import com.ys.model.listener.MoreButtonToggleListener;
 import com.ys.model.listener.OridinryDialogClick;
 import com.ys.model.listener.RadioChooiceListener;
 
@@ -64,14 +62,8 @@ public class ScreenSettingActivity extends SettingBaseActivity implements View.O
     }
 
     private void updateMainView() {
-        if (CpuModel.getMobileType().startsWith(CpuModel.CPU_MODEL_MTK_M11)) {
-            mBingding.switchOpenPower.setVisibility(View.GONE);
-        }
-        boolean isBackLightOpen = SystemManagerInstance.getInstance(ScreenSettingActivity.this).getBackLightTtatues("屏幕设置界面");
-        MyLog.d("light", "======当前背光的状态===" + isBackLightOpen);
-        mBingding.switchOpenPower.setSwitchStatues(isBackLightOpen);
         //更新旋转角度
-        //updateScreenRoate();
+//        updateScreenRoate();
         //更新屏幕亮度
         updateBlightInfo();
     }
@@ -89,12 +81,7 @@ public class ScreenSettingActivity extends SettingBaseActivity implements View.O
             }
         });
 
-        mBingding.switchOpenPower.setOnMoretListener(new MoreButtonToggleListener() {
-            @Override
-            public void switchToggleView(View view, boolean isChooice) {
-                SystemManagerInstance.getInstance(ScreenSettingActivity.this).turnBackLightTtatues(isChooice);
-            }
-        });
+
     }
 
     @Override

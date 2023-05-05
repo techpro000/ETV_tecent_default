@@ -1,6 +1,5 @@
 package com.etv.service;
 
-import static com.etv.config.AppConfig.APP_TYPE_JIANGJUN_YUNCHENG;
 import static com.youth.banner.util.LogUtils.TAG;
 
 import android.app.Activity;
@@ -28,7 +27,6 @@ import com.etv.service.parsener.TcpParsener;
 import com.etv.service.view.TcpHartStatuesListener;
 import com.etv.service.view.TcpPowerOnOffListener;
 import com.etv.setting.InterestActivity;
-
 import com.etv.socket.online.SiteWebsocket;
 import com.etv.socket.online.SocketWebListener;
 import com.etv.task.db.DBTaskUtil;
@@ -37,12 +35,9 @@ import com.etv.util.Biantai;
 import com.etv.util.FileUtil;
 import com.etv.util.MyLog;
 import com.etv.util.NetWorkUtils;
-import com.etv.util.ScreenUtil;
 import com.etv.util.SharedPerManager;
 import com.etv.util.SharedPerUtil;
 import com.etv.util.SimpleDateUtil;
-import com.etv.util.image.CaptureImageListener;
-import com.etv.util.image.ImageCaptureUtil;
 import com.etv.util.poweronoff.PowerOnOffManager;
 import com.etv.util.poweronoff.db.PowerDbManager;
 import com.etv.util.rxjava.AppStatuesListener;
@@ -112,7 +107,7 @@ public class TcpService extends Service implements SocketWebListener {
             String tag = intent.getStringExtra("tag");
             MyLog.update("==截图回来了==准备上传==" + tag);
             initOther();
-            tcpParsener.updateImageToWeb(tag);
+            tcpParsener.updateImageToWeb(tag, AppInfo.CAPTURE_MAIN);
         } catch (Exception e) {
             MyLog.update("==截图回来了==上传异常==" + e.toString(), true);
             e.printStackTrace();
@@ -553,26 +548,8 @@ public class TcpService extends Service implements SocketWebListener {
     }
 
     private void startCaptureImage() {
-        if (AppConfig.APP_TYPE != APP_TYPE_JIANGJUN_YUNCHENG) {
-            //截图功能统一写到 守护进程里面，不要调用API 截图，API 覆盖主板不完全，切记
-            ScreenUtil.getScreenImage(TcpService.this, AppInfo.TAG_UPDATE);
-            return;
-        }
-
-        ImageCaptureUtil.captureScreen(TcpService.this, new CaptureImageListener() {
-            @Override
-            public void getCaptureImagePath(boolean isSuucess, String imagePath) {
-                MyLog.update("=========截圖返回-------------" + isSuucess + " / " + imagePath, true);
-                updateScreenshotToWeb();
-            }
-        });
-
-//           boolean res = ScreenUtil.screenShot(getApplication(), AppInfo.CAPTURE_MAIN);
-//            MyLog.update("=========开始截图----唯意---------" + res, true);
-//            if (res) {
-//                MyLog.update("=========截图成功-------------", true);
-//                updateScreenshotToWeb();
-//            }
+        initOther();
+        tcpParsener.startCaptureImage();
     }
 
     /**
@@ -712,7 +689,7 @@ public class TcpService extends Service implements SocketWebListener {
                 if (!isSuccess) {
                     AppInfo.isDevRegister = false;
                     sendBroadToUi(AppInfo.SOCKET_LINE_STATUS_CHANGE, SocketWebListener.SOCKET_ERROR,
-                            "Registration Failed: " + errorrDesc, errorrDesc);
+                        "Registration Failed: " + errorrDesc, errorrDesc);
                     return;
                 }
                 AppInfo.isDevRegister = true;
@@ -846,7 +823,7 @@ public class TcpService extends Service implements SocketWebListener {
     public void socketState(int state, String desc) {
         MyLog.message("服务器Socket状态：" + state + "：  " + desc, true);
         if (state == SocketWebListener.SOCKET_CLOSE
-                || state == SocketWebListener.SOCKET_ERROR) {
+            || state == SocketWebListener.SOCKET_ERROR) {
             //socket断开了，去通知主界面更新状态
             AppConfig.isOnline = false;
         } else if (state == SocketWebListener.SOCKET_OPEN) {
@@ -947,15 +924,5 @@ public class TcpService extends Service implements SocketWebListener {
         });
     }
 
-    //上传截图到服务器
-    private void updateScreenshotToWeb() {
-        try {
-            MyLog.update("==截图回来了==准备上传==", true);
-            initOther();
-            tcpParsener.updateImageToWeb(AppInfo.TAG_UPDATE);
-        } catch (Exception e) {
-            MyLog.update("==截图回来了==上传异常==" + e.toString());
-            e.printStackTrace();
-        }
-    }
+
 }

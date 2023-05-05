@@ -1,17 +1,16 @@
 package com.etv.util;
 
-import static com.youth.banner.util.LogUtils.TAG;
-
 import android.content.Context;
-import android.os.Build;
-import android.util.Log;
 
 import com.EtvApplication;
+import com.etv.config.AppInfo;
 import com.etv.entity.ScreenEntity;
+import com.etv.listener.BitmapCaptureListener;
 import com.etv.util.guardian.GuardianUtil;
 import com.etv.util.rxjava.AppStatuesListener;
 import com.etv.util.system.CpuModel;
 import com.etv.util.system.SystemManagerInstance;
+import com.ys.rkapi.MyManager;
 
 import java.io.File;
 import java.util.List;
@@ -19,8 +18,8 @@ import java.util.List;
 public class ScreenUtil {
 
     public static boolean screenShot(Context context, String savePath) {
-        MyLog.update("=========截图成功-------正在截图------",true);
-        return SystemManagerInstance.getInstance(context).screenShot(savePath);
+        MyLog.update("=========截图成功-------正在截图------", true);
+            return SystemManagerInstance.getInstance(context).screenShot(savePath);
     }
 
     /**
@@ -29,7 +28,7 @@ public class ScreenUtil {
      * @param context
      * @param tag
      */
-    public static void getScreenImage(Context context, String tag) {
+    public static void getScreenImage(Context context, String tag, BitmapCaptureListener listener) {
         int screenWidth = SharedPerUtil.getScreenWidth();
         int screenHeight = SharedPerUtil.getScreenHeight();
         if (CpuModel.getMobileType().startsWith(CpuModel.CPU_MODEL_MTK_M11) && (screenWidth < screenHeight)) {
@@ -39,17 +38,22 @@ public class ScreenUtil {
         }
         String cpuMudel = CpuModel.getMobileType();
         //判断是否是4.4的3128
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            if (cpuMudel.contains("rk312x")) {
-                deal312844ScreenInfo(context, tag);
-                return;
-            }
-        }
-        if (cpuMudel.contains("smd") || cpuMudel.contains("msm")) {
+        if (cpuMudel.contains("rk312x")) {
             deal312844ScreenInfo(context, tag);
             return;
         }
+        if (cpuMudel.startsWith(CpuModel.CPU_RK_3566)) {
+            get3566CatptureImage(context, listener);
+            return;
+        }
         GuardianUtil.getCaptureImage(context, screenWidth, screenHeight, tag);
+    }
+
+    private static void get3566CatptureImage(Context context, BitmapCaptureListener listener) {
+        FileUtil.creatPathNotExcit("开始截图");
+        MyLog.update("=截图=3566=开始截图==");
+        boolean isSuccess = screenShot(context, AppInfo.CAPTURE_MAIN);
+        listener.backCaptureImage(isSuccess, AppInfo.CAPTURE_MAIN);
     }
 
     private static void deal312844ScreenInfo(Context context, String tag) {

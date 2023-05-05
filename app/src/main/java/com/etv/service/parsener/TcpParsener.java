@@ -1,5 +1,7 @@
 package com.etv.service.parsener;
 
+import static com.etv.config.AppConfig.APP_TYPE_JIANGJUN_YUNCHENG;
+
 import android.content.Context;
 import android.content.Intent;
 
@@ -8,6 +10,11 @@ import com.etv.activity.pansener.InitPansener;
 import com.etv.config.AppConfig;
 import com.etv.config.AppInfo;
 import com.etv.entity.BggImageEntity;
+import com.etv.listener.BitmapCaptureListener;
+import com.etv.service.TcpService;
+import com.etv.util.ScreenUtil;
+import com.etv.util.image.CaptureImageListener;
+import com.etv.util.image.ImageCaptureUtil;
 import com.etv.util.poweronoff.PowerOnOffManager;
 import com.etv.util.poweronoff.db.PowerDbManager;
 import com.etv.listener.TaskChangeListener;
@@ -197,7 +204,7 @@ public class TcpParsener {
      * 上传截图，给服务器
      * @param tag
      */
-    public void updateImageToWeb(String tag) {
+    public void updateImageToWeb(String tag,String imagePath) {
         if (tag == null || tag.length() < 1) {
             return;
         }
@@ -205,7 +212,7 @@ public class TcpParsener {
             MyLog.update("==截图回来了==准备上传==" + tag, true);
             if (tag.equals(AppInfo.TAG_UPDATE)) {
                 initOther();
-                tcpServerModule.monitorUpdateImage(context.getApplicationContext(), AppInfo.CAPTURE_MAIN);
+                tcpServerModule.monitorUpdateImage(context.getApplicationContext(), imagePath);
             }
         } catch (Exception e) {
             MyLog.update("==截图回来了==上传异常==" + e.toString(), true);
@@ -392,6 +399,41 @@ public class TcpParsener {
             }
         });
 
+    }
+
+    public void startCaptureImage() {
+        if (AppConfig.APP_TYPE == APP_TYPE_JIANGJUN_YUNCHENG) {
+            ImageCaptureUtil.captureScreen(context, new CaptureImageListener() {
+                @Override
+                public void getCaptureImagePath(boolean isSuucess, String imagePath) {
+                    MyLog.update("=========截圖返回-------------" + isSuucess + " / " + imagePath, true);
+                    updateScreenshotToWeb(imagePath);
+                }
+            });
+            return;
+        }
+        //截图功能统一写到 守护进程里面，不要调用API 截图，API 覆盖主板不完全，切记
+        ScreenUtil.getScreenImage(context, AppInfo.TAG_UPDATE, new BitmapCaptureListener() {
+            @Override
+            public void backCaptureImage(boolean isSuccess, String imagePath) {
+                if (!isSuccess){
+                    return;
+                }
+                updateScreenshotToWeb(AppInfo.CAPTURE_MAIN);
+            }
+        });
+    }
+
+    //上传截图到服务器
+    private void updateScreenshotToWeb(String imagePath) {
+        try {
+            MyLog.update("==截图回来了==准备上传==", true);
+            initOther();
+            updateImageToWeb(AppInfo.TAG_UPDATE,imagePath);
+        } catch (Exception e) {
+            MyLog.update("==截图回来了==上传异常==" + e.toString());
+            e.printStackTrace();
+        }
     }
 
 }
