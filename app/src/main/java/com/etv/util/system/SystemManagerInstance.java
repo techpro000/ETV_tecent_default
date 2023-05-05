@@ -142,14 +142,6 @@ public class SystemManagerInstance {
                 context.sendBroadcast(intent);
                 return;
             }
-            if (CpuModel.isGTCPU()) {
-                //这里是高通得系统
-                String lightNum = SharedPerManager.getScreenLightNum();
-                String turnOnCmd = "echo " + lightNum + " > sys/class/leds/lcd-backlight/brightness";
-                RootCmd.exusecmd(turnOnCmd, "高通开启主屏背光");
-                MyLog.sleep("===========00000执行休眠程序===高通开启主屏背光  ");
-                return;
-            }
             if (CpuModel.getMobileType().startsWith(CpuModel.CPU_MODEL_RK_3399)) {
                 MyLog.sleep("===========00000执行休眠程序===06  ");
 //                String lightNum = SharedPerManager.getScreenLightNum();
@@ -183,17 +175,6 @@ public class SystemManagerInstance {
                 Intent intent = new Intent("com.ys.set_screen_on").setPackage("com.ys.ys_receiver");
                 intent.putExtra("screen_on", 0);
                 context.sendBroadcast(intent);
-                return;
-            }
-            if (CpuModel.isGTCPU()) {
-                MyLog.sleep("===========00000执行休眠程序===1");
-                //这里是高通得系统
-                String rootCmdLight = "cat sys/class/leds/lcd-backlight/brightness";
-                String lightLightNum = RootCmd.execRootCmdBackInfo(rootCmdLight);
-                SharedPerManager.setScreenLightNum(lightLightNum);
-                String turnOnCmd = "echo 0 > sys/class/leds/lcd-backlight/brightness";
-                RootCmd.exusecmd(turnOnCmd, "高通关闭主屏背光");
-                MyLog.sleep("===========00000执行休眠程序===高通关闭主屏背光 ");
                 return;
             }
             if (CpuModel.getMobileType().startsWith(CpuModel.CPU_MODEL_RK_3399)) {

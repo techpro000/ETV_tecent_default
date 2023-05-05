@@ -97,20 +97,14 @@ public class DoubleScreenManager {
     //     * 0  方屏
     private void mathScreenSizeToLocalSave(int widthCache, int heightCache, List<ScreenEntity> screenEntityList, Display display) {
         int screenRoate = 0;
-        boolean isCpuGt = CpuModel.isGTCPU();
-        if (isCpuGt) {
-            //高通主板
-            screenRoate = SystemManagerUtil.getScreenGTRoate(RootCmd.PROOERTY_OTHER_INFO_GAOTONG, widthCache, heightCache);
+        //RK  获取副屏得旋转角度
+        String cpuModel = CpuModel.getMobileType();
+        if (cpuModel.contains(CpuModel.CPU_MODEL_RK_3399)) {
+            screenRoate = SystemManagerUtil.getScreenRoate(RootCmd.PROOERTY_OTHER_INFO_3399, widthCache, heightCache);
+        } else if (cpuModel.contains(CpuModel.CPU_MODEL_PX30)) {
+            screenRoate = SystemManagerUtil.getScreenRoate(RootCmd.PROOERTY_OTHER_INFO_PX30_DOUBLE, widthCache, heightCache);
         } else {
-            //RK  获取副屏得旋转角度
-            String cpuModel = CpuModel.getMobileType();
-            if (cpuModel.contains(CpuModel.CPU_MODEL_RK_3399)) {
-                screenRoate = SystemManagerUtil.getScreenRoate(RootCmd.PROOERTY_OTHER_INFO_3399, widthCache, heightCache);
-            } else if (cpuModel.contains(CpuModel.CPU_MODEL_PX30)) {
-                screenRoate = SystemManagerUtil.getScreenRoate(RootCmd.PROOERTY_OTHER_INFO_PX30_DOUBLE, widthCache, heightCache);
-            } else {
-                screenRoate = SystemManagerUtil.getScreenRoate(RootCmd.PROOERTY_OTHER_INFO, widthCache, heightCache);
-            }
+            screenRoate = SystemManagerUtil.getScreenRoate(RootCmd.PROOERTY_OTHER_INFO, widthCache, heightCache);
         }
         int mainScreenRoate = SystemManagerUtil.getMainScreenRoate();
         MyLog.screen("====屏幕得旋转角度=主屏=" + mainScreenRoate + " / " + screenRoate);
@@ -149,19 +143,6 @@ public class DoubleScreenManager {
                 //竖屏
                 width = Math.min(widthCache, heightCache);
                 height = Math.max(widthCache, heightCache);
-            }
-        }
-        if (isCpuGt) {
-//            高通主板单独处理
-            if (screenRoate > 0) {   // 横屏
-                width = Math.max(widthCache, heightCache);
-                height = Math.min(widthCache, heightCache);
-            } else if (screenRoate < 0) {   //竖屏
-                width = Math.min(widthCache, heightCache);
-                height = Math.max(widthCache, heightCache);
-            } else if (screenRoate == 0) {   //方屏
-                width = widthCache;
-                height = heightCache;
             }
         }
         MyLog.screen("========设置副屏分尺寸==11=" + screenRoate + " / " + width + "/ " + height);

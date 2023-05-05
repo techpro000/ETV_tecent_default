@@ -247,15 +247,6 @@ public class RootCmd {
             exusecmd("chmod 777 /system/app/guardian.apk", "安装守护进程");
             return;
         }
-        //高通主板
-        if (CpuModel.isGTCPU()) {
-            MyLog.guardian("====writeFileToSystemApp===高通主板挂在方法=======");
-            exusecmd("mount -o rw,remount -t ext4 /system", "安装守护进程");
-            exusecmd("rm -rf /system/app/guardian.apk", "安装守护进程");
-            exusecmd("cp  " + filePath + " " + sysFilePath, "安装守护进程");
-            exusecmd("chmod 777 /system/app/guardian.apk", "安装守护进程");
-            return;
-        }
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
             //android -11
             MyLog.guardian("==writeFileToSystemApp=== android-11以下的版本=========");

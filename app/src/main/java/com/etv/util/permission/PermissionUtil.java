@@ -21,12 +21,6 @@ import java.lang.reflect.Method;
 public class PermissionUtil {
 
     public static boolean checkFloatPermission(Context context) {
-        boolean isGT = CpuModel.isGTCPU();
-        if (isGT) {
-            //高通获取副屏的旋转角度
-            return true;
-        }
-
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
             return true;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {

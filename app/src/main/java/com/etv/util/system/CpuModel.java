@@ -63,24 +63,8 @@ public class CpuModel {
         return false;
     }
 
-
     public static boolean IsRK3568() {
         String cpuModel = getMobileType();
         return cpuModel.startsWith(CPU_MODEL_3568_11);
     }
-
-
-    /***
-     * 判断主板是不是高通得主板
-     * @return
-     */
-    public static boolean isGTCPU() {
-        String cpuModel = getMobileType();
-        Log.e("CPUMODEL", "=====cpuModel==" + cpuModel);
-        if (cpuModel.startsWith("sdm") || cpuModel.startsWith("msm")) {
-            return true;
-        }
-        return false;
-    }
-
 }
