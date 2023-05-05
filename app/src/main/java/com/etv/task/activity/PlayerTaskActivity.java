@@ -118,8 +118,8 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
             getWindow().setFormat(PixelFormat.TRANSLUCENT);
             //硬件加速
             getWindow().setFlags(
-                    android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
-                    android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+                android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+                android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         }
         mBingding = ActivityPlayTaskBinding.inflate(getLayoutInflater());
         setContentView(mBingding.getRoot());
@@ -387,12 +387,12 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
                 intent.putStringArrayListExtra(TaskImageActivity.TAG_RECEIVE_MESSAGE, (ArrayList<String>) list);
                 break;
             case AppInfo.VIEW_VIDEO: //视频
-                MyLog.touch("====展示全屏w==2" + cpType);
+                MyLog.touch("====展示全屏w==video" + cpType);
                 intent.setClass(PlayerTaskActivity.this, TaskVideoActivity.class);
                 intent.putStringArrayListExtra(TaskVideoActivity.TAG_RECEIVE_MESSAGE_VIDEO, (ArrayList<String>) list);
                 break;
             case AppInfo.VIEW_IMAGE_VIDEO: //混播
-                MyLog.touch("====展示全屏w==3" + cpType);
+                MyLog.touch("====展示全屏w==混播" + cpType);
                 intent.setClass(PlayerTaskActivity.this, PlayImaVideoActivity.class);
                 intent.putStringArrayListExtra(PlayImaVideoActivity.TAG_RECEIVE_MESSAGE, (ArrayList<String>) list);
                 break;
@@ -620,15 +620,15 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
     @Override
     public void showHdmInViewToActivity(int x, int y, int width, int height) {
         Observable.timer(2, TimeUnit.SECONDS)
-                .compose(new SchedulerTransformer())
-                .compose(RxLifecycle.bindRxLifecycle(this))
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Exception {
-                        MyLog.i("main", "=====开始计时=倒计时完成=====");
-                        loadHdmiView(x, y, width, height);
-                    }
-                });
+            .compose(new SchedulerTransformer())
+            .compose(RxLifecycle.bindRxLifecycle(this))
+            .subscribe(new Consumer<Long>() {
+                @Override
+                public void accept(Long aLong) throws Exception {
+                    MyLog.i("main", "=====开始计时=倒计时完成=====");
+                    loadHdmiView(x, y, width, height);
+                }
+            });
     }
 
     private void loadHdmiView(int x, int y, int width, int height) {

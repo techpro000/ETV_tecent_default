@@ -1272,9 +1272,7 @@ public class PlayTaskParsener {
             String backTime = cpListEntity.getCoScreenProtectTime();    //屏保时间
             String nextSceneEntity = cpListEntity.getCoLinkId();        //跳转场景的 场景ID
             MyLog.touch("=====用户触摸类型=" + coActionType
-                + " /coLinkAction= "
-                + coLinkAction + " / "
-                + backTime + " / "
+                + " /coLinkAction= " + coLinkAction + " /返回时间=" + backTime + " / "
                 + nextSceneEntity);
             switch (coActionType) {
                 case AppInfo.TOUCH_TYPE_NONE:  //没有触摸行为
@@ -1302,13 +1300,13 @@ public class PlayTaskParsener {
                     projectJumpEntity.setProjectorTime(projectorTime);
                     addProJumpSencenToList(projectJumpEntity, " case AppInfo.TOUCH_TYPE_JUMP_SENCEN: //跳转场景");
                     //====准备布局到界面===============================
-                    MyLog.playTask("====TEXT getPmFromTask 2");
                     getPmFromTask(nextSencenPosition, nextSceneEntity, true, "触摸互动场景跳转");
                     break;
                 case AppInfo.TOUCH_TYPE_JUMP_WEB:  //跳转网页
                     playTaskView.startViewWebActivty(coLinkAction, backTime);
                     break;
                 case AppInfo.TOUCH_TYPE_JUMP_SCREEN: //全屏显示
+                    MyLog.playTask("===全屏显示=" + list);
                     playTaskView.toShowFullScreenView(cpListEntity, list, ClickPosition);
                     break;
                 case AppInfo.TOUCH_TYPE_JUMP_APK:

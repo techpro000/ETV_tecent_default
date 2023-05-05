@@ -4,11 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AbsoluteLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.etv.config.AppConfig;
 import com.etv.config.AppInfo;
+import com.etv.listener.TaskPlayStateListener;
+import com.etv.task.entity.CpListEntity;
+import com.etv.task.util.TaskDealUtil;
+import com.etv.util.SharedPerUtil;
+import com.etv.view.layout.Generator;
 import com.ys.model.entity.FileEntity;
 import com.etv.listener.VideoPlayListener;
 import com.etv.task.entity.MediAddEntity;
@@ -43,27 +49,25 @@ public class TaskVideoActivity extends TaskActivity implements View.OnClickListe
 
     List<String> videoLists = new ArrayList<String>();
     List<MediAddEntity> videos = new ArrayList<MediAddEntity>();
-    LinearLayout iv_no_data;
-    VideoViewBitmap video_single;
-    int playPosition = 0;
     LinearLayout lin_exit;
     TextView tv_exit;
+    AbsoluteLayout view_abous;
+    Generator generatorView = null;
 
     private void initView() {
         AppInfo.startCheckTaskTag = false;
+        videoLists = getIntent().getStringArrayListExtra(TAG_RECEIVE_MESSAGE_VIDEO);
+        if (videoLists == null || videoLists.size() < 1) {
+            MyLog.cdl("======视频得数量=00===");
+            finishView();
+            return;
+        }
+        view_abous = (AbsoluteLayout) findViewById(R.id.view_abous);
         lin_exit = (LinearLayout) findViewById(R.id.lin_exit);
         tv_exit = (TextView) findViewById(R.id.tv_exit);
         lin_exit.setOnClickListener(this);
         tv_exit.setOnClickListener(this);
-        iv_no_data = (LinearLayout) findViewById(R.id.iv_no_data);
-        videoLists = getIntent().getStringArrayListExtra(TAG_RECEIVE_MESSAGE_VIDEO);
-        if (videoLists == null || videoLists.size() < 1) {
-            MyLog.cdl("======视频得数量  00===");
-            iv_no_data.setVisibility(View.VISIBLE);
-            return;
-        }
         MyLog.cdl("======视频得数量===" + videoLists.size());
-        iv_no_data.setVisibility(View.GONE);
         for (int i = 0; i < videoLists.size(); i++) {
             MyLog.task("======文件的地址==" + videoLists.get(i));
             long fileSize = -1;
@@ -73,41 +77,40 @@ public class TaskVideoActivity extends TaskActivity implements View.OnClickListe
             }
             videos.add(new MediAddEntity(videoLists.get(i).toString(), "0", "1", "0", "70", FileEntity.STYLE_FILE_VIDEO, AppInfo.PROGRAM_TOUCH, fileSize));
         }
-        video_single = (VideoViewBitmap) findViewById(R.id.video_single);
-        video_single.setVideoPlayListener(new VideoPlayListener() {
-            @Override
-            public void initOver() {
-//                video_single.setPlayList(videos);
-                video_single.setPlayListPosition(videos, playPosition);
-            }
+        //加载 View
+        generatorView = TaskDealUtil.getVideoPlayView(TaskVideoActivity.this, null, 0, 0,
+            SharedPerUtil.getScreenWidth(), SharedPerUtil.getScreenHeight(), videos, AppInfo.PROGRAM_POSITION_MAIN, false);
+        view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
+        generatorView.updateView(null, true);
 
+        generatorView.setPlayStateChangeListener(new TaskPlayStateListener() {
             @Override
-            public void playCompletion(String tag) {
-                MyLog.video("====视频列表播放完毕了==这里回调====" + tag);
+            public void playComplete(int playTag) {
+                MyLog.video("====视频列表播放完毕了==这里回调====");
                 finish();
             }
 
             @Override
-            public void playCompletionSplash(int position, int playTimeCurrent) {
+            public void playCompletePosition(String etLevel, String taskId, int currentPlayPosition, int playTag) {
 
             }
 
             @Override
-            public void playError(String errorDesc) {
-                ErrorToastView.getInstance().Toast(TaskVideoActivity.this, errorDesc);
-                finish();
+            public void clickTaskView(CpListEntity cpListEntity, List<String> list, int position) {
+
             }
 
             @Override
-            public void playErrorToStop(String errorDesc) {
+            public void longClickView(CpListEntity cpListEntity, Object object) {
 
             }
 
             @Override
             public void reStartPlayProgram(String errorDesc) {
-                startToMainTaskView();
+                ErrorToastView.getInstance().Toast(TaskVideoActivity.this, errorDesc);
+                finish();
             }
-        }, null);
+        });
     }
 
     @Override
@@ -123,8 +126,8 @@ public class TaskVideoActivity extends TaskActivity implements View.OnClickListe
     @Override
     protected void onStop() {
         super.onStop();
-        if (video_single != null) {
-            video_single.clearMemory();
+        if (generatorView != null) {
+            generatorView.clearMemory();
         }
     }
 
