@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
-import com.EtvApplication;
-import com.bin.david.form.data.form.IForm;
 import com.etv.config.ApiInfo;
 import com.etv.config.AppConfig;
 import com.etv.config.AppInfo;
@@ -26,8 +24,6 @@ import com.etv.util.system.CpuModel;
 import com.ys.etv.R;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 安装守护进程方法
@@ -295,19 +291,21 @@ public class GuardianUtil {
             RawSourceEntity rawSourceEntity = new RawSourceEntity(R.raw.guardian_356x, 3206512, "3566-RK-11", 82);
             return rawSourceEntity;
         }
-        RawSourceEntity rawSourceEntity = new RawSourceEntity(R.raw.guardian_71, 3395008, "7.0通用版本", 77);
+
+        if (cpuModel.contains(CpuModel.CPU_MODEL_MLOGIC)) {
+            //PX30主板
+            RawSourceEntity rawSourceEntity = new RawSourceEntity(R.raw.guardian_px30, 3365824, "mlogic9.0", 47);
+            return rawSourceEntity;
+        }
+        if (cpuModel.contains(CpuModel.CPU_MODEL_PX30)) {
+            //PX-30 8.0系统
+            RawSourceEntity rawSourceEntity = new RawSourceEntity(R.raw.guardian_81, 3389505, "8.1通用版本", 48);
+            return rawSourceEntity;
+        }
+
         try {
             MyLog.guardian("=====获取守护进程Raw id==" + cpuModel);
-            if (cpuModel.contains(CpuModel.CPU_MODEL_MLOGIC)) {
-                //PX30主板
-                rawSourceEntity = new RawSourceEntity(R.raw.guardian_mlogic91, 3365824, "mlogic9.0", 47);
-                return rawSourceEntity;
-            }
-            if (cpuModel.contains(CpuModel.CPU_MODEL_PX30)) {
-                //PX-30 8.0系统
-                rawSourceEntity = new RawSourceEntity(R.raw.guardian_81, 3389505, "8.1通用版本", 48);
-                return rawSourceEntity;
-            }
+            RawSourceEntity rawSourceEntity = new RawSourceEntity(R.raw.guardian_71, 3395008, "7.0通用版本", 77);
             if (cpuModel.contains(CpuModel.CPU_MODEL_RK_DEFAULT)) {
                 int sdkCode = Build.VERSION.SDK_INT;
                 MyLog.guardian("==当前SDK 得版本===" + sdkCode);
@@ -331,22 +329,12 @@ public class GuardianUtil {
                     rawSourceEntity = new RawSourceEntity(R.raw.guardian_71, 3395008, "7.0通用版本", 77);
                     return rawSourceEntity;
                 }
-//                if (sdkCode > Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                    // 5<Code<6.0  //需要系统签名
-//                    rawSourceEntity = new RawSourceEntity(R.raw.guardian_51, 1624725, "5.1通用版本", 43);
-//                    return rawSourceEntity;
-//                }
-//                if (sdkCode > Build.VERSION_CODES.JELLY_BEAN && sdkCode < Build.VERSION_CODES.LOLLIPOP) {
-//                    //4.0~5.0
-//                    rawSourceEntity = new RawSourceEntity(R.raw.guardian_44, 3359565, "4.4通用版本", 55);
-//                    return rawSourceEntity;
-//                }
             }
         } catch (Exception e) {
             MyLog.guardian("=====获取守护进程Raw id error==" + e.toString());
             e.printStackTrace();
         }
-        return rawSourceEntity;
+        return null;
     }
 
     /***

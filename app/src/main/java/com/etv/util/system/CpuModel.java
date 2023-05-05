@@ -1,9 +1,6 @@
 package com.etv.util.system;
 
-import android.util.Log;
-
 import com.etv.util.MyLog;
-import com.etv.util.SharedPerManager;
 
 public class CpuModel {
 
@@ -16,7 +13,7 @@ public class CpuModel {
     public static final String CPU_MODEL_MTK_M11 = "mt5862";  //M11主板
     public static final String CPU_RK_3566 = "rk3566";        //RK-3566
     public static final String CPU_MODEL_3568_11 = "rk3568";  //3568-android-11
-    public static final String CPU_MODEL_T982 = "t982"; // 982
+    public static final String CPU_MODEL_T982 = "t982";        // 982
 
     /***
      * 获取CPU型号
