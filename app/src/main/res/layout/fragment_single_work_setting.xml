@@ -382,7 +382,6 @@
                         android:layout_marginLeft="@dimen/dimen_10"
                         android:orientation="horizontal">
 
-
                         <Button
                             android:id="@+id/btn_reduce_wps"
                             android:layout_width="30dp"

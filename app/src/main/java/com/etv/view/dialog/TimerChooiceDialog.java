@@ -94,7 +94,7 @@ public class TimerChooiceDialog implements OnClickListener, AdapterView.OnItemCl
             case R.id.btn_min:
                 lv_time.setVisibility(View.VISIBLE);
                 tv_chooide_desc.setVisibility(View.VISIBLE);
-                tv_chooide_desc.setText("请选择分钟 !!");
+                tv_chooide_desc.setText(context.getString(R.string.select_min_please));
                 lv_time.setNumColumns(10);
                 listShow = getMins();
                 adapter.setList(listShow);
@@ -115,7 +115,7 @@ public class TimerChooiceDialog implements OnClickListener, AdapterView.OnItemCl
     private void showHourNum() {
         lv_time.setVisibility(View.VISIBLE);
         tv_chooide_desc.setVisibility(View.VISIBLE);
-        tv_chooide_desc.setText("请选择小时 !!");
+        tv_chooide_desc.setText(context.getString(R.string.select_hour_please));
         lv_time.setNumColumns(4);
         listShow = getHours();
         adapter.setList(listShow);

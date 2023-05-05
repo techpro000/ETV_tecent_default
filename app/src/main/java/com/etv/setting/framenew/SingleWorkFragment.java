@@ -209,7 +209,7 @@ public class SingleWorkFragment extends Fragment implements View.OnClickListener
                 break;
             case R.id.btn_reduce_wps:  //文档切换时间
                 int disTimeWps = SharedPerManager.getWpsDistanceTime();
-                if (disTimeWps < 4) {
+                if (disTimeWps < 6) {
                     showToastView(getActivity().getString(R.string.time_morethree));
                     return;
                 }
@@ -221,7 +221,7 @@ public class SingleWorkFragment extends Fragment implements View.OnClickListener
             case R.id.btn_add_wps:   //文档切换时间
                 int disTimeAddWps = SharedPerManager.getWpsDistanceTime();
                 disTimeAddWps++;
-                if (disTimeAddWps >10000){
+                if (disTimeAddWps > 10000) {
                     showToastView(getActivity().getString(R.string.time_lesstentyhousand));
                     return;
                 }
@@ -243,7 +243,7 @@ public class SingleWorkFragment extends Fragment implements View.OnClickListener
             case R.id.btn_add:
                 int disTimeAdd = SharedPerManager.getPicDistanceTime();
                 disTimeAdd++;
-                if (disTimeAdd >= 10000){
+                if (disTimeAdd >= 10000) {
                     showToastView(getActivity().getString(R.string.time_lesstentyhousand));
                     return;
                 }
@@ -382,9 +382,9 @@ public class SingleWorkFragment extends Fragment implements View.OnClickListener
     private void initPopWindow() {
         View popView = View.inflate(getActivity(), R.layout.view_pop_procityarea, null);
         pop_pic_type = new CustomPopWindow.PopupWindowBuilder(getActivity())
-                .setView(popView)
-                .size(300, 300)
-                .create();
+            .setView(popView)
+            .size(300, 300)
+            .create();
         lv_content = (ListView) popView.findViewById(R.id.lv_content);
         adapter = new PopStringAdapter(getActivity(), list_anim_tye);
         lv_content.setAdapter(adapter);

@@ -221,8 +221,9 @@
     <string name="big_changesize">ズームイン・ズームアウトアニメーション</string>
     <string name="trans_changesize">グラデーションの透明度</string>
     <string name="change_small">グラデーションスケール</string>
-    <string name="time_morethree">3秒以上の時間を設定してください</string>
+    <string name="time_morethree">5秒以上の時間を設定してください</string>
     <string name="time_lesstentyhousand">10001秒未満の時間を設定してください</string>
+
     <string name="net_error">ネットワーク異常</string>
     <string name="querying">問い合わせ中</string>
     <string name="line_auto_tips">この操作はLAN接続でのみ利用可能です。ご注意ください！</string>
@@ -650,5 +651,10 @@
     <string name="text_file"> ファイル ？</string>
     <string name="delete_file">削除</string>
     <string name="thinf_again">考えている</string>
+    <string name="socket_line_name">長い接続です</string>
+    <string name="str_socket_tip">長い接続をお願いします。</string>
+    <string name="select_time_please">時間をお願いします</string>
+    <string name="select_hour_please">時間をお願いします!</string>
+    <string name="select_min_please">分を選びます!</string>
 
 </resources>

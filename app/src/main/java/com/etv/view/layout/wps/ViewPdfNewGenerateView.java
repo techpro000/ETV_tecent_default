@@ -107,19 +107,19 @@ public class ViewPdfNewGenerateView extends Generator {
             pdfview = (PDFView) view.findViewById(R.id.pdfview);
         }
         pdfview.fromFile(file)
-                .defaultPage(currentShowPosition)
-                .swipeHorizontal(true)  //横向移动
-                .enableDoubletap(false)
-                .enableSwipe(false)
-                .spacing(0) // in dp
-                .autoSpacing(false)
-                .pageFitPolicy(FitPolicy.FULL_SCREEN)  //居中显示
-                .enableAnnotationRendering(true)
-                .setShowScreenSize(screenWidth, screenHeight)
-                .onLoad(onLoadCompleteListener)
-                .onPageChange(onPageChangeListener)
-                .onPageError(onPageErrorListener)
-                .load();
+            .defaultPage(currentShowPosition)
+            .swipeHorizontal(true)  //横向移动
+            .enableDoubletap(false)
+            .enableSwipe(false)
+            .spacing(0) // in dp
+            .autoSpacing(false)
+            .pageFitPolicy(FitPolicy.FULL_SCREEN)  //居中显示
+            .enableAnnotationRendering(true)
+            .setShowScreenSize(screenWidth, screenHeight)
+            .onLoad(onLoadCompleteListener)
+            .onPageChange(onPageChangeListener)
+            .onPageError(onPageErrorListener)
+            .load();
     }
 
     private void initListener() {
@@ -150,7 +150,7 @@ public class ViewPdfNewGenerateView extends Generator {
     private void setPageTime(int duration, String printTag) {
         MyLog.playTask("设置文档切换时间=" + duration + " /printTag =  " + printTag);
         if (duration < 5000) {
-            POLLING_INTERVAL = 10;
+            POLLING_INTERVAL = 5;
             return;
         }
         POLLING_INTERVAL = duration / 1000;

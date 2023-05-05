@@ -221,7 +221,7 @@
     <string name="big_changesize">放大消隐动画</string>
     <string name="trans_changesize">渐变透明</string>
     <string name="change_small">渐变缩放</string>
-    <string name="time_morethree">请设置大于 3 秒的时间</string>
+    <string name="time_morethree">请设置大于 5 秒的时间</string>
     <string name="time_lesstentyhousand">请设置小于 10001 秒的时间</string>
 
     <string name="net_error">网络异常</string>
@@ -653,5 +653,8 @@
     <string name="thinf_again">在想想</string>
     <string name="socket_line_name">长连接</string>
     <string name="str_socket_tip">请打开长连接</string>
+    <string name="select_time_please">请选择时间</string>
+    <string name="select_hour_please">请选择小时!</string>
+    <string name="select_min_please">请选择分钟!</string>
 
 </resources>

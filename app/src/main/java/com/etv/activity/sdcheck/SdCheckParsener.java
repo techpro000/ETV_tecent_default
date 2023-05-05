@@ -101,9 +101,9 @@ public class SdCheckParsener implements SdCheckListener {
             MyLog.cdl("====离线文件的路径==" + filePth);
             int fileType = FileMatch.fileMatch(fileName);
             if (fileType == FileEntity.STYLE_FILE_IMAGE
-                    || fileType == FileEntity.STYLE_FILE_VIDEO
-                    || fileType == FileEntity.STYLE_FILE_MUSIC
-                    || fileType == FileEntity.STYLE_FILE_PDF) {
+                || fileType == FileEntity.STYLE_FILE_VIDEO
+                || fileType == FileEntity.STYLE_FILE_MUSIC
+                || fileType == FileEntity.STYLE_FILE_PDF) {
                 listFile.add(new MediaBean(fileName, filePth, fileType));
             }
         }
@@ -226,8 +226,9 @@ public class SdCheckParsener implements SdCheckListener {
             String fileName = mediaBean.getName();
             sdCheckView.addInfoToList(context.getString(R.string.start_copy) + " : " + filePth);
             String savePath = filePth.substring(filePth.indexOf("etv-media/") + 10);
+            MyLog.cdl("=======文件写入==真实路径000=" + savePath + " /fileName = " + fileName);
             savePath = AppInfo.TASK_SINGLE_PATH() + "/" + savePath;
-            MyLog.cdl("=======文件写入==真实路径=" + filePth + " / " + savePath);
+            MyLog.cdl("=======文件写入==真实路径111=" + filePth + " / " + savePath);
             FileWriteRunnable runnable = new FileWriteRunnable(context, filePth, savePath, new WriteSdListener() {
 
                 @Override
