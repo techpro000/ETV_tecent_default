@@ -13,9 +13,7 @@
         <WebView
             android:id="@+id/webview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:layerType="software" />
+            android:layout_height="match_parent" />
 
         <RelativeLayout
             android:id="@+id/rela_bgg_stream"

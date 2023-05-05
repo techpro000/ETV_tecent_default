@@ -116,6 +116,8 @@ public class ViewWebViewGenerate extends Generator {
         mysettings.setAllowFileAccess(true);
         mysettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         mysettings.setUseWideViewPort(true);
+        mysettings.setBlockNetworkImage(false);//解决图片不显示
+        mysettings.setLoadsImagesAutomatically(true); //支持自动加载图片
         //支持windows=============================================
         MyLog.cdl("==========setSupportMultipleWindows======");
 //        mysettings.setSupportMultipleWindows(true);  //会拦截 点击跳转
@@ -153,6 +155,9 @@ public class ViewWebViewGenerate extends Generator {
         }
         //背景透明
         webview.setBackgroundColor(Color.parseColor("#00000000"));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webview.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         webview.loadUrl(webUrl);
     }
 

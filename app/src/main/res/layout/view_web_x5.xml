@@ -7,7 +7,9 @@
     <com.tencent.smtt.sdk.WebView
         android:id="@+id/wb"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layerType="software"
+        />
 
     <LinearLayout
         android:layout_width="wrap_content"
