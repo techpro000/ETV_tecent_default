@@ -1737,7 +1737,6 @@ public class TaskDealUtil {
             generatorView = new ViewImgVideoTextUreGenerate(context, cpEntity, leftPosition, topPosition, width, height, mixtureList);
             return generatorView;
         }
-
         if (CpuModel.getMobileType().startsWith(CpuModel.CPU_RK_3566)) {
             generatorView = new ViewImgVideoTextUreGenerate(context, cpEntity, leftPosition, topPosition, width, height, mixtureList);
             return generatorView;
