@@ -484,7 +484,8 @@ public class TcpService extends Service implements SocketWebListener {
                     break;
                 case AppInfo.ORDER_MONITOR: //监控, 屏幕截屏
                     MyLog.update("=========开始截图-------------", true);
-                    startCaptureImage();
+                    initOther();
+                    tcpParsener.startCaptureImage();
                     break;
                 case AppInfo.ORDER_WORK:   //接受获取任务的指令
                     //接受新任务，直接停止下载，请求新任务
@@ -545,11 +546,6 @@ public class TcpService extends Service implements SocketWebListener {
             MyLog.message(e.toString(), true);
             e.printStackTrace();
         }
-    }
-
-    private void startCaptureImage() {
-        initOther();
-        tcpParsener.startCaptureImage();
     }
 
     /**

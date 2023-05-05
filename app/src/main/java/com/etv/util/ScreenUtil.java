@@ -17,11 +17,6 @@ import java.util.List;
 
 public class ScreenUtil {
 
-    public static boolean screenShot(Context context, String savePath) {
-        MyLog.update("=========截图成功-------正在截图------", true);
-            return SystemManagerInstance.getInstance(context).screenShot(savePath);
-    }
-
     /**
      * 智能截图
      *
@@ -37,25 +32,32 @@ public class ScreenUtil {
             return;
         }
         String cpuMudel = CpuModel.getMobileType();
-        //判断是否是4.4的3128
-        if (cpuMudel.contains("rk312x")) {
+        if (cpuMudel.startsWith(CpuModel.CPU_MODEL_RK_3128)) {
+            //3128 截图
             deal312844ScreenInfo(context, tag);
             return;
         }
         if (cpuMudel.startsWith(CpuModel.CPU_RK_3566)) {
-            get3566CatptureImage(context, listener);
+            //3566软件截图
+            get356xCatptureImage(context, listener);
             return;
         }
+        //旧版本使用守护进程截图
         GuardianUtil.getCaptureImage(context, screenWidth, screenHeight, tag);
     }
 
-    private static void get3566CatptureImage(Context context, BitmapCaptureListener listener) {
+    private static void get356xCatptureImage(Context context, BitmapCaptureListener listener) {
         FileUtil.creatPathNotExcit("开始截图");
         MyLog.update("=截图=3566=开始截图==");
-        boolean isSuccess = screenShot(context, AppInfo.CAPTURE_MAIN);
+        boolean isSuccess = SystemManagerInstance.getInstance(context).screenShot(AppInfo.CAPTURE_MAIN);
         listener.backCaptureImage(isSuccess, AppInfo.CAPTURE_MAIN);
     }
 
+    /***
+     * 3128截图
+     * @param context
+     * @param tag
+     */
     private static void deal312844ScreenInfo(Context context, String tag) {
         int cacheWidth = SharedPerUtil.getScreenWidth();
         int cacheHeight = SharedPerUtil.getScreenHeight();
@@ -128,11 +130,6 @@ public class ScreenUtil {
     private static String getMlogicResolution() {
         int screenWidth = SharedPerUtil.getScreenWidth();
         int screenHeight = SharedPerUtil.getScreenHeight();
-        /*if (screenWidth > screenHeight) {
-            return "3840x2160";
-        } else {
-            return "2160x3840";
-        }*/
         Shell.Result result = Shell.exeCommandForResult("cat /sys/class/display/mode");
         Shell.Result rotation = Shell.exeCommandForResult("getprop persist.sys.displayrot");
         String mode = result.msg.trim();

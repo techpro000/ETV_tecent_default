@@ -101,7 +101,6 @@ public class TcpSocketService extends Service {
     private static final int CLEAT_SD_CACHE_INFO = 5651;        //清理磁盘
     private static final int GO_TO_ACTIVITY = 5652;
     private static final int SHOW_TOAST_VIEW = 5653;
-    private static final int MONITOR_VIEW_TO_WEB = 5654;        //提交屏幕截图到服务器
     private static final int STOP_DOWN_TASK_AND_CLEAR = 5655;  //清理任务
     private static final int UPDATE_APK_IMG_INFO = 5656;  //升级APK，固件信息
     private static final int STOP_TASK_DOWN_INFO = 5657;  //请求任务前把正在下载的中止掉，防止多次重复下载
@@ -177,12 +176,6 @@ public class TcpSocketService extends Service {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    break;
-                case MONITOR_VIEW_TO_WEB:   //上传截图界面到VIEw
-                    MyLog.cdl("=========开始截图-------------");
-                    //截图功能统一写到 守护进程里面，不要调用API 截图，API 覆盖主板不完全，切记
-                     initOther();
-                     tcpParsener.startCaptureImage();
                     break;
                 case SHOW_TOAST_VIEW:          //弹窗提示
                     String toast = (String) msg.obj;
@@ -355,7 +348,7 @@ public class TcpSocketService extends Service {
                 AppInfo.isDevRegister = isSuccess;
                 if (!isSuccess) {
                     sendBroadToUi(AppInfo.SOCKET_LINE_STATUS_CHANGE, SocketWebListener.SOCKET_ERROR,
-                            "Registration Failed: " + errorrDesc, errorrDesc);
+                        "Registration Failed: " + errorrDesc, errorrDesc);
                     return;
                 }
                 sendBroadToUi(AppInfo.SOCKET_LINE_STATUS_CHANGE, SocketWebListener.SOCKET_ERROR, "Registration successful, Ready to connect", null);
@@ -581,7 +574,7 @@ public class TcpSocketService extends Service {
             int code = jsonObject.getInt("code");
             switch (code) {
                 case AppInfo.WET_SCAN_REGISTER_DEV_WEB:
-                    Log.e(TAG, "dealSysCodeMessage: "+"走这" );
+                    Log.e(TAG, "dealSysCodeMessage: " + "走这");
                     String userName = jsonObject.getString("userName");
                     SharedPerManager.setUserName(userName, "微信扫码连接服务器");
                     dealDisOnlineDev("微信扫码连接服务器", false);
@@ -686,11 +679,8 @@ public class TcpSocketService extends Service {
                     handler.sendEmptyMessage(CHECK_POWER_ON_OFF);
                     break;
                 case AppInfo.ORDER_MONITOR: //监控
-                    handler.sendEmptyMessage(MONITOR_VIEW_TO_WEB);
-                 /*   if (ScreenUtil.screenShot(getApplication(), AppInfo.CAPTURE_MAIN)) {
-                        MyLog.cdl("=========截图成功-------------");
-                        updateScreenshotToWeb();
-                    }*/
+                    initOther();
+                    tcpParsener.startCaptureImage();
                     break;
                 case AppInfo.ORDER_WORK:   //接受获取任务的指令
                     //接受新任务，直接停止下载，请求新任务
@@ -906,7 +896,7 @@ public class TcpSocketService extends Service {
             String tag = intent.getStringExtra("tag");
             MyLog.update("==截图回来了==准备上传==" + tag);
             initOther();
-            tcpParsener.updateImageToWeb(tag,AppInfo.CAPTURE_MAIN);
+            tcpParsener.updateImageToWeb(tag, AppInfo.CAPTURE_MAIN);
         } catch (Exception e) {
             MyLog.update("==截图回来了==上传异常==" + e.toString());
             e.printStackTrace();

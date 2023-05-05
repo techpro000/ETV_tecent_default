@@ -378,7 +378,7 @@ public class MyLog {
     }
 
     private static void printExceptionToSd(String printTag, String message) {
-        Log.d("printInfo", printTag + " : " + message);
+//        Log.d("printInfo", printTag + " : " + message);
         if (!AppInfo.PERMISSION_COMPLAIY) {
             return;
         }

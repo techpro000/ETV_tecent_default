@@ -1,16 +1,11 @@
 package com.diff.util;
 
-import android.util.Log;
-
 import com.diff.entity.DiffShowEntity;
-import com.etv.config.AppConfig;
 import com.etv.config.AppInfo;
 import com.etv.util.MyLog;
-import com.etv.util.RootCmd;
 import com.etv.util.SharedPerManager;
 import com.etv.util.SharedPerUtil;
 import com.etv.util.system.CpuModel;
-import com.etv.util.system.SystemManagerUtil;
 
 public class DiffSizeUtil {
 

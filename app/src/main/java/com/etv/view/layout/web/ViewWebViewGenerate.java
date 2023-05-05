@@ -148,7 +148,6 @@ public class ViewWebViewGenerate extends Generator {
             }
 
         });
-
         webview.setWebChromeClient(new MyWebChromeClient());
         if (!webUrl.startsWith("http")) {
             webUrl = "http://" + webUrl;

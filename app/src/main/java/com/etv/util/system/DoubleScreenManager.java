@@ -46,6 +46,7 @@ public class DoubleScreenManager {
     List<ScreenEntity> screenEntityList = new ArrayList<ScreenEntity>();
 
     public void getDevScreenNumFroSys() {
+        MyLog.screen("开始获取屏幕属性==001");
         try {
             screenNumAdd++;
             if (screenNumAdd > 2) {
@@ -55,6 +56,7 @@ public class DoubleScreenManager {
             DisplayManager mDisplayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
             Display[] displays = mDisplayManager.getDisplays();
             int screenNum = displays.length;
+            MyLog.screen("开始获取屏幕属性，获取屏幕得个数====screenNum=" + screenNum);
             //添加主屏到集合
             ScreenEntity screenEntity = new ScreenEntity(AppInfo.PROGRAM_POSITION_MAIN, SharedPerUtil.getScreenWidth(), SharedPerUtil.getScreenHeight(), displays[0]);
             screenEntityList.add(screenEntity);

@@ -4,6 +4,7 @@ import static com.etv.config.AppConfig.APP_TYPE_JIANGJUN_YUNCHENG;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import com.etv.activity.model.RegisterDevListener;
 import com.etv.activity.pansener.InitPansener;
@@ -204,16 +205,14 @@ public class TcpParsener {
      * 上传截图，给服务器
      * @param tag
      */
-    public void updateImageToWeb(String tag,String imagePath) {
-        if (tag == null || tag.length() < 1) {
+    public void updateImageToWeb(String tag, String imagePath) {
+        if (TextUtils.isEmpty(imagePath)) {
             return;
         }
         try {
             MyLog.update("==截图回来了==准备上传==" + tag, true);
-            if (tag.equals(AppInfo.TAG_UPDATE)) {
-                initOther();
-                tcpServerModule.monitorUpdateImage(context.getApplicationContext(), imagePath);
-            }
+            initOther();
+            tcpServerModule.monitorUpdateImage(context.getApplicationContext(), imagePath);
         } catch (Exception e) {
             MyLog.update("==截图回来了==上传异常==" + e.toString(), true);
             e.printStackTrace();
@@ -398,7 +397,6 @@ public class TcpParsener {
 
             }
         });
-
     }
 
     public void startCaptureImage() {
@@ -407,33 +405,20 @@ public class TcpParsener {
                 @Override
                 public void getCaptureImagePath(boolean isSuucess, String imagePath) {
                     MyLog.update("=========截圖返回-------------" + isSuucess + " / " + imagePath, true);
-                    updateScreenshotToWeb(imagePath);
+                    updateImageToWeb(AppInfo.TAG_UPDATE, imagePath);
                 }
             });
             return;
         }
-        //截图功能统一写到 守护进程里面，不要调用API 截图，API 覆盖主板不完全，切记
+        //新版本直接使用软件截图，旧版本使用守护进程进行截图
         ScreenUtil.getScreenImage(context, AppInfo.TAG_UPDATE, new BitmapCaptureListener() {
             @Override
             public void backCaptureImage(boolean isSuccess, String imagePath) {
-                if (!isSuccess){
+                if (!isSuccess) {
                     return;
                 }
-                updateScreenshotToWeb(AppInfo.CAPTURE_MAIN);
+                updateImageToWeb(AppInfo.TAG_UPDATE, AppInfo.CAPTURE_MAIN);
             }
         });
     }
-
-    //上传截图到服务器
-    private void updateScreenshotToWeb(String imagePath) {
-        try {
-            MyLog.update("==截图回来了==准备上传==", true);
-            initOther();
-            updateImageToWeb(AppInfo.TAG_UPDATE,imagePath);
-        } catch (Exception e) {
-            MyLog.update("==截图回来了==上传异常==" + e.toString());
-            e.printStackTrace();
-        }
-    }
-
 }
