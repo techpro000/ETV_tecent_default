@@ -159,7 +159,7 @@ public class TimerChangeActivity extends SettingBaseActivity implements View.OnC
                 break;
             case R.id.btn_submit:
                 if (isCheckNull()) {
-                    showToastView("请勾选周期");
+                    showToastView(getString(R.string.select_time_please));
                     return;
                 }
                 if (order == ORDER_ADD) {
@@ -300,12 +300,12 @@ public class TimerChangeActivity extends SettingBaseActivity implements View.OnC
         boolean check_ck_sta = ck_sta.isChecked();
         boolean check_ck_sun = ck_sun.isChecked();
         if (!check_ck_mon &&
-                !check_ck_tue &&
-                !check_ck_wed &&
-                !check_ck_thu &&
-                !check1_ck_fri &&
-                !check_ck_sta &&
-                !check_ck_sun) {
+            !check_ck_tue &&
+            !check_ck_wed &&
+            !check_ck_thu &&
+            !check1_ck_fri &&
+            !check_ck_sta &&
+            !check_ck_sun) {
             return true;
         }
         return false;

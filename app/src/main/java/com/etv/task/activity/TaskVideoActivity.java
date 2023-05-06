@@ -87,7 +87,6 @@ public class TaskVideoActivity extends TaskActivity implements View.OnClickListe
             @Override
             public void playComplete(int playTag) {
                 MyLog.video("====视频列表播放完毕了==这里回调====");
-                finish();
             }
 
             @Override

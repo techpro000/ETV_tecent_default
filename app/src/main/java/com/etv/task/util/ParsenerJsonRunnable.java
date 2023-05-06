@@ -45,12 +45,14 @@ public class ParsenerJsonRunnable implements Runnable {
     public void run() {
         if (isParsenerNet) {  //网络模式节目解析
             if (json == null || json.length() < 8) {
+                DBTaskUtil.clearAllDbInfo("请求得任务信息，JSON IS NULL 没有任务,直接删库");
                 taskRequestListener.parserJsonOver("网络任务 = 解析异常,没有相关的 JSON 数据", null);
                 return;
             }
             List<TaskWorkEntity> taskWorkEntityList = parsenerTaskEntity(json);
             if (taskWorkEntityList == null || taskWorkEntityList.size() < 1) {
                 //表示当前没有节目，直接删库，删除素材信息，停止播放
+                MyLog.task("=请求得任务信息，没有任务,直接删库==");
                 DBTaskUtil.clearAllDbInfo("请求得任务信息，没有任务,直接删库");
             }
             taskRequestListener.parserJsonOver("解析数据完成", taskWorkEntityList);
