@@ -1,21 +1,32 @@
 package com.etv.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
+
+import androidx.annotation.NonNull;
 
 import com.EtvApplication;
 import com.etv.config.AppInfo;
 import com.etv.entity.ScreenEntity;
 import com.etv.listener.BitmapCaptureListener;
+import com.etv.service.EtvService;
 import com.etv.util.guardian.GuardianUtil;
 import com.etv.util.rxjava.AppStatuesListener;
 import com.etv.util.system.CpuModel;
 import com.etv.util.system.SystemManagerInstance;
-import com.ys.rkapi.MyManager;
 
 import java.io.File;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+
 public class ScreenUtil {
+
+    private static Handler mHandler = new Handler();
 
     /**
      * 智能截图
@@ -49,8 +60,19 @@ public class ScreenUtil {
     private static void get356xCatptureImage(Context context, BitmapCaptureListener listener) {
         FileUtil.creatPathNotExcit("开始截图");
         MyLog.update("=截图=3566=开始截图==");
-        boolean isSuccess = SystemManagerInstance.getInstance(context).screenShot(AppInfo.CAPTURE_MAIN);
-        listener.backCaptureImage(isSuccess, AppInfo.CAPTURE_MAIN);
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                boolean isSuccess = SystemManagerInstance.getInstance(context).screenShot(AppInfo.CAPTURE_MAIN);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.backCaptureImage(isSuccess, AppInfo.CAPTURE_MAIN);
+                    }
+                });
+            }
+        };
+        EtvService.getInstance().executor(runnable);
     }
 
     /***
