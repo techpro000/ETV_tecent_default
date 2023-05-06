@@ -288,7 +288,7 @@ public class GuardianUtil {
         }
         if (CpuModel.getMobileType().equals(CpuModel.CPU_RK_3566)
             || cpuModel.contains(CpuModel.CPU_MODEL_3568_11)) {
-            RawSourceEntity rawSourceEntity = new RawSourceEntity(R.raw.guardian_356x, 3206512, "3566-RK-11", 82);
+            RawSourceEntity rawSourceEntity = new RawSourceEntity(R.raw.guardian_356x, 3206494, "3566-RK-11", 83);
             return rawSourceEntity;
         }
 
