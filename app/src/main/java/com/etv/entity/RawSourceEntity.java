@@ -1,7 +1,8 @@
 package com.etv.entity;
 
 /**
- * Created by jsjm on 2018/11/9.
+ * Created by LONG
+ * on 2018/11/9.
  */
 public class RawSourceEntity {
 
@@ -13,9 +14,6 @@ public class RawSourceEntity {
 
     public RawSourceEntity() {
     }
-
-
-
 
     public RawSourceEntity(int rawId, long fileLength, String name, int apkVersion) {
         this.rawId = rawId;
@@ -67,9 +65,9 @@ public class RawSourceEntity {
     @Override
     public String toString() {
         return "RawSourceEntity{" +
-                "rawId=" + rawId +
-                ", fileLength=" + fileLength +
-                ", name=" + name +
-                '}';
+            "rawId=" + rawId +
+            ", fileLength=" + fileLength +
+            ", name=" + name +
+            '}';
     }
 }

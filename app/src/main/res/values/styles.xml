@@ -81,13 +81,6 @@
     </style>
 
 
-    <!--dimension,reference,color,boolean,float,integer,string,fraction-->
-    <declare-styleable name="Grid_Button">
-        <attr name="gridBackColor" format="color" />
-        <attr name="gridtitle" format="string" />
-        <attr name="gridimgContent" format="reference" />
-        <attr name="gridimgSize" format="dimension" />
-    </declare-styleable>
 
     <declare-styleable name="VIEW_TERMISETTING">
         <attr name="icon_image" format="reference" />

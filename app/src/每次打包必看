@@ -16,9 +16,9 @@ Launcher
 
 15：etv_ip_address.txt     192.168.1.24
     etv_register.txt      {"username":"cdl","phone": "18925274342","registeNum":20}
-    etv_disonline.zip     离线任务  task.txt
+    etv_disonline.zip      离线任务  task.txt
     etv.apk                U盘安装APK
-    隐藏密码                8899
+    隐藏密码                 8899
     根目录放置下文件夹 素材
 
 没有签名：
@@ -69,12 +69,3 @@ localDev
                                   }
 
 
-                                          Pm25GetUtil pm25GetUtil = new Pm25GetUtil(TestActivity.this, new Pm25GetUtil.Pm25InfoListener() {
-
-                                              @Override
-                                              public void backPm25Infomation(boolean isTrue, String pm25) {
-                                                  MyLog.e("weather", "====获得PM25的信息===" + isTrue + " / " + pm25);
-                                              }
-
-                                          });
-                                          pm25GetUtil.getCityInfoList("深圳市");

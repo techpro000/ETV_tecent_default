@@ -22,7 +22,6 @@ import com.etv.task.entity.CpListEntity;
 import com.etv.task.entity.TextInfo;
 import com.etv.task.util.TaskDealUtil;
 import com.etv.util.MyLog;
-import com.etv.util.system.CpuModel;
 
 public class AutoScrollTextView extends SurfaceView implements SurfaceHolder.Callback {
     private int mDefaultWidth = 0; // TextView默认宽度

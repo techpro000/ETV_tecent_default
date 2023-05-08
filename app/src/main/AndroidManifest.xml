@@ -177,7 +177,6 @@
         <activity
             android:name="com.etv.task.activity.PlaySingleActivity"
             android:launchMode="singleTask" />
-        <activity android:name="com.etv.task.shiwei.PlaySingleShiWeiActivity" />
         <activity android:name="com.etv.task.activity.TaskBlackActivity" />
         <activity android:name="com.etv.activity.SettingSysActivity" />
         <activity android:name="com.etv.setting.WorkChoiceActivity" />
@@ -185,7 +184,6 @@
         <activity android:name="com.etv.setting.PowerOnOffLocalActivity" />
         <activity android:name="com.etv.setting.PowerOnOffWebActivity" />
         <activity android:name="com.etv.setting.TaskInfoActivity" />
-        <activity android:name="com.etv.setting.EthernetActivity" />
         <activity android:name="com.etv.task.activity.PlayImaVideoActivity" />
         <activity
             android:name="com.etv.activity.TimerReduceActivity"
