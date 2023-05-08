@@ -2,6 +2,7 @@ package com.etv.task.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AbsoluteLayout;
@@ -13,6 +14,7 @@ import com.etv.config.AppInfo;
 import com.etv.listener.TaskPlayStateListener;
 import com.etv.task.entity.CpListEntity;
 import com.etv.task.util.TaskDealUtil;
+import com.etv.util.Biantai;
 import com.etv.util.SharedPerUtil;
 import com.etv.view.layout.Generator;
 import com.ys.model.entity.FileEntity;
@@ -140,9 +142,20 @@ public class TaskVideoActivity extends TaskActivity implements View.OnClickListe
     }
 
     public void finishView() {
-        Intent intent = new Intent();
-        setResult(RESULT_OK, intent);
-        finish();
+        if (Biantai.isOneClick()) {
+            return;
+        }
+        if (generatorView != null) {
+            generatorView.clearMemory();
+        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        }, 500);
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.etv.service;
 
 import static com.etv.config.AppConfig.APP_TYPE;
 import static com.etv.config.AppConfig.APP_TYPE_JIANGJUN_YUNCHENG;
-import static com.etv.util.FileUtil.TAG;
 
 import android.app.Activity;
 import android.app.Notification;
@@ -19,7 +18,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
@@ -29,7 +27,6 @@ import com.etv.config.AppInfo;
 import com.etv.service.parsener.EtvParsener;
 import com.etv.setting.InterestActivity;
 import com.etv.socket.online.SocketWebListener;
-import com.etv.udp.UdpParnsener;
 import com.etv.util.CodeUtil;
 import com.etv.util.MyLog;
 import com.etv.util.NetWorkUtils;
@@ -221,7 +218,6 @@ public class EtvService extends Service {
     private static final int SEARCH_MESSAGE_SDCARD_OUT = 2346;
     private static final int UPDATE_INFO = 2347;
     private static final int SET_SYSTEM_TIME = 2348;
-    Boolean isOk = false;
 
     private Handler handler = new Handler() {
         @Override

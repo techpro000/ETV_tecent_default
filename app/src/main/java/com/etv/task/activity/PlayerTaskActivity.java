@@ -126,6 +126,7 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
         initView();
         initListener();
         initTaskReceiver();
+        updateViewInfo("Activity_onCreate");
     }
 
     private void initListener() {
@@ -221,7 +222,6 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
         JUMP_TO_VIEW = JUMP_DEFAULT;
         TaskWorkService.isStartApk = false;  //startApk  归位
         AppInfo.startCheckTaskTag = true;
-        updateViewInfo("onResume");
         if (playTaskParsener == null) {
             return;
         }
@@ -270,7 +270,7 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
         if (playTaskParsener == null) {
             return;
         }
-        MyLog.playTask("===========刷新界面===" + tag + "  /时间==" + System.currentTimeMillis());
+        MyLog.playTask("刷新界面===" + tag + "  /时间==" + System.currentTimeMillis());
         EtvService.getInstance().updateDevStatuesToWeb(PlayerTaskActivity.this);
         playTaskParsener.getTaskToView(tag);           //获取数据
     }
@@ -404,7 +404,7 @@ public class PlayerTaskActivity extends TaskActivity implements PlayTaskView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        MyLog.playTask("========生命周期==========界面回来了====" + resultCode);
+        MyLog.playTask("==界面回来了==" + resultCode + " /requestCode = " + requestCode);
         if (resultCode != RESULT_OK) {
             return;
         }
