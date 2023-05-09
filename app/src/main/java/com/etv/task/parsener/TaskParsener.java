@@ -86,7 +86,7 @@ public class TaskParsener {
         if (taskView == null) {
             return;
         }
-        MyLog.task("========parserJsonOver=======准备去播放===== " + tag + " / " + list.size());
+        MyLog.task("========parserJsonOver=======准备去播放===== " + tag );
         taskView.backTaskList(list, tag);
     }
 

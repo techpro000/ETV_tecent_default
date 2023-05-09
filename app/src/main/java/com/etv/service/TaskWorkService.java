@@ -443,7 +443,7 @@ public class TaskWorkService extends Service implements TaskView {
      */
     @Override
     public void backTaskList(List<TaskWorkEntity> lists, String printTag) {
-        MyLog.task("返回需要下载播放的任务集合任务结合" + lists.size());
+        MyLog.task("返回需要下载播放的任务集合任务结合" + printTag);
         setCurrentTaskType(TASK_TYPE_DEFAULT, "恢复原始状态");
         if (lists == null || lists.size() < 1) {
             //没有需要下载的任务，直接关闭播放界面
