@@ -657,4 +657,6 @@
     <string name="select_time_please">시간을 선택하세요</string>
     <string name="select_hour_please">시간을 선택하세요!</string>
     <string name="select_min_please">분을 선택해 주세요!</string>
+    <string name="current_board_notsupport_stream">현재 메인보드는 스트림 방송을 지원하지 않습니다. 판매 후 문의하십시오!</string>
+
 </resources>

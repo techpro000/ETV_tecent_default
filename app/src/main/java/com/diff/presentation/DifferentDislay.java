@@ -28,6 +28,7 @@ import com.etv.task.model.TaskRequestListener;
 import com.etv.task.parsener.PlayTaskParsener;
 import com.etv.task.util.TaskDealUtil;
 import com.etv.util.MyLog;
+import com.etv.util.system.CpuModel;
 import com.etv.util.weather.WeatherEntity;
 import com.etv.util.weather.WeatherHttpRequest;
 import com.etv.view.layout.Generator;
@@ -324,6 +325,10 @@ public class DifferentDislay extends Presentation {
                     }
                     break;
                 case AppInfo.VIEW_STREAM_VIDEO:            //流媒体
+                    if (CpuModel.getMobileType().startsWith(CpuModel.CPU_RK_3566)) {
+                        MyToastView.getInstance().Toast(context, context.getString(R.string.current_board_notsupport_stream));
+                        break;
+                    }
                     MyLog.diff("====加载流媒体控件==VIEW_STREAM_VIDEO==" + leftPosition + " / " + topPosition + " / " + width + " / " + height);
                     if (txtList == null || txtList.size() < 1) {
                         return;

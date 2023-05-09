@@ -81,6 +81,7 @@ public class FileUtil {
             return true;
         }
         if (localFileLength > downFileLength) {
+            MyLog.task("=======比对文件，本地文件比服务器得文件大,直接删除，重新下载本地="+localFileLength + " / " + downFileLength);
             FileUtil.deleteDirOrFilePath(saveFilePath, "==比对文件，本地文件比服务器得文件大,直接删除，重新下载本地==" + localFileLength + " / " + downFileLength);
             return false;
         }

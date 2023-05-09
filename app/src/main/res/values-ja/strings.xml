@@ -656,5 +656,6 @@
     <string name="select_time_please">時間をお願いします</string>
     <string name="select_hour_please">時間をお願いします!</string>
     <string name="select_min_please">分を選びます!</string>
+    <string name="current_board_notsupport_stream">現在のマザーボードは流媒体の再生を支持しないで、アフターサービスを連絡してください!</string>
 
 </resources>

@@ -82,13 +82,8 @@ public class TaskParsener {
      */
     private void parsenerJsonOverFromWeb(String tag, List<TaskWorkEntity> list) {
         MyLog.task("解析完毕==" + tag + " /list is null =  " + (list == null));
-        TaskWorkService.setCurrentTaskType(TaskWorkService.TASK_TYPE_DEFAULT, "解析完成，这里恢复状态");
+        TaskWorkService.setCurrentTaskType(TaskWorkService.TASK_TYPE_DEFAULT, "开始解析，先恢复状态");
         if (taskView == null) {
-            return;
-        }
-        if (list == null || list.size() < 1) {
-            MyLog.task("========parserJsonOver=======没有获取到任务=====1");
-            taskView.finishMyShelf("没有合适的任务");
             return;
         }
         MyLog.task("========parserJsonOver=======准备去播放===== " + tag + " / " + list.size());
@@ -108,47 +103,47 @@ public class TaskParsener {
         }
         String requestUrl = ApiInfo.getSdManagerCheckUrl();
         OkHttpUtils
-                .post()
-                .url(requestUrl)
-                .addParams("userName", SharedPerManager.getUserName())
-                .build()
-                .execute(new StringCallback() {
+            .post()
+            .url(requestUrl)
+            .addParams("userName", SharedPerManager.getUserName())
+            .build()
+            .execute(new StringCallback() {
 
-                    @Override
-                    public void onError(Call call, String errorDesc, int id) {
-                        MyLog.cdl("获取内存阀值=====" + printMsg + " / " + errorDesc);
-                    }
+                @Override
+                public void onError(Call call, String errorDesc, int id) {
+                    MyLog.cdl("获取内存阀值=====" + printMsg + " / " + errorDesc);
+                }
 
-                    @Override
-                    public void onResponse(String json, int id) {
-                        MyLog.cdl("获取内存阀值==" + printMsg + " / " + json);
-                        try {
-                            JSONObject jsonObject = new JSONObject(json);
-                            int code = jsonObject.getInt("code");
-                            if (code == 0) {
-                                String data = jsonObject.getString("data");
-                                JSONObject jsonData = new JSONObject(data);
-                                int riLevel = Integer.parseInt(jsonData.getString("riLevel"));
-                                String riSpeedLimit = jsonData.getString("riSpeedLimit");  //下载速度
-                                String riDownNumLimit = jsonData.getString("riDownNumLimit"); //下载台数限制
-                                if (riDownNumLimit == null || riDownNumLimit.length() < 1) {
-                                    riDownNumLimit = "200";
-                                }
-                                if (riSpeedLimit == null || riSpeedLimit.length() < 1) {
-                                    riSpeedLimit = "5000";
-                                }
-                                int limitSpeed = Integer.parseInt(riSpeedLimit);
-                                int limitNumLine = Integer.parseInt(riDownNumLimit);
-                                SharedPerManager.setLimitDevNum(limitNumLine);
-                                SharedPerManager.setLimitSpeed(limitSpeed);
-                                SharedPerManager.setSdcardManagerAuthor(riLevel);
-                                AppInfo.getDevDownLevel = true;
+                @Override
+                public void onResponse(String json, int id) {
+                    MyLog.cdl("获取内存阀值==" + printMsg + " / " + json);
+                    try {
+                        JSONObject jsonObject = new JSONObject(json);
+                        int code = jsonObject.getInt("code");
+                        if (code == 0) {
+                            String data = jsonObject.getString("data");
+                            JSONObject jsonData = new JSONObject(data);
+                            int riLevel = Integer.parseInt(jsonData.getString("riLevel"));
+                            String riSpeedLimit = jsonData.getString("riSpeedLimit");  //下载速度
+                            String riDownNumLimit = jsonData.getString("riDownNumLimit"); //下载台数限制
+                            if (riDownNumLimit == null || riDownNumLimit.length() < 1) {
+                                riDownNumLimit = "200";
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                            if (riSpeedLimit == null || riSpeedLimit.length() < 1) {
+                                riSpeedLimit = "5000";
+                            }
+                            int limitSpeed = Integer.parseInt(riSpeedLimit);
+                            int limitNumLine = Integer.parseInt(riDownNumLimit);
+                            SharedPerManager.setLimitDevNum(limitNumLine);
+                            SharedPerManager.setLimitSpeed(limitSpeed);
+                            SharedPerManager.setSdcardManagerAuthor(riLevel);
+                            AppInfo.getDevDownLevel = true;
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                });
+                }
+            });
     }
 
     /**

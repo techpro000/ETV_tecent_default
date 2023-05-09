@@ -294,21 +294,21 @@ public class PlayTaskTriggerParsener {
                         addViewToList(generatorView, coType, false);
                     }
                     break;
-                case AppInfo.VIEW_STREAM_VIDEO:  //流媒体
-                    MyLog.playTask("====加载流媒体控件==VIEW_STREAM_VIDEO==" + leftPosition + " / " + topPosition + " / " + width + " / " + height);
-                    if (txtList == null || txtList.size() < 1) {
-                        return;
-                    }
-                    TextInfo textInfoStream = txtList.get(0);
-                    String streamUrl = textInfoStream.getTaContent();
-                    MyLog.playTask("====加载流媒体控件==streamUrl==" + streamUrl);
-                    String moveStream = textInfoStream.getTaMove();
-                    generatorView = TaskDealUtil.getStreamGenViewBySpeed(context, moveStream, cpEntity, leftPosition, topPosition,
-                            width, height, streamUrl, coType);
-                    addViewToList(generatorView, coType, false);
-                    view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
-                    generatorView.updateView(null, true);
-                    break;
+//                case AppInfo.VIEW_STREAM_VIDEO:  //流媒体
+//                    MyLog.playTask("====加载流媒体控件==VIEW_STREAM_VIDEO==" + leftPosition + " / " + topPosition + " / " + width + " / " + height);
+//                    if (txtList == null || txtList.size() < 1) {
+//                        return;
+//                    }
+//                    TextInfo textInfoStream = txtList.get(0);
+//                    String streamUrl = textInfoStream.getTaContent();
+//                    MyLog.playTask("====加载流媒体控件==streamUrl==" + streamUrl);
+//                    String moveStream = textInfoStream.getTaMove();
+//                    generatorView = TaskDealUtil.getStreamGenViewBySpeed(context, moveStream, cpEntity, leftPosition, topPosition,
+//                            width, height, streamUrl, coType);
+//                    addViewToList(generatorView, coType, false);
+//                    view_abous.addView(generatorView.getView(), generatorView.getLayoutParams());
+//                    generatorView.updateView(null, true);
+//                    break;
                 case AppInfo.VIEW_DATE:   //日期
                     MyLog.playTask("====时间的坐标==" + leftPosition + "/ " + topPosition + " /" + width + " / " + height);
                     if (txtList == null || txtList.size() < 1) {

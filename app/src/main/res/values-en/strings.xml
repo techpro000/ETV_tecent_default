@@ -504,8 +504,7 @@
     <string name="totil_air_quiet">Air quality Index of public toilets</string>
     <string name="person_total_setting">Passenger flow setting</string>
     <string name="web_touch_title">Web interactive</string>
-    <string name="apk_back_time">APK return time must be greater than 5 seconds, currently do not return</string>
-    、
+    <string name="apk_back_time">APK return time must be greater than 5 seconds, currently do not return</string>、
     <string name="refresh_time">Refresh time (minutes)</string>
     <string name="statues_tecent">Kernel state</string>
     <string name="statues_install">Installed</string>
@@ -657,5 +656,6 @@
     <string name="select_time_please">Please select the time</string>
     <string name="select_hour_please">Please select the hour!</string>
     <string name="select_min_please">Please select minutes!</string>
+    <string name="current_board_notsupport_stream">The current motherboard does not support streaming media, please contact after-sales!</string>
 
 </resources>

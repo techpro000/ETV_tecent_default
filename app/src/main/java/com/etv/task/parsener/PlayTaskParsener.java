@@ -76,6 +76,7 @@ import com.ys.bannerlib.util.GlideCacheUtil;
 import com.ys.bannerlib.util.GlideImageUtil;
 import com.ys.etv.R;
 import com.ys.model.dialog.EditTextDialog;
+import com.ys.model.dialog.MyToastView;
 import com.ys.model.listener.EditTextDialogListener;
 import com.ys.model.util.FileMatch;
 
@@ -256,11 +257,22 @@ public class PlayTaskParsener {
      * 用户触摸类型=2 /coLinkAction= 2 / 10 / 46416cfc566e44d29be3
      */
     private void getPmFromTask(int position, String senceid, boolean isTouch, String printTag) {
-        MyLog.task("==getPmFromTask==" + position + " /senceid= " + senceid + "/isTouch= " + isTouch);
+        MyLog.task("==getPmFromTask==" + position + " /senceid= " + senceid + "/printTag= " + printTag);
         //清除时间变化观察者模式
         TimerDealUtil.getInstance().removeAllGenerator();
         //每次回到第一个场景,重新计时
+
+        SceneEntity currentSceneEntityFirst = sceneEntityListMain.get(0);
+        String senIdFirst = currentSceneEntityFirst.getSenceId();
+
+        if (!TextUtils.isEmpty(senIdFirst) && !TextUtils.isEmpty(senceid) && senIdFirst.equals(senceid)) {
+//            //特殊场景，回到第一个场景，重新计数
+            MyLog.task("==getPmFromTask==特殊场景，回到第一个场景，重新计数 00");
+            position = 0;
+        }
+
         if (position == 0) {
+            MyLog.task("==getPmFromTask==特殊场景，回到第一个场景，重新计数  11");
             projectJumpEntities.clear();
             SceneEntity sceneEntityFrom = sceneEntityListMain.get(0);
             if (sceneEntityFrom != null) {
@@ -839,6 +851,10 @@ public class PlayTaskParsener {
                     }
                     break;
                 case AppInfo.VIEW_STREAM_VIDEO:  //流媒体
+                    if (CpuModel.getMobileType().startsWith(CpuModel.CPU_RK_3566)) {
+                        MyToastView.getInstance().Toast(context, context.getString(R.string.current_board_notsupport_stream));
+                        break;
+                    }
                     MyLog.playTask("====加载流媒体控件==VIEW_STREAM_VIDEO==" + leftPosition + " / " + topPosition + " / " + width + " / " + height);
                     if (txtList == null || txtList.size() < 1) {
                         return;
@@ -1282,7 +1298,6 @@ public class PlayTaskParsener {
                     //保存触摸到集合里面
                     ProjectJumpEntity projectJumpEntity = new ProjectJumpEntity();
                     SceneEntity sceneEntityFrom = getCurrentSencenEntity();
-                    projectJumpEntity.setSceneEntityFrom(sceneEntityFrom);
                     //执行场景跳转的功能
                     int nextSencenPosition = Integer.parseInt(coLinkAction);
                     MyLog.d("TOUCH", "=====跳转场景==coLinkAction==" + coLinkAction);
@@ -1292,13 +1307,13 @@ public class PlayTaskParsener {
                     }
                     //添加记录到集合
                     SceneEntity sceneEntityTo = sceneEntityListMain.get(nextSencenPosition);
-                    String scenId = sceneEntityTo.getSenceId();
-                    //证明商标
-                    MyLog.d("TOUCH", "=====跳转场景=000===" + nextSencenPosition + " /scenId= " + scenId);
                     int projectorTime = getCurrentSencenProjectorTimeByCpEntity(cpListEntity);
+                    projectJumpEntity.setSceneEntityFrom(sceneEntityFrom);
                     projectJumpEntity.setSceneEntityTo(sceneEntityTo);
                     projectJumpEntity.setProjectorTime(projectorTime);
-                    addProJumpSencenToList(projectJumpEntity, " case AppInfo.TOUCH_TYPE_JUMP_SENCEN: //跳转场景");
+
+//                    MyLog.playTaskBack("sceneEntityFrom=" + sceneEntityFrom + "\nsceneEntityTo=" + sceneEntityTo);
+                    addProJumpSencenToList(projectJumpEntity, "用户点击场景跳转");
                     //====准备布局到界面===============================
                     getPmFromTask(nextSencenPosition, nextSceneEntity, true, "触摸互动场景跳转");
                     break;
@@ -1588,44 +1603,47 @@ public class PlayTaskParsener {
     }
 
     /**
-     * 添加场景到集合
+     * 添加场景到数据集合
      */
     public void addProJumpSencenToList(ProjectJumpEntity projectJumpEntity, String printTag) {
         SceneEntity sceneEntityFrom = projectJumpEntity.getSceneEntityFrom();
         SceneEntity sceneEntityTo = projectJumpEntity.getSceneEntityTo();
         long proTime = projectJumpEntity.getProjectorTime();
-        MyLog.playTaskBack("=============添加场景到集合==proTime==" + proTime + "==printTag==" + printTag);
+        MyLog.playTaskBack("添加场景到集合，printTag==" + printTag);
         if (projectJumpEntities == null) {
             return;
         }
         //第一次直接添加
         if (projectJumpEntities.size() < 1) {
-            addProJumpToList(new ProjectJumpEntity(sceneEntityFrom, sceneEntityTo, proTime), "第一次添加，直接添加");
+            MyLog.playTaskBack("添加场景到集合，第一次添加数据==" + proTime + "\n" + sceneEntityFrom + "\n" + sceneEntityTo);
+            addProJumpToList(new ProjectJumpEntity(sceneEntityFrom, sceneEntityTo, proTime), "第一次添加");
             return;
         }
         if (proTime > 0) { //正常设置得触摸返回时间
-            addProJumpToList(new ProjectJumpEntity(sceneEntityFrom, sceneEntityTo, proTime), "正常触摸返回，直接添加");
+            MyLog.playTaskBack("添加场景到集合，带有触摸返回时间==" + proTime + "\n" + sceneEntityFrom + "\n" + sceneEntityTo);
+            addProJumpToList(new ProjectJumpEntity(sceneEntityFrom, sceneEntityTo, proTime), "正常触摸返回");
         } else {
-//            这个是依据场景得层级依次返回
-//            int touch_back_time = SharedPerManager.getScene_task_touch_back_time();
-//            addProJumpToList(new ProjectJumpEntity(sceneEntityFrom, sceneEntityTo, touch_back_time), "=添加场景到集合==用户没有设定触摸返回得时间，直接添加");
-            //用户没有设定触摸返回得时间
-            //直接返回第一个场景
-            SceneEntity sceneEntityFirst = sceneEntityListMain.get(0);
+//          这个是依据场景得层级依次返回
             long touch_back_time = SharedPerManager.getScene_task_touch_back_time();
-            addProJumpToList(new ProjectJumpEntity(sceneEntityFirst, sceneEntityTo, touch_back_time), "=添加场景到集合==用户没有设定触摸返回得时间，直接添加");
+            MyLog.playTaskBack("添加场景到集合，没有设置返回时间==" + touch_back_time + "\n" + sceneEntityFrom + "\n" + sceneEntityTo);
+            addProJumpToList(new ProjectJumpEntity(sceneEntityFrom, sceneEntityTo, touch_back_time), "用户没有设定触摸返回得时间");
         }
     }
 
     private void addProJumpToList(ProjectJumpEntity projectJumpEntity, String printTag) {
         SceneEntity sceneEntityFrom = projectJumpEntity.getSceneEntityFrom();
         SceneEntity sceneEntityTo = projectJumpEntity.getSceneEntityTo();
-        MyLog.playTaskBack("添加场景到集合场景ID====000===" + printTag);
-        if (sceneEntityFrom != null && sceneEntityTo != null) {
-            MyLog.playTaskBack("添加场景到集合场景ID==" + projectJumpEntity.getSceneEntityFrom().getSenceId() + " / " + projectJumpEntity.getSceneEntityTo().getSenceId() + " / " + projectJumpEntity.getProjectorTime() + " /" + printTag);
-        } else {
-            MyLog.playTaskBack("添加场景到集合场景ID==场景有一个是null==" + printTag);
-        }
+        MyLog.playTaskBack("printTag=" + printTag);
+        MyLog.playTaskBack("sceneEntityFrom=" + sceneEntityFrom + "\nsceneEntityTo=" + sceneEntityTo);
+
+//        [{From=dd6d5a82b6e94e67b5f6,To=null,Time=0},
+//        {From=dd6d5a82b6e94e67b5f6,To=7de9a35df52f4061a787,Time=3600000},
+//        {From=dd6d5a82b6e94e67b5f6,To=8d8bc92305b348d2a54a,Time=3600000}]
+
+//        dd6d5a82b6e94e67b5f6
+//        7de9a35df52f4061a787
+//        8d8bc92305b348d2a54a
+
         projectJumpEntities.add(new ProjectJumpEntity(sceneEntityFrom, sceneEntityTo, projectJumpEntity.getProjectorTime()));
     }
 
@@ -1633,39 +1651,39 @@ public class PlayTaskParsener {
      * 执行返回播放的操作
      */
     public void playBackSencenView() {
-        if (sceneEntityListMain == null || sceneEntityListMain.size() < 1) {
-            playTaskView.showToastView("当前节目为 null");
+        if (sceneEntityListMain == null || sceneEntityListMain.size() < 2) {
+            playTaskView.showToastView("当前节目只有一个场景,没法回退");
             return;
         }
-        if (sceneEntityListMain.size() < 2) {
-            playTaskView.showToastView("当前节目只有一个场景");
-        }
-        if (projectJumpEntities == null || projectJumpEntities.size() < 2) {
-            MyLog.playTaskBack("=======场景==null中断操作===");
-//            getPmFromTask(0, "第二个场景返回默认回到第一个场景");
+        if (projectJumpEntities == null || projectJumpEntities.size() < 1) {
+            MyLog.playTaskBack("跳转集合数据<2,没法跳转");
             return;
         }
-        ProjectJumpEntity projump = projectJumpEntities.get(projectJumpEntities.size() - 1);
-        SceneEntity sceneEntityFrom = projump.getSceneEntityFrom();
-        String scenId = sceneEntityFrom.getSenceId();
-        MyLog.playTaskBack("=======点击返回，返回得ID===" + scenId);
-        int lastSencenPosition = 0;
-        for (int i = 0; i < sceneEntityListMain.size(); i++) {
-            SceneEntity sceneEntitySave = sceneEntityListMain.get(i);
-            String senIdSave = sceneEntitySave.getSenceId();
-            if (senIdSave.contains(scenId)) {
-                lastSencenPosition = i;
-            }
-        }
-        if (projectJumpEntities != null || projectJumpEntities.size() > 1) {
-            MyLog.playTask("=======点击返回，移除场景===" + projectJumpEntities.size());
-            projectJumpEntities.remove(projectJumpEntities.size() - 1);
-            MyLog.playTask("=======点击返回，移除场景===" + projectJumpEntities.size());
-        }
-        MyLog.playTaskBack("====播放结束了，切换节目===" + currentSencenPosition + " / " + lastSencenPosition);
-        String SenceId = sceneEntityListMain.get(lastSencenPosition).getSenceId();
-        MyLog.playTask("====TEXT getPmFromTask 6");
-        getPmFromTask(lastSencenPosition, SenceId, true, "执行返回播放的操作");
+
+//        for (int i = 0; i < projectJumpEntities.size(); i++) {
+//            MyLog.playTaskBack("准备播放的场景ID=" + projectJumpEntities.toString());
+//            SceneEntity SenceFrom = projectJumpEntities.get(i).getSceneEntityFrom();
+//            SceneEntity SenceTo = projectJumpEntities.get(i).getSceneEntityTo();
+//            MyLog.playTaskBack("准备播放的场景ID==SenceFrom=" + SenceFrom.toString() + " \nSenceTo=" + SenceTo.toString());
+//        }
+
+//        [{From=dd6d5a82b6e94e67b5f6,To=null,Time=0},
+//        {From=dd6d5a82b6e94e67b5f6,To=7de9a35df52f4061a787,Time=3600000},
+//        {From=dd6d5a82b6e94e67b5f6,To=8d8bc92305b348d2a54a,Time=3600000}]
+
+//        dd6d5a82b6e94e67b5f6
+//        7de9a35df52f4061a787
+//        8d8bc92305b348d2a54a
+
+
+        int lastSencenPosition = projectJumpEntities.size() - 1;
+        MyLog.playTaskBack("计算完整准备切换节目的位置===" + lastSencenPosition + " /allSize=" + projectJumpEntities.size());
+        String SenceFrom = projectJumpEntities.get(lastSencenPosition).getSceneEntityFrom().getSenceId();
+//        String SenceTo = projectJumpEntities.get(lastSencenPosition).getSceneEntityTo().getSenceId();
+
+        MyLog.playTaskBack("准备播放的场景ID===" + lastSencenPosition + " /SenceFrom=" + SenceFrom);
+        projectJumpEntities.remove(projectJumpEntities.size() - 1);
+        getPmFromTask(lastSencenPosition, SenceFrom, true, "执行返回播放的操作");
     }
 
     /**

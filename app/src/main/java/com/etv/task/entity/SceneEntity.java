@@ -137,19 +137,19 @@ public class SceneEntity extends LitePalSupport {
     @Override
     public String toString() {
         return "SceneEntity{" +
-                "senceid='" + senceid + '\'' +
-                ", programid='" + programid + '\'' +
-                ", taskid='" + taskid + '\'' +
-                ", pmType='" + pmType + '\'' +
-                ", etLevel='" + etLevel + '\'' +
-                ", displayPos='" + displayPos + '\'' +
-                ", listCp=" + listCp +
-                ", scBackImg='" + scBackImg + '\'' +
-                ", scBackimgSize='" + scBackimgSize + '\'' +
-                ", scTime='" + scTime + '\'' +
-                ", etIsLinkScreeen=" + etIsLinkScreeen +
-                ", saveTime=" + saveTime +
-                '}';
+            "senceid='" + senceid + '\'' +
+            ", programid='" + programid + '\'' +
+            ", taskid='" + taskid + '\'' +
+            ", pmType='" + pmType + '\'' +
+            ", etLevel='" + etLevel + '\'' +
+            ", displayPos='" + displayPos + '\'' +
+            ", listCp=" + listCp +
+            ", scBackImg='" + scBackImg + '\'' +
+            ", scBackimgSize='" + scBackimgSize + '\'' +
+            ", scTime='" + scTime + '\'' +
+            ", etIsLinkScreeen=" + etIsLinkScreeen +
+            ", saveTime=" + saveTime +
+            '}';
     }
 }
 

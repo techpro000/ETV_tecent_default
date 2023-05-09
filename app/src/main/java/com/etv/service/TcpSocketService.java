@@ -46,6 +46,7 @@ import com.etv.util.net.ImUtils;
 import com.etv.util.poweronoff.PowerOnOffManager;
 import com.etv.util.poweronoff.db.PowerDbManager;
 import com.etv.util.rxjava.AppStatuesListener;
+import com.etv.util.system.CpuModel;
 import com.etv.util.system.SystemManagerInstance;
 import com.etv.util.system.SystemManagerUtil;
 import com.etv.util.system.VoiceManager;
@@ -888,6 +889,10 @@ public class TcpSocketService extends Service {
 
     //=============百度地图定位==============
     public void startLocationService(int tag) {
+        if (CpuModel.getMobileType().startsWith(CpuModel.CPU_MODEL_MTK_M11)) {
+            AppInfo.isLocationSuccess = true;
+            return;
+        }
         MapLocationParsener.getInstance(TcpSocketService.this).startLocationService(tag);
     }
 
