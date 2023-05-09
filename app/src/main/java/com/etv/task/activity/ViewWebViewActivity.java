@@ -53,8 +53,8 @@ public class ViewWebViewActivity extends TaskActivity implements View.OnClickLis
             getWindow().setFormat(PixelFormat.TRANSLUCENT);
             //硬件加速
             getWindow().setFlags(
-                    android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
-                    android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+                android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+                android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         }
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(SharedPerUtil.getScreenWidth(), SharedPerUtil.getScreenHeight());
         View vieWeb = View.inflate(ViewWebViewActivity.this, R.layout.activity_web_touch, null);
@@ -168,14 +168,6 @@ public class ViewWebViewActivity extends TaskActivity implements View.OnClickLis
     }
 
     private void finiView() {
-        if (NetWorkUtils.isNetworkConnected(ViewWebViewActivity.this)) {
-            startToMainTaskView();
-            return;
-        }
-        if (!AppConfig.isOnline) {
-            startToMainTaskView();
-            return;
-        }
         cacelTimer();
         Intent intent = new Intent();
         setResult(RESULT_OK, intent);
